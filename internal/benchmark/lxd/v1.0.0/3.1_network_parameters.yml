@@ -1,0 +1,43 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Network Configuration
+    sub_category:
+      name: 3.1 Network Parameters (Host Only)
+      audit_tests:
+        -
+          name: '3.1.1 Ensure packet redirect sending is disabled (Automated)'
+          description: ICMP Redirects are used to send routing information to other hosts.
+                      As a host itself does not act as a router (in a host only configuration), there is no need to send redirects.
+          profile_applicability: Level 1
+          audit:
+            - 'sysctl net.ipv4.conf.all.send_redirects 2> /dev/null'
+            - 'sysctl net.ipv4.conf.default.send_redirects 2> /dev/null'
+            - 'grep "net\.ipv4\.conf\.all\.send_redirects" /etc/sysctl.conf |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+            - 'grep "net\.ipv4\.conf\.all\.send_redirects" /etc/sysctl.d/* |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+            - 'grep "net\.ipv4\.conf\.default\.send_redirects" /etc/sysctl.conf | awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+            - 'grep "net\.ipv4\.conf\.default\.send_redirects" /etc/sysctl.d/* |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Set the following parameters in /etc/sysctl.conf or a /etc/sysctl.d/* file:
+                        Run the following commands to set the active kernel parameters:
+                          net.ipv4.conf.all.send_redirects = 0 net.ipv4.conf.default.send_redirects = 0
+                           # sysctl -w net.ipv4.conf.all.send_redirects=0
+                        # sysctl -w net.ipv4.conf.default.send_redirec'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'net.ipv4.conf.all.send_redirects = 0'; && '${1}' == 'net.ipv4.conf.default.send_redirects = 0'; && '${2}' == 'net.ipv4.conf.all.send_redirects = 0'; && '${3}' == 'net.ipv4.conf.all.send_redirects = 0'; && '${4}' == 'net.ipv4.conf.default.send_redirects= 0'; && '${5}' == 'net.ipv4.conf.default.send_redirects= 0';"
+        -
+          name: '3.1.2 Ensure IP forwarding is disabled (Automated)'
+          description: The net.ipv4.ip_forward and net.ipv6.conf.all.forwarding flags are used to tell the system whether it can forward packets or not.
+          profile_applicability: Level 1
+          audit:
+            - 'sysctl net.ipv4.ip_forward 2> /dev/null'
+            - 'grep -E -s "^\s*net\.ipv4\.ip_forward\s*=\s*1" /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf 2> /dev/null'
+            - 'sysctl net.ipv6.conf.all.forwarding 2> /dev/null'
+            - 'grep -E -s "^\s*net\.ipv6\.conf\.all\.forwarding\s*=\s*1" /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf 2> /dev/null'
+            - '# grep "^\s*linux" /boot/grub/grub.cfg 2> /dev/null | grep -v "ipv6.disable=1"'
+          remediation: 'Run the following command to restore the default parameter and set the active kernel parameter:
+                        IF IPv6 is enabled:
+                        Run the following command to restore the default parameter and set the active kernel parameter:
+                        # grep -Els "^\s*net\.ipv6\.conf\.all\.forwarding\s*=\s*1" /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri "s/^\s*(net\.ipv6\.conf\.all\.forwarding\s*)(=)(\s*\S+\b).*$/# *REMOVED* \1/" $filename; done; sysctl -w net.ipv6.conf.all.forwarding=0; sysctl -w net.ipv6.route.flush=1'
+          check_type: multi_param
+          eval_expr: "('${0}' == 'net.ipv4.ip_forward = 0'; && '${1}' == ''; && '${4}' == '';)  || ('${2}' == 'net.ipv6.conf.all.forwarding = 0'; && '${3}' == '';) "

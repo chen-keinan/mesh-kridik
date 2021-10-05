@@ -1,0 +1,44 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Initial Setup
+    sub_category:
+      name: 1.1 Filesystem Configuration
+      audit_tests:
+        -
+          name: '1.1.1 Ensure /tmp is configured (Automated)'
+          description: The /tmp directory is a world-writable directory used for temporary storage by all users and some applications.
+          profile_applicability: Level 1
+          audit:
+            - mount | grep -E '\s/tmp\s'
+            - grep -E '\s/tmp\s' /etc/fstab | grep -E -v '^\s*#'
+            - systemctl is-enabled tmp.mount 2>/dev/null
+          remediation: 'Configure /etc/fstab as appropriate. Example:
+                    tmpfs /tmp tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0
+                    OR
+                    Run the following commands to enable systemd /tmp mounting:
+                    Edit /etc/systemd/system/local-fs.target.wants/tmp.mount to configure the /tmp mount:
+                    [Mount]
+                    What=tmpfs
+                    Where=/tmp
+                    Type=tmpfs Options=mode=1777,strictatime,noexec,nodev,nosuid'
+          check_type: multi_param
+          impact: 'Since the /tmp directory is intended to be world-writable, there is a risk of resource exhaustion if it is not bound to a separate partition.
+              Running out of /tmp space is a problem regardless of what kind of filesystem lies under it, but in a default installation a disk-based /tmp will essentially have the whole disk available, as it only creates a single / partition. On the other hand, a RAM-based /tmp as with tmpfs will almost certainly be much smaller, which can lead to applications filling up the filesystem much more easily.
+              /tmp utilizing tmpfs can be resized using the size={size} parameter on the Options line on the tmp.mount file'
+          eval_expr: "'${0}' == 'tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)'; || '${1}' == 'tmpfs /tmp tmpfs defaults,noexec,nosuid,nodev 0 0'; || '${2}' == 'enabled'"
+          additional_info: If an entry for /tmp exists in /etc/fstab it will take precedence over entries in the tmp.mount file
+          references:
+            - AJ Lewis, "LVM HOWTO", http://tldp.org/HOWTO/LVM-HOWTO/
+            - https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems/
+        -
+          name: '1.1.2 Ensure sticky bit is set on all world-writable directories (Automated)'
+          description: Setting the sticky bit on world writable directories prevents users from deleting or renaming files in that directory that are not owned by them.
+          profile_applicability: Level 1
+          audit:
+            - df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' 2>/dev/null -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
+          remediation:
+          check_type: multi_param
+          eval_expr: "'${0}' == '';"
+          additional_info: Some distributions may not support the --local option to df.

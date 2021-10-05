@@ -1,0 +1,26 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Initial Setup
+    sub_category:
+      name: 1.2 Configure Software Updates
+      audit_tests:
+        -
+          name: '1.2.1 Ensure package manager repositories are configured (Manual)'
+          description: Systems need to have package manager repositories configured to ensure they receive the latest patches and updates.
+          profile_applicability: Level 1
+          audit:
+            - apt-cache policy
+          remediation: 'Configure your package manager repositories according to site policy.'
+          check_type: multi_param
+          type: manual
+        -
+          name: '1.2.2 Ensure GPG keys are configured (Manual)'
+          description: Most packages managers implement GPG key signing to verify package integrity during installation.
+          profile_applicability: Level 1
+          audit:
+            - apt-key list
+          remediation: 'Update your package manager GPG keys in accordance with site policy.'
+          check_type: multi_param
+          type: manual

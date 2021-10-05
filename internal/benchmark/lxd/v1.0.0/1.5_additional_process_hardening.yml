@@ -1,0 +1,19 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Initial Setup
+    sub_category:
+      name: 1.5 Additional Process Hardening
+      audit_tests:
+        -
+          name: '1.5.1 Ensure prelink is disabled (Automated)'
+          description: prelink is a program that modifies ELF shared libraries and ELF dynamically linked binaries in
+                        such a way that the time needed for the dynamic linker to perform relocations at startup significantly decreases.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s prelink 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Run the following command to restore binaries to normal: # prelink -ua
+                        Uninstall prelink using the appropriate package manager or manual installation: # apt purge prelink'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed';"

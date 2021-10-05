@@ -1,0 +1,69 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Initial Setup
+    sub_category:
+      name: 1.4 Filesystem Integrity Checking
+      audit_tests:
+        -
+          name: '1.4.1 Ensure AIDE is installed (Automated)'
+          description: AIDE takes a snapshot of filesystem state including modification times, permissions,
+                      and file hashes which can then be used to compare against the current state of the
+                      filesystem to detect modifications to the system.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s aide 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Install AIDE using the appropriate package manager or manual installation:
+                        # apt install aide aide-common
+                        Configure AIDE as appropriate for your environment. Consult the AIDE documentation for options.
+                        Initialize AIDE:
+                        # aideinit'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'install ok installed';"
+          additional_info: The prelinking feature can interfere with AIDE because it alters binaries to speed up their start up times.
+                            Run prelink -ua to restore the binaries to their prelinked state, thus avoiding false positives from AIDE.
+        -
+          name: '1.4.2 Ensure filesystem integrity is regularly checked (Automated)'
+          description: Periodic checking of the filesystem integrity is needed to detect changes to the filesystem.
+          profile_applicability: Level 1
+          audit:
+            - 'crontab -u root -l 2> /dev/null | grep aide'
+            - 'grep -r aide /etc/cron.* /etc/crontab'
+            - 'systemctl is-enabled aidecheck.service 2> /dev/null'
+            - 'systemctl is-enabled aidecheck.timer 2> /dev/null'
+            - 'systemctl status aidecheck.timer 2> /dev/null'
+          remediation: 'If cron will be used to schedule and run aide check
+                               Run the following command:
+                               # crontab -u root -e
+                               Add the following line to the crontab:
+                               0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check
+                               OR
+                               if aidecheck.service and aidecheck.timer will be used to schedule and run aide check: Create or edit the file /etc/systemd/system/aidecheck.service and add the following lines:
+                               [Unit]
+                               Description=Aide Check
+                               [Service]
+                               Type=simple
+                               ExecStart=/usr/bin/aide.wrapper --config /etc/aide/aide.conf --check
+                               [Install]
+                               WantedBy=multi-user.target
+                               Create or edit the file /etc/systemd/system/aidecheck.timer and add the following lines:
+                               [Unit]
+                               Description=Aide check every day at 5AM
+                               [Timer]
+                               OnCalendar=*-*-* 05:00:00
+                               Unit=aidecheck.service
+                               [Install]
+                               WantedBy=multi-user.target
+                               Run the following commands:
+                               # chown root:root /etc/systemd/system/aidecheck.* # chmod 0644 /etc/systemd/system/aidecheck.*
+                               # systemctl daemon-reload
+                               # systemctl enable aidecheck.service
+                               # systemctl --now enable aidecheck.timer'
+          check_type: multi_param
+          eval_expr: "('${0}' != ''; && '${1}' != '';) || ('${2}' != ''; && '${3}' != ''; && '${4}' != 'Unit aidecheck.timer could not be found.';) "
+          additional_info: The checking in this recommendation occurs every day at 5am. Alter the frequency and time of the checks in compliance with site policy.
+            Note that Debian advises using /usr/bin/aide.wrapper rather than calling /usr/bin/aide directly in order to protect the database and prevent conflicts.
+          references:
+            - https://github.com/konstruktoid/hardening/blob/master/config/aidecheck.service
+            - https://github.com/konstruktoid/hardening/blob/master/config/aidecheck.timer

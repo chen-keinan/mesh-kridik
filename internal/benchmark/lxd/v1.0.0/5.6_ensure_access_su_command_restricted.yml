@@ -1,0 +1,27 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Access, Authentication and Authorization
+    sub_category:
+      name: 5.6 access su command restricted
+      audit_tests:
+        -
+          name: '5.6 Ensure access to the su command is restricted (Automated)'
+          description: The su command allows a user to run a command or shell as another user. The program has been superseded by sudo ,
+                        which allows for more granular control over privileged access. Normally, the su command can be executed by any user.
+                        By uncommenting the pam_wheel.so statement in /etc/pam.d/su , the su command will only allow users in a specific groups to execute su.
+                        This group should be empty to reinforce the use of sudo for privileged access.
+          audit:
+            - 'grep pam_wheel.so /etc/pam.d/su 2> /dev/null  |awk -F " " ''{print $1}'' |awk ''FNR <= 1'''
+            - 'grep pam_wheel.so /etc/pam.d/su 2> /dev/null  |awk -F " " ''{print $2}'' |awk ''FNR <= 1'''
+            - 'grep pam_wheel.so /etc/pam.d/su 2> /dev/null  |awk -F " " ''{print $3}'' |awk ''FNR <= 1'''
+            - 'grep pam_wheel.so /etc/pam.d/su 2> /dev/null  |awk -F " " ''{print $4}'' |awk ''FNR <= 1'''
+            - 'grep pam_wheel.so /etc/pam.d/su 2> /dev/null  |awk -F "group=" ''{print $2}'' |awk ''FNR <= 1'''
+            - 'grep ${1} /etc/group 2> /dev/null |awk -F ":" ''{print $4}'' |awk ''FNR <= 1'''
+          remedeation: 'Create an empty group that will be specified for use of the su command. The group should be named according to site policy.
+                        Example:
+                        # groupadd sugroup
+                        Add the following line to the /etc/pam.d/su file, specifying the empty group: auth required pam_wheel.so use_uid group=sugroup'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'auth'; && '${1}' == 'required'; && '${2}' == 'pam_wheel.so'; && '${3}' == 'use_uid'; && '${4}' != ''; && '${5}' == '';"
