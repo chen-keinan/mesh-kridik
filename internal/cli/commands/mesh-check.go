@@ -103,10 +103,11 @@ var reportResultProcessor ResultProcessor = func(at *models.AuditBench, isSuccee
 }
 
 //CmdEvaluator interface expose one method to evaluate command with evalExpr
-//lxd-audit.go
+//mesh-check.go
 //go:generate mockgen -destination=../mocks/mock_CmdEvaluator.go -package=mocks . CmdEvaluator
 type CmdEvaluator interface {
 	EvalCommand(commands []string, evalExpr string) eval.CmdEvalResult
+	EvalCommandPolicy(commands []string, policy string, propertyEval string, commNum int) eval.CmdEvalResult
 }
 
 //NewLxdAudit new audit object
@@ -144,7 +145,7 @@ func (ldx *MeshCheck) Run(args []string) int {
 }
 
 func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool, auditTests []*models.SubCategory) {
-	ka := m2.MeshCheckResults{BenchmarkType: "lxd", Categories: make([]m2.AuditBenchResult, 0)}
+	ka := m2.MeshCheckResults{BenchmarkType: "mesh", Categories: make([]m2.AuditBenchResult, 0)}
 	for _, at := range auditTests {
 		for _, ab := range at.AuditTests {
 			var testResult = "FAIL"
