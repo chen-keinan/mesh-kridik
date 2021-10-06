@@ -88,7 +88,7 @@ const (
 	//LxdProbeHomeEnvVar ldx probe Home env var
 	LxdProbeHomeEnvVar = "LXD_PROBE_HOME"
 	//LxdProbe binary name
-	LxdProbe = "kube-mesh-kridik"
+	LxdProbe = "mesh-kridik"
 	//RootUser process user owner
 	RootUser = "root"
 	//NonApplicableTest test is not applicable

@@ -1,0 +1,59 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Services
+    sub_category:
+      name: 2.3 Service Clients
+      audit_tests:
+        -
+          name: '2.3.1 Ensure NIS Client is not installed (Automated)'
+          description: The Network Information Service (NIS), formerly known as Yellow Pages, is a client-server directory service protocol used to distribute system configuration files.
+            The NIS client was used to bind a machine to an NIS server and receive the distributed configuration files.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s nis 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Uninstall nis: apt purge nis'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed'; || '${0}' == '';"
+        -
+          name: '2.3.2 Ensure rsh client is not installed (Automated)'
+          description: The rsh-client package contains the client commands for the rsh services.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s rsh-client 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Uninstall rsh: apt purge rsh-client'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed'; || '${0}' == '';"
+          additional_info: Additional methods of disabling a service exist. Consult your distribution documentation for appropriate methods.
+        -
+          name: '2.3.3 Ensure talk client is not installed (Automated)'
+          description: The talk software makes it possible for users to send and receive messages across systems through a terminal session.
+            The talk client, which allows initialization of talk sessions, is installed by default.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s talk 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Uninstall talk: apt purge talk'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed'; || '${0}' == '';"
+        -
+          name: '2.3.4 Ensure telnet client is not installed (Automated)'
+          description: The telnet package contains the telnet client, which allows users to start connections to other systems via the telnet protocol.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s telnet 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Uninstall telnet:# apt purge telnet'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed'; || '${0}' == '';"
+        -
+          name: '2.3.5 Ensure LDAP client is not installed (Automated)'
+          description: The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP.
+            It is a service that provides a method for looking up information from a central database.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s ldap-utils 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Uninstall ldap-utils:# apt purge ldap-utils'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed'; || '${0}' == '';"
+          additional_info: The openldap-clients package can go by other names on some distributions.
+                          openldap2-client, and ldap-utils are known alternative package names.

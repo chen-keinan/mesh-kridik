@@ -3,12 +3,12 @@ package commands
 import (
 	"fmt"
 	"github.com/cheggaaa/pb"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/logger"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/models"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/filters"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/utils"
-	"github.com/chen-keinan/kube-mesh-kridik/ui"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/internal/logger"
+	"github.com/chen-keinan/mesh-kridik/internal/models"
+	"github.com/chen-keinan/mesh-kridik/pkg/filters"
+	"github.com/chen-keinan/mesh-kridik/pkg/utils"
+	"github.com/chen-keinan/mesh-kridik/ui"
 	"github.com/mitchellh/colorstring"
 	"github.com/olekukonko/tablewriter"
 	"gopkg.in/yaml.v2"
@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func printTestResults(at []*models.CheckSpec, table *tablewriter.Table, category string) models.SecCheckTotals {
+func printTestResults(at []*models.AuditBench, table *tablewriter.Table, category string) models.AuditTestTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -46,10 +46,10 @@ func printTestResults(at []*models.CheckSpec, table *tablewriter.Table, category
 			failCounter++
 		}
 	}
-	return models.SecCheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
+	return models.AuditTestTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
-func printClassicTestResults(at []*models.CheckSpec, log *logger.MeshKridikLogger) models.SecCheckTotals {
+func printClassicTestResults(at []*models.AuditBench, log *logger.LdxProbeLogger) models.AuditTestTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -72,12 +72,12 @@ func printClassicTestResults(at []*models.CheckSpec, log *logger.MeshKridikLogge
 			failCounter++
 		}
 	}
-	return models.SecCheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
+	return models.AuditTestTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
 //AddFailedMessages add failed audit test to report data
-func AddFailedMessages(at *models.CheckSpec, isSucceeded bool) []*models.CheckSpec {
-	av := make([]*models.CheckSpec, 0)
+func AddFailedMessages(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
+	av := make([]*models.AuditBench, 0)
 	at.TestSucceed = isSucceeded
 	if !isSucceeded || at.NonApplicable {
 		av = append(av, at)
@@ -86,8 +86,8 @@ func AddFailedMessages(at *models.CheckSpec, isSucceeded bool) []*models.CheckSp
 }
 
 //AddAllMessages add all audit test to report data
-func AddAllMessages(at *models.CheckSpec, isSucceeded bool) []*models.CheckSpec {
-	av := make([]*models.CheckSpec, 0)
+func AddAllMessages(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
+	av := make([]*models.AuditBench, 0)
 	at.TestSucceed = isSucceeded
 	av = append(av, at)
 	return av
@@ -112,7 +112,7 @@ func NewFileLoader() TestLoader {
 //LoadAuditTests load audit test from benchmark folder
 func (tl AuditTestLoader) LoadAuditTests(auditFiles []utils.FilesInfo) []*models.SubCategory {
 	auditTests := make([]*models.SubCategory, 0)
-	audit := models.SecCheck{}
+	audit := models.Audit{}
 	for _, auditFile := range auditFiles {
 		err := yaml.Unmarshal([]byte(auditFile.Data), &audit)
 		if err != nil {
@@ -203,7 +203,7 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 	return ft
 }
 
-func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.CheckSpec) []*models.CheckSpec, log *logger.MeshKridikLogger) []*models.SubCategory {
+func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.AuditBench) []*models.AuditBench, log *logger.LdxProbeLogger) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
 	log.Console(ui.LxdAuditTest)
 	bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")

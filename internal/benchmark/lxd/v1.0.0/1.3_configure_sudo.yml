@@ -1,0 +1,58 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Initial Setup
+    sub_category:
+      name: 1.3 Configure Sudo
+      audit_tests:
+        -
+          name: '1.3.1 Ensure sudo is installed (Automated)'
+          description: sudo allows a permitted user to execute a command as the superuser or another user, as specified by the security policy.
+                        The invoking user's real (not effective) user ID is used to determine the user name with which to query the security policy.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s sudo 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+            - 'dpkg -s sudo-ldap 2> /dev/null|grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Install sudo using the following command.
+                        # apt install sudo
+                        OR
+                        # apt install sudo-ldap'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'install ok installed'; || '${1}' == 'install ok installed';"
+          additional_info: Use the sudo-ldap package if you need LDAP support for sudoers.
+          references:
+            - SUDO(8)
+            - http://www.sudo.ws/
+        -
+          name: '1.3.2 Ensure sudo commands use pty (Automated)'
+          description: sudo can be configured to run only from a psuedo-pty
+          profile_applicability: Level 1
+          audit:
+            - 'grep -Ei ''^\s*Defaults\s+([^#]+,\s*)?use_pty(,\s+\S+\s*)*(\s+#.*)?$'' /etc/sudoers /etc/sudoers.d/*'
+          remediation: 'edit the file /etc/sudoers or a file in /etc/sudoers.d/ with visudo -f and add the following line:
+                        Defaults use_pty'
+          check_type: multi_param
+          eval_expr: "'${0}' != '';"
+          additional_info: isudo edits the sudoers file in a safe fashion, analogous to vipw(8).
+                          visudo locks the sudoers file against multiple simultaneous edits, provides basic sanity checks, and checks or parse errors.
+                          If the sudoers file is currently being edited you will receive a message to try again later.
+          references:
+            - SUDO(8)
+        -
+          name: '1.3.3 Ensure sudo log file exists (Automated)'
+          description: sudo can use a custom log file
+          profile_applicability: Level 1
+          audit:
+            - 'grep -Ei ''^\s*Defaults\s+logfile=\S+'' /etc/sudoers /etc/sudoers.d/*'
+          remediation: 'edit the file /etc/sudoers or a file in /etc/sudoers.d/ with visudo -f and add the following line: and add the following line:
+                        Defaults logfile="<PATH TO CUSTOM LOG FILE>"
+                        Example
+                        Defaults logfile="/var/log/sudo.log"'
+          check_type: multi_param
+          eval_expr: "'${0}' != '';"
+          additional_info: visudo edits the sudoers file in a safe fashion, analogous to vipw(8).
+                           visudo locks the sudoers file against multiple simultaneous edits, provides basic sanity checks, and checks or parse errors.
+                           If the sudoers file is currently being edited you will receive a message to try again later.
+          references:
+            - SUDO(8)

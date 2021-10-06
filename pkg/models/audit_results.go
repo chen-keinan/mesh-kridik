@@ -1,7 +1,7 @@
 package models
 
-//MeshKridikSecurityResults encapsulate security check results to be consumed by user plugin
-type MeshKridikSecurityResults struct {
+//LxdAuditResults encapsulate audit test results to be consumed by user plugin
+type LxdAuditResults struct {
 	BenchmarkType string             `yaml:"benchmark_type"`
 	Categories    []AuditBenchResult `yaml:"audit_bench_result"`
 }

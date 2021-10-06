@@ -1,8 +1,8 @@
 package startup
 
 import (
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/utils"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

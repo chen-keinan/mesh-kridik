@@ -1,0 +1,28 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Services
+    sub_category:
+      name: 2.4 Nonessential services
+      audit_tests:
+        -
+          name: '2.4.1 Ensure nonessential services are removed or masked (Manual)'
+          description: A network port is identified by its number, the associated IP address, and the type of the communication protocol such as TCP or UDP.
+                      A listening port is a network port on which an application or process listens on, acting as a communication endpoint.
+                      Each listening port can be open or closed (filtered) using a firewall.
+                      In general terms, an open port is a network port that accepts incoming packets from remote locations.
+          profile_applicability: Level 1
+          audit:
+            - 'Run the following command:
+               # lsof -i -P -n | grep -v "(ESTABLISHED)"
+               Review the output to ensure that all services listed are required on the system.
+                If a listed service is not required, remove the package containing the service.
+                 If the package containing the service is required, stop and mask the service'
+          remediation: 'Run the following command to remove the package containing the service:
+                        # yum remove <package_name>
+                        OR If required packages have a dependency:
+                        Run the following command to stop and mask the service:
+                        # systemctl --now mask <service_name>'
+          check_type: multi_param
+          type: manual

@@ -1,0 +1,30 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Services
+    sub_category:
+      name: 2.1 inetd Services
+      audit_tests:
+        -
+          name: '2.1.1 Ensure xinetd is not installed (Automated)'
+          description: The eXtended InterNET Daemon (xinetd) is an open source super daemon that replaced the original inetd daemon.
+                       The xinetd daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s xinetd 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Run the following commands to remove xinetd:
+                        # apt purge xinetd'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed';"
+          additional_info: Additional methods of disabling a service exist. Consult your distribution documentation for appropriate methods.
+        -
+          name: '2.1.2 Ensure openbsd-inetd is not installed (Automated)'
+          description: The inetd daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s openbsd-inetd 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Run the following command to uninstall openbsd-inetd:
+                        apt purge openbsd-inetd'
+          check_type: multi_param
+          eval_expr: "'${0}' != 'install ok installed';"

@@ -1,0 +1,197 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Logging and Auditing
+    sub_category:
+      name: 4.1 Configure Logging
+      audit_tests:
+        -
+          name: '4.1.1.1 Ensure rsyslog is installed (Automated)'
+          description: The rsyslog software is a recommended replacement to the original syslogd daemon which provide improvements over syslogd,
+                        such as connection-oriented (i.e. TCP) transmission of logs, the option to log to database formats,
+                        and the encryption of log data en route to a central logging server.
+          profile_applicability: Level 1
+          audit:
+            - 'dpkg -s rsyslog 2> /dev/null |grep Status |awk -F ":" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'nstall rsyslog:
+                        # apt install rsyslog'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'install ok installed';"
+        -
+          name: '4.1.1.2 Ensure rsyslog Service is enabled (Automated)'
+          description: Once the rsyslog package is installed it needs to be activated.
+          profile_applicability: Level 1
+          audit:
+            - 'systemctl is-enabled rsyslog 2> /dev/null'
+          remediation: 'Run the following commands to enable rsyslog:
+                        # systemctl --now enable rsyslog'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'enabled';"
+          additional_info: 'Additional methods of enabling a service exist. Consult your distribution documentation for appropriate methods.'
+        -
+          name: '4.1.1.3 Ensure logging is configured (Manual)'
+          description: The /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files specifies rules for logging and which files are to be used to log certain classes of messages.
+          profile_applicability: Level 1
+          audit:
+            - 'ls -l /var/log/'
+          remediation: 'Edit the following lines in the /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files as appropriate for your environment:
+                        *.emerg
+                        auth,authpriv.*
+                        mail.*
+                        mail.info
+                        mail.warning
+                        mail.err
+                        news.crit
+                        news.err
+                        news.notice
+                        :omusrmsg:*
+                         /var/log/auth.log
+                        -/var/log/mail
+                        -/var/log/mail.info
+                        -/var/log/mail.warn
+                         /var/log/mail.err
+                        -/var/log/news/news.crit
+                        -/var/log/news/news.err
+                        -/var/log/news/news.notice
+                        *.=warning;*.=err
+                        *.crit
+                        *.*;mail.none;news.none
+                        local0,local1.*
+                        local2,local3.*
+                        local4,local5.*
+                        local6,local7.*
+                        -/var/log/warn
+                         /var/log/warn
+                        -/var/log/messages
+                        -/var/log/localmessages
+                        -/var/log/localmessages
+                        -/var/log/localmessages
+                        -/var/log/localmessages
+                        Run the following command to reload the rsyslog configuration:
+                        # systemctl reload rsyslog'
+          check_type: multi_param
+          references:
+            - See the rsyslog.conf(5) man page for more information.
+          additional_info: 'On some systems /var/log/secure should be used for authentication data rather than /var/log/auth.log.
+                            Please consult your distribution-specific recommendations for further details.'
+          type: manual
+        -
+          name: '4.1.1.4 Ensure rsyslog default file permissions configured (Automated)'
+          description: rsyslog will create logfiles that do not already exist on the system.
+                      This setting controls what permissions will be applied to these newly created files.
+          profile_applicability: Level 1
+          audit:
+            - 'grep ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf |awk -F "FileCreateMode" ''{print $2}'' |awk ''FNR <= 1'''
+          remediation: 'Edit the /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files and set $FileCreateMode to 0640 or more restrictive:
+                        $FileCreateMode 0640'
+          check_type: multi_param
+          eval_expr: "'${0}' == '0640';"
+          references:
+            - See the rsyslog.conf(5) man page for more information.
+        -
+          name: '4.1.1.5 Ensure rsyslog is configured to send logs to a remote log host (Automated)'
+          description: The rsyslog utility supports the ability to send logs it gathers to a remote log host running syslogd(8)
+                      or to receive messages from remote hosts, reducing administrative overhead.
+          profile_applicability: Level 1
+          audit:
+            - 'grep -E "^[^#](\s*\S+\s*)\s*action\(" /etc/rsyslog.conf /etc/rsyslog.d/*.conf | grep "target="'
+          remediation: 'Edit the /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files and add one of the following lines:
+                        Newer syntax:
+                        <files to sent to the remote log server> action(type="omfwd" target="<FQDN or ip of loghost>" port="<port number>" protocol="tcp"
+                        action.resumeRetryCount="<number of re-tries>" queue.size=<number of messages to queue>")
+                        queue.type="linkList"
+                        Example:
+                        *.* action(type="omfwd" target="192.168.2.100" port"514" protocol="tcp" action.resumeRetryCount="100"
+                        queue.type="linkList" queue.size="1000")
+                        Older syntax:
+                        *.* @@<FQDN or ip of loghost>
+                        Example:
+                        *.* @@192.168.2.100
+                        Run the following command to reload the rsyslog configuration: # systemctl reload rsyslog'
+          check_type: multi_param
+          eval_expr: "'${0}' != '';"
+          additional_info: 'The double "at" sign (@@) directs rsyslog to use TCP to send log messages to the server, which is a more reliable transport mechanism than the default UDP protocol.
+                            *.* sends all logs to the remote loghost. Ensure that the selection of logfiles being sent follows local site policy'
+          references:
+            - See the rsyslog.conf(5) man page for more information.
+        -
+          name: '4.1.1.6 Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)'
+          description: By default, rsyslog does not listen for log messages coming in from remote systems.
+                      The ModLoad tells rsyslog to load the imtcp.so module so it can listen over a network via TCP.
+                      The InputTCPServerRun option instructs rsyslogd to listen on the specified TCP port.
+          audit:
+            - '# grep ''$ModLoad imtcp'' /etc/rsyslog.conf /etc/rsyslog.d/*.conf $ModLoad imtcp
+              # grep ''$InputTCPServerRun'' /etc/rsyslog.conf /etc/rsyslog.d/*.conf $InputTCPServerRun 514'
+          remedeation: 'For hosts that are designated as log hosts, edit the /etc/rsyslog.conf file and un- comment or add the following lines:
+                         $ModLoad imtcp
+                          $InputTCPServerRun 514
+                          For hosts that are not designated as log hosts, edit the /etc/rsyslog.conf file and comment or remove the following lines:
+                          # $ModLoad imtcp
+                          # $InputTCPServerRun 514
+                          Run the following command to reload the rsyslogd configuration: # systemctl restart rsyslog'
+          check_type: multi_param
+          additional_info: 'The $ModLoad imtcp line can have the .so extension added to the end of the module, or use the full path to the module.'
+          references:
+            - See the rsyslog(8) man page for more information.
+          type: manual
+        -
+          name: '4.1.2.1 Ensure journald is configured to send logs to rsyslog (Automated)'
+          description: Data from journald may be stored in volatile memory or persisted locally on the server.
+                      Utilities exist to accept remote export of journald logs, however, use of the rsyslog service
+                      provides a consistent means of log collection and export.
+          audit:
+            - 'grep -e ForwardToSyslog /etc/systemd/journald.conf'
+          remedeation: 'Edit the /etc/systemd/journald.conf file and add the following line:
+                        ForwardToSyslog=yes'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'ForwardToSyslog=yes';"
+          additional_info: 'This recommendation assumes that recommendation 4.2.1.5, "Ensure rsyslog is configured to send logs to a remote log host"
+                           has been implemented. As noted in the journald man pages, journald logs may be exported to rsyslog either through the process mentioned here,
+                            or through a facility like systemd-journald.service.
+                            There are trade-offs involved in each implementation, where ForwardToSyslog will immediately capture all events
+                            (and forward to an external log server, if properly configured), but may not capture all boot-up activities.
+                            Mechanisms such as systemd- journald.service, on the other hand, will record bootup events, but may delay sending the information to rsyslog,
+                            leading to the potential for log manipulation prior to export. Be aware of the limitations of all tools employed to secure a system.
+                            The main configuration file /etc/systemd/journald.conf is read before any of the custom *.conf files.
+                            If there are custom configs present, they override the main configuration parameters'
+          references:
+            - https://github.com/konstruktoid/hardening/blob/master/systemd.adoc#etcsyste mdjournaldconf
+        -
+          name: '4.1.2.2 Ensure journald is configured to compress large log files (Automated)'
+          description: The journald system includes the capability of compressing overly large
+                        files to avoid filling up the system with logs or making the logs unmanageably large..
+          audit:
+            - 'grep -e Compress /etc/systemd/journald.conf'
+          remedeation: 'Edit the /etc/systemd/journald.conf file and add the following line:
+                        Compress=yes'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'Compress=yes';"
+          additional_info: 'The main configuration file /etc/systemd/journald.conf is read before any of the custom *.conf files.
+                            If there are custom configs present, they override the main configuration parameters'
+          references:
+            - https://github.com/konstruktoid/hardening/blob/master/systemd.adoc#etcsyste mdjournaldconf
+        -
+          name: '4.1.2.3 Ensure journald is configured to write logfiles to persistent disk (Automated)'
+          description: Data from journald may be stored in volatile memory or persisted locally on the server.
+                      Logs in memory will be lost upon a system reboot. By persisting logs to local disk on the server they are protected from loss.
+          audit:
+            - 'grep -e Storage /etc/systemd/journald.conf'
+          remedeation: 'Edit the /etc/systemd/journald.conf file and add the following line:
+                        Storage=persistent'
+          check_type: multi_param
+          eval_expr: "'${0}' == 'Storage=persistent';"
+          additional_info: 'The main configuration file /etc/systemd/journald.conf is read before any of the custom *.conf files.
+                            If there are custom configs present, they override the main configuration parameters'
+          references:
+            - https://github.com/konstruktoid/hardening/blob/master/systemd.adoc#etcsyste mdjournaldconf
+        -
+          name: '4.1.3 Ensure permissions on all logfiles are configured (Automated)'
+          description: Log files stored in /var/log/ contain logged information from many services on the system, or on log hosts others as well.
+          audit:
+            - 'stat -c %a $( find /var/log -type f)'
+          remedeation: 'Run the following commands to set permissions on all existing log files:
+                         find /var/log -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g- w,o-rwx "{}" +'
+          check_type: multi_param
+          eval_expr: "${0} <= 444;"
+          additional_info: 'You may also need to change the configuration for your logging software or services for any logs that had incorrect permissions.'

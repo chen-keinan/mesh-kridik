@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"github.com/chen-keinan/go-command-eval/eval"
 	"github.com/chen-keinan/go-user-plugins/uplugin"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/cli/commands"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/hooks"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/logger"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/startup"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/models"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/utils"
+	"github.com/chen-keinan/mesh-kridik/internal/cli/commands"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/internal/hooks"
+	"github.com/chen-keinan/mesh-kridik/internal/logger"
+	"github.com/chen-keinan/mesh-kridik/internal/startup"
+	"github.com/chen-keinan/mesh-kridik/pkg/models"
+	"github.com/chen-keinan/mesh-kridik/pkg/utils"
 	"github.com/mitchellh/cli"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -112,7 +112,7 @@ func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.LxdBenchAuditResultHook 
 }
 
 // init new plugin worker , accept audit result chan and audit result plugin hooks
-func initPluginWorker(plChan chan models.MeshKridikSecurityResults, completedChan chan bool) {
+func initPluginWorker(plChan chan models.LxdAuditResults, completedChan chan bool) {
 	log, err := zap.NewProduction()
 	if err != nil {
 		panic(err)
@@ -123,8 +123,8 @@ func initPluginWorker(plChan chan models.MeshKridikSecurityResults, completedCha
 	worker.Invoke()
 }
 
-//StartCLICommand invoke cli lxd command kube-mesh-kridik cli
-func StartCLICommand(fm utils.FolderMgr, plChan chan models.MeshKridikSecurityResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.MeshKridikLogger) {
+//StartCLICommand invoke cli lxd command mesh-kridik cli
+func StartCLICommand(fm utils.FolderMgr, plChan chan models.LxdAuditResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.LdxProbeLogger) {
 	// init plugin folders
 	initPluginFolders(fm)
 	// init plugin worker
@@ -149,7 +149,7 @@ func NewCommandArgs(ad ArgsData) []string {
 
 //NewCliCommands return cli lxd obj commands
 // accept cli args data , completion chan , result chan , spec files and return artay of cli commands
-func NewCliCommands(ad ArgsData, plChan chan models.MeshKridikSecurityResults, completedChan chan bool, fi []utils.FilesInfo) []cli.Command {
+func NewCliCommands(ad ArgsData, plChan chan models.LxdAuditResults, completedChan chan bool, fi []utils.FilesInfo) []cli.Command {
 	cmds := make([]cli.Command, 0)
 	// invoke cli
 	evaluator := eval.NewEvalCmd()
@@ -175,8 +175,8 @@ func NewCompletionChan() chan bool {
 }
 
 //NewLxdResultChan return plugin test result chan
-func NewLxdResultChan() chan models.MeshKridikSecurityResults {
-	plChan := make(chan models.MeshKridikSecurityResults)
+func NewLxdResultChan() chan models.LxdAuditResults {
+	plChan := make(chan models.LxdAuditResults)
 	return plChan
 }
 
@@ -247,7 +247,7 @@ type ArgsData struct {
 //SanitizeArgs sanitizer func
 type SanitizeArgs func(str []string) ArgsData
 
-// LxdProbeHelpFunc kube-mesh-kridik Help function with all supported commands
+// LxdProbeHelpFunc mesh-kridik Help function with all supported commands
 func LxdProbeHelpFunc(app string) cli.HelpFunc {
 	return func(commands map[string]cli.CommandFactory) string {
 		var buf bytes.Buffer

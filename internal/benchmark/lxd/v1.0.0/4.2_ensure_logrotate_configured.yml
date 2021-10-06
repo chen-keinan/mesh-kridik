@@ -1,0 +1,20 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Logging and Auditing
+    sub_category:
+      name: 4.2 Ensure logrotate is configured
+      audit_tests:
+        -
+          name: '4.2 Ensure logrotate is configured (Manual)'
+          description: The system includes the capability of rotating log files regularly to avoid filling up the system with logs or making the logs unmanageably large.
+                        The file /etc/logrotate.d/rsyslog is the configuration file used to rotate log files created by rsyslog.
+          audit:
+            - 'Review /etc/logrotate.conf and /etc/logrotate.d/rsyslog and verify logs are rotated according to site policy.'
+          remedeation: 'Edit /etc/logrotate.conf and /etc/logrotate.d/rsyslog to ensure logs are rotated according to site policy.'
+          check_type: multi_param
+          additional_info: 'If no maxage setting is set for logrotate a situation can occur where logrotate is interrupted and fails to delete rotated logfiles.
+                            It is recommended to set this to a value greater than the longest any log file should exist on your system to ensure that any such logfile
+                            is removed but standard rotation settings are not overridden.'
+          type: manual

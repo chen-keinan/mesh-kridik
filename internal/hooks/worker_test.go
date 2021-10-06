@@ -1,7 +1,7 @@
 package hooks
 
 import (
-	m2 "github.com/chen-keinan/kube-mesh-kridik/pkg/models"
+	m2 "github.com/chen-keinan/mesh-kridik/pkg/models"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"testing"

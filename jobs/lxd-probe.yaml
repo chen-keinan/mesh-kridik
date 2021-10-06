@@ -1,18 +1,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: kube-mesh-kridik
+  name: mesh-kridik
 spec:
   template:
     metadata:
       labels:
-        app: kube-mesh-kridik
+        app: mesh-kridik
     spec:
       hostPID: true
       containers:
-      - name: kube-mesh-kridik
-        image: chenkeinan/kube-mesh-kridik:latest
-        command: ["./kube-mesh-kridik"]
+      - name: mesh-kridik
+        image: chenkeinan/mesh-kridik:latest
+        command: ["./mesh-kridik"]
         volumeMounts:
         - name: var-lib-etcd
           mountPath: /var/lib/etcd

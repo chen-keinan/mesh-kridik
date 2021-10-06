@@ -2,8 +2,8 @@ package startup
 
 import (
 	"fmt"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/utils"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/pkg/utils"
 	"github.com/gobuffalo/packr"
 	"os"
 	"path/filepath"

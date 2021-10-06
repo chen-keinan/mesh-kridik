@@ -3,7 +3,7 @@ package hooks
 import (
 	"fmt"
 	"github.com/chen-keinan/go-user-plugins/uplugin"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/models"
+	"github.com/chen-keinan/mesh-kridik/pkg/models"
 	"go.uber.org/zap"
 	"plugin"
 )
@@ -26,13 +26,13 @@ func NewPluginWorker(commandMatchData *PluginWorkerData, log *zap.Logger) *Plugi
 }
 
 //NewPluginWorkerData return new plugin worker instance
-func NewPluginWorkerData(plChan chan models.MeshKridikSecurityResults, hook LxdBenchAuditResultHook, completedChan chan bool) *PluginWorkerData {
+func NewPluginWorkerData(plChan chan models.LxdAuditResults, hook LxdBenchAuditResultHook, completedChan chan bool) *PluginWorkerData {
 	return &PluginWorkerData{plChan: plChan, plugins: hook, completedChan: completedChan}
 }
 
 //PluginWorkerData encapsulate plugin worker properties
 type PluginWorkerData struct {
-	plChan        chan models.MeshKridikSecurityResults
+	plChan        chan models.LxdAuditResults
 	completedChan chan bool
 	plugins       LxdBenchAuditResultHook
 }

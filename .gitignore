@@ -17,4 +17,4 @@ coverage.md
 coverage.out
 mock*
 *.iml
-kube-mesh-kridik
+mesh-kridik

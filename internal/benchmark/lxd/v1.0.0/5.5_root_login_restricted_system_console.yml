@@ -1,0 +1,16 @@
+---
+benchmark_type: lxd
+categories:
+  -
+    name: Access, Authentication and Authorization
+    sub_category:
+      name: 5.5 root login is restricted
+      audit_tests:
+        -
+          name: '5.5 Ensure root login is restricted to system console (Manual)'
+          description: The file /etc/securetty contains a list of valid terminals that may be logged in directly as root.
+          audit:
+            - '# cat /etc/securetty'
+          remedeation: 'Remove entries for any consoles that are not in a physically secure location.'
+          check_type: multi_param
+          type: manual

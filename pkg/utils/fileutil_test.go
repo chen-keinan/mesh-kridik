@@ -2,8 +2,8 @@ package utils
 
 import (
 	"fmt"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
-	"github.com/chen-keinan/kube-mesh-kridik/pkg/utils/mocks"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/pkg/utils/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -15,7 +15,7 @@ import (
 //Test_GetHomeFolder test
 func Test_GetHomeFolder(t *testing.T) {
 	a := GetHomeFolder()
-	assert.True(t, strings.HasSuffix(a, ".kube-mesh-kridik"))
+	assert.True(t, strings.HasSuffix(a, ".mesh-kridik"))
 }
 
 //Test_CreateHomeFolderIfNotExist test
@@ -38,7 +38,7 @@ func Test_GetBenchmarkFolder(t *testing.T) {
 	assert.NoError(t, err)
 	a, err := GetBenchmarkFolder("lxd", "v1.0.0", fm)
 	assert.NoError(t, err)
-	assert.True(t, strings.HasSuffix(a, ".kube-mesh-kridik/benchmarks/lxd/v1.0.0"))
+	assert.True(t, strings.HasSuffix(a, ".mesh-kridik/benchmarks/lxd/v1.0.0"))
 }
 
 //Test_CreateBenchmarkFolderIfNotExist test
@@ -119,11 +119,11 @@ func saveFilesIfNotExist(filesData []FilesInfo) error {
 	return nil
 }
 
-//Test_GetEnv test getting home kube-mesh-kridik folder
+//Test_GetEnv test getting home mesh-kridik folder
 func Test_GetEnv(t *testing.T) {
-	os.Setenv(common.LxdProbeHomeEnvVar, "/home/kube-mesh-kridik")
+	os.Setenv(common.LxdProbeHomeEnvVar, "/home/mesh-kridik")
 	homeFolder := GetEnv(common.LxdProbeHomeEnvVar, "/home/user")
-	assert.Equal(t, homeFolder, "/home/kube-mesh-kridik")
+	assert.Equal(t, homeFolder, "/home/mesh-kridik")
 	os.Unsetenv(common.LxdProbeHomeEnvVar)
 	homeFolder = GetEnv(common.LxdProbeHomeEnvVar, "/home/user")
 	assert.Equal(t, homeFolder, "/home/user")

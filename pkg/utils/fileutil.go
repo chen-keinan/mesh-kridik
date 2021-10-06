@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"github.com/chen-keinan/kube-mesh-kridik/internal/common"
+	"github.com/chen-keinan/mesh-kridik/internal/common"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -24,7 +24,7 @@ type FolderMgr interface {
 	GetHomeFolder() (string, error)
 }
 
-//bFolder kube-mesh-kridik folder object
+//bFolder mesh-kridik folder object
 type bFolder struct {
 }
 
@@ -33,7 +33,7 @@ func NewKFolder() FolderMgr {
 	return &bFolder{}
 }
 
-//CreateFolder create new kube-mesh-kridik folder
+//CreateFolder create new mesh-kridik folder
 func (lxdf bFolder) CreateFolder(folderName string) error {
 	_, err := os.Stat(folderName)
 	if os.IsNotExist(err) {
@@ -45,7 +45,7 @@ func (lxdf bFolder) CreateFolder(folderName string) error {
 	return nil
 }
 
-//GetHomeFolder return kube-mesh-kridik home folder
+//GetHomeFolder return mesh-kridik home folder
 func (lxdf bFolder) GetHomeFolder() (string, error) {
 	usr, err := user.Current()
 	if err != nil {
@@ -53,7 +53,7 @@ func (lxdf bFolder) GetHomeFolder() (string, error) {
 	}
 	// User can set a custom KUBE_KNARK_HOME from environment variable
 	usrHome := GetEnv(common.LxdProbeHomeEnvVar, usr.HomeDir)
-	return path.Join(usrHome, ".kube-mesh-kridik"), nil
+	return path.Join(usrHome, ".mesh-kridik"), nil
 }
 
 //GetPluginSourceSubFolder return plugins source folder path
@@ -92,7 +92,7 @@ func CreatePluginsSourceFolderIfNotExist(fm FolderMgr) error {
 	return fm.CreateFolder(pluginfFolder)
 }
 
-//GetHomeFolder return kube-mesh-kridik home folder
+//GetHomeFolder return mesh-kridik home folder
 func GetHomeFolder() string {
 	usr, err := user.Current()
 	if err != nil {
@@ -100,10 +100,10 @@ func GetHomeFolder() string {
 	}
 	// User can set a custom LXD_PROBE_HOME from environment variable
 	usrHome := GetEnv(common.LxdProbeHomeEnvVar, usr.HomeDir)
-	return path.Join(usrHome, ".kube-mesh-kridik")
+	return path.Join(usrHome, ".mesh-kridik")
 }
 
-//CreateHomeFolderIfNotExist create kube-mesh-kridik home folder if not exist
+//CreateHomeFolderIfNotExist create mesh-kridik home folder if not exist
 func CreateHomeFolderIfNotExist(fm FolderMgr) error {
 	lxdProbeFolder, err := fm.GetHomeFolder()
 	if err != nil {
@@ -113,7 +113,7 @@ func CreateHomeFolderIfNotExist(fm FolderMgr) error {
 	if os.IsNotExist(err) {
 		errDir := os.MkdirAll(lxdProbeFolder, 0750)
 		if errDir != nil {
-			return fmt.Errorf("failed to create kube-mesh-kridik home folder at %s", lxdProbeFolder)
+			return fmt.Errorf("failed to create mesh-kridik home folder at %s", lxdProbeFolder)
 		}
 	}
 	return nil
@@ -128,7 +128,7 @@ func GetBenchmarkFolder(spec, version string, fm FolderMgr) (string, error) {
 	return filepath.Join(folder, fmt.Sprintf("benchmarks/%s/%s/", spec, version)), nil
 }
 
-//CreateBenchmarkFolderIfNotExist create kube-mesh-kridik benchmark folder if not exist
+//CreateBenchmarkFolderIfNotExist create mesh-kridik benchmark folder if not exist
 func CreateBenchmarkFolderIfNotExist(spec, version string, fm FolderMgr) error {
 	benchmarkFolder, err := GetBenchmarkFolder(spec, version, fm)
 	if err != nil {
