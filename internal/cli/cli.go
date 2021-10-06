@@ -124,7 +124,7 @@ func initPluginWorker(plChan chan models.MeshCheckResults, completedChan chan bo
 }
 
 //StartCLICommand invoke cli lxd command mesh-kridik cli
-func StartCLICommand(fm utils.FolderMgr, plChan chan models.MeshCheckResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.LdxProbeLogger) {
+func StartCLICommand(fm utils.FolderMgr, plChan chan models.MeshCheckResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.MeshKridikLogger) {
 	// init plugin folders
 	initPluginFolders(fm)
 	// init plugin worker

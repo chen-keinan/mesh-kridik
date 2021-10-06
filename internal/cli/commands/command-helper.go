@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func printTestResults(at []*models.AuditBench, table *tablewriter.Table, category string) models.AuditTestTotals {
+func printTestResults(at []*models.AuditBench, table *tablewriter.Table, category string) models.CheckTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -46,10 +46,10 @@ func printTestResults(at []*models.AuditBench, table *tablewriter.Table, categor
 			failCounter++
 		}
 	}
-	return models.AuditTestTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
+	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
-func printClassicTestResults(at []*models.AuditBench, log *logger.LdxProbeLogger) models.AuditTestTotals {
+func printClassicTestResults(at []*models.AuditBench, log *logger.MeshKridikLogger) models.CheckTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -72,7 +72,7 @@ func printClassicTestResults(at []*models.AuditBench, log *logger.LdxProbeLogger
 			failCounter++
 		}
 	}
-	return models.AuditTestTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
+	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
 //AddFailedMessages add failed audit test to report data
@@ -112,7 +112,7 @@ func NewFileLoader() TestLoader {
 //LoadAuditTests load audit test from benchmark folder
 func (tl AuditTestLoader) LoadAuditTests(auditFiles []utils.FilesInfo) []*models.SubCategory {
 	auditTests := make([]*models.SubCategory, 0)
-	audit := models.Audit{}
+	audit := models.Check{}
 	for _, auditFile := range auditFiles {
 		err := yaml.Unmarshal([]byte(auditFile.Data), &audit)
 		if err != nil {
@@ -203,9 +203,9 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 	return ft
 }
 
-func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.AuditBench) []*models.AuditBench, log *logger.LdxProbeLogger) []*models.SubCategory {
+func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.AuditBench) []*models.AuditBench, log *logger.MeshKridikLogger) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
-	log.Console(ui.LxdAuditTest)
+	log.Console(ui.MeshCheck)
 	bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")
 	for _, f := range ft {
 		tr := ui.ExecuteSpecs(f, execTestFunc)

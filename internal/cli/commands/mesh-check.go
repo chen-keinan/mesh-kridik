@@ -27,17 +27,17 @@ type MeshCheck struct {
 	CompletedChan   chan bool
 	FilesInfo       []utils.FilesInfo
 	Evaluator       eval.CmdEvaluator
-	log             *logger.LdxProbeLogger
+	log             *logger.MeshKridikLogger
 }
 
 // ResultProcessor process audit results
 type ResultProcessor func(at *models.AuditBench, isSucceeded bool) []*models.AuditBench
 
 // ConsoleOutputGenerator print audit tests to stdout
-var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.LdxProbeLogger) {
-	grandTotal := make([]models.AuditTestTotals, 0)
+var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
+	grandTotal := make([]models.CheckTotals, 0)
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Category", "Status", "Type", "Audit Test Description"})
+	table.SetHeader([]string{"Category", "Status", "Type", "Check Test Description"})
 	table.SetAutoWrapText(false)
 	table.SetBorder(true) // Set
 	for _, a := range at {
@@ -51,8 +51,8 @@ var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 }
 
 // ClassicOutputGenerator print audit tests to stdout in classic view
-var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.LdxProbeLogger) {
-	grandTotal := make([]models.AuditTestTotals, 0)
+var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
+	grandTotal := make([]models.CheckTotals, 0)
 	for _, a := range at {
 		log.Console(fmt.Sprintf("%s %s\n", "[Category]", a.Name))
 		categoryTotal := printClassicTestResults(a.AuditTests, log)
@@ -61,7 +61,7 @@ var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 	log.Console(printFinalResults(grandTotal))
 }
 
-func printFinalResults(grandTotal []models.AuditTestTotals) string {
+func printFinalResults(grandTotal []models.CheckTotals) string {
 	finalTotal := calculateFinalTotal(grandTotal)
 	passTest := colorstring.Color("[green]Pass:")
 	failTest := colorstring.Color("[red]Fail:")
@@ -70,7 +70,7 @@ func printFinalResults(grandTotal []models.AuditTestTotals) string {
 	return fmt.Sprintf("%s %s %d , %s %d , %s %d ", title, passTest, finalTotal.Pass, warnTest, finalTotal.Warn, failTest, finalTotal.Fail)
 }
 
-func calculateFinalTotal(granTotal []models.AuditTestTotals) models.AuditTestTotals {
+func calculateFinalTotal(granTotal []models.CheckTotals) models.CheckTotals {
 	var (
 		warn int
 		fail int
@@ -81,11 +81,11 @@ func calculateFinalTotal(granTotal []models.AuditTestTotals) models.AuditTestTot
 		fail = fail + total.Fail
 		pass = pass + total.Pass
 	}
-	return models.AuditTestTotals{Pass: pass, Fail: fail, Warn: warn}
+	return models.CheckTotals{Pass: pass, Fail: fail, Warn: warn}
 }
 
 // ReportOutputGenerator print failed audit test to human report
-var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.LdxProbeLogger) {
+var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
 	for _, a := range at {
 		log.Table(reports.GenerateAuditReport(a.AuditTests))
 	}

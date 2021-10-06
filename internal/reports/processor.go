@@ -19,7 +19,7 @@ func GenerateAuditReport(adtsReport []*models.AuditBench) *uitable.Table {
 		table.AddRow("Status:", status)
 		table.AddRow("Name:", failedAudit.Name)
 		table.AddRow("Description:", failedAudit.Description)
-		table.AddRow("Audit:", failedAudit.AuditCommand)
+		table.AddRow("Check:", failedAudit.AuditCommand)
 		table.AddRow("Remediation:", failedAudit.Remediation)
 		table.AddRow("References:", failedAudit.References)
 		table.AddRow("") // blank

@@ -204,7 +204,7 @@ func TestPrintTestResults(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var tr models.AuditTestTotals
+			var tr models.CheckTotals
 			if tt.testType == "regular" {
 				tr = printTestResults(tt.tests, tablewriter.NewWriter(os.Stdout), tt.testCategory)
 			} else {

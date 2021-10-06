@@ -6,10 +6,10 @@ import (
 )
 
 // OutputGenerator for  audit results
-type OutputGenerator func(at []*models.SubCategory, log *logger.LdxProbeLogger)
+type OutputGenerator func(at []*models.SubCategory, log *logger.MeshKridikLogger)
 
 //PrintOutput print audit test result to console
-func PrintOutput(auditTests []*models.SubCategory, outputGenerator OutputGenerator, log *logger.LdxProbeLogger) {
+func PrintOutput(auditTests []*models.SubCategory, outputGenerator OutputGenerator, log *logger.MeshKridikLogger) {
 	log.Console(auditResult)
 	outputGenerator(auditTests, log)
 }

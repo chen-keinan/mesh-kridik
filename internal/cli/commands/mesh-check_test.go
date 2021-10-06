@@ -35,7 +35,7 @@ func TestRunAuditTests(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ab := models.Audit{}
+			ab := models.Check{}
 			err := yaml.Unmarshal(readTestData(tt.testFile, t), &ab)
 			if err != nil {
 				t.Errorf("failed to Unmarshal test file %s error : %s", tt.testFile, err.Error())
@@ -144,15 +144,15 @@ func Test_sendResultToPlugin(t *testing.T) {
 
 }
 func Test_calculateFinalTotal(t *testing.T) {
-	att := make([]models.AuditTestTotals, 0)
-	atOne := models.AuditTestTotals{Fail: 2, Pass: 3, Warn: 1}
-	atTwo := models.AuditTestTotals{Fail: 1, Pass: 5, Warn: 7}
+	att := make([]models.CheckTotals, 0)
+	atOne := models.CheckTotals{Fail: 2, Pass: 3, Warn: 1}
+	atTwo := models.CheckTotals{Fail: 1, Pass: 5, Warn: 7}
 	att = append(att, atOne)
 	att = append(att, atTwo)
 	res := calculateFinalTotal(att)
 	assert.Equal(t, res.Warn, 8)
 	assert.Equal(t, res.Pass, 8)
 	assert.Equal(t, res.Fail, 3)
-	str := printFinalResults([]models.AuditTestTotals{res})
+	str := printFinalResults([]models.CheckTotals{res})
 	assert.Equal(t, str, "Test Result Total:    \x1b[32mPass:\x1b[0m 8 , \x1b[33mWarn:\x1b[0m 8 , \x1b[31mFail:\x1b[0m 3 ")
 }
