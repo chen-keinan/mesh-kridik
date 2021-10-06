@@ -50,6 +50,6 @@ dlv:
 	dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./mesh-kridik
 build_beb:
 	$(GOPACKR)
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -v -gcflags='-N -l' cmd/lxd/mesh-kridik.go
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -v -gcflags='-N -l' cmd/mesh-kridik/mesh-kridik.go
 	scripts/deb.sh
 .PHONY: all build install test
