@@ -1,1 +1,1 @@
-# kube-mesh-kridik
+# mesh-kridik
