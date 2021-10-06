@@ -52,7 +52,7 @@ func (lxdf bFolder) GetHomeFolder() (string, error) {
 		return "", err
 	}
 	// User can set a custom KUBE_KNARK_HOME from environment variable
-	usrHome := GetEnv(common.LxdProbeHomeEnvVar, usr.HomeDir)
+	usrHome := GetEnv(common.MeshKridikHomeEnvVar, usr.HomeDir)
 	return path.Join(usrHome, ".mesh-kridik"), nil
 }
 
@@ -99,7 +99,7 @@ func GetHomeFolder() string {
 		panic("Failed to fetch user home folder")
 	}
 	// User can set a custom LXD_PROBE_HOME from environment variable
-	usrHome := GetEnv(common.LxdProbeHomeEnvVar, usr.HomeDir)
+	usrHome := GetEnv(common.MeshKridikHomeEnvVar, usr.HomeDir)
 	return path.Join(usrHome, ".mesh-kridik")
 }
 

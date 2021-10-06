@@ -121,11 +121,11 @@ func saveFilesIfNotExist(filesData []FilesInfo) error {
 
 //Test_GetEnv test getting home mesh-kridik folder
 func Test_GetEnv(t *testing.T) {
-	os.Setenv(common.LxdProbeHomeEnvVar, "/home/mesh-kridik")
-	homeFolder := GetEnv(common.LxdProbeHomeEnvVar, "/home/user")
+	os.Setenv(common.MeshKridikHomeEnvVar, "/home/mesh-kridik")
+	homeFolder := GetEnv(common.MeshKridikHomeEnvVar, "/home/user")
 	assert.Equal(t, homeFolder, "/home/mesh-kridik")
-	os.Unsetenv(common.LxdProbeHomeEnvVar)
-	homeFolder = GetEnv(common.LxdProbeHomeEnvVar, "/home/user")
+	os.Unsetenv(common.MeshKridikHomeEnvVar)
+	homeFolder = GetEnv(common.MeshKridikHomeEnvVar, "/home/user")
 	assert.Equal(t, homeFolder, "/home/user")
 }
 

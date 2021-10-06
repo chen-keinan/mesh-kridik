@@ -11,7 +11,7 @@ func Test_NewPluginWorker(t *testing.T) {
 	production, err := zap.NewProduction()
 	assert.NoError(t, err)
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	pw := NewPluginWorker(NewPluginWorkerData(plChan, LxdBenchAuditResultHook{}, completedChan), production)
 	assert.True(t, len(pw.cmd.plugins.Plugins) == 0)
 

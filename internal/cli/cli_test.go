@@ -25,34 +25,8 @@ func Test_StartCli(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, len(files), 27)
+	assert.Equal(t, len(files), 1)
 	assert.Equal(t, files[0].Name, common.FilesystemConfiguration)
-	assert.Equal(t, files[1].Name, common.ConfigureSoftwareUpdates)
-	assert.Equal(t, files[2].Name, common.ConfigureSudo)
-	assert.Equal(t, files[3].Name, common.FilesystemIntegrityChecking)
-	assert.Equal(t, files[4].Name, common.AdditionalProcessHardening)
-	assert.Equal(t, files[5].Name, common.MandatoryAccessControl)
-	assert.Equal(t, files[6].Name, common.WarningBanners)
-	assert.Equal(t, files[7].Name, common.EnsureUpdates)
-	assert.Equal(t, files[8].Name, common.InetdServices)
-	assert.Equal(t, files[9].Name, common.SpecialPurposeServices)
-	assert.Equal(t, files[10].Name, common.ServiceClients)
-	assert.Equal(t, files[11].Name, common.NonessentialServices)
-	assert.Equal(t, files[12].Name, common.NetworkParameters)
-	assert.Equal(t, files[13].Name, common.NetworkParametersHost)
-	assert.Equal(t, files[14].Name, common.TCPWrappers)
-	assert.Equal(t, files[15].Name, common.FirewallConfiguration)
-	assert.Equal(t, files[16].Name, common.ConfigureLogging)
-	assert.Equal(t, files[17].Name, common.EnsureLogrotateConfigured)
-	assert.Equal(t, files[18].Name, common.EnsureLogrotateAssignsAppropriatePermissions)
-	assert.Equal(t, files[19].Name, common.ConfigureCron)
-	assert.Equal(t, files[20].Name, common.SSHServerConfiguration)
-	assert.Equal(t, files[21].Name, common.ConfigurePam)
-	assert.Equal(t, files[22].Name, common.UserAccountsAndEnvironment)
-	assert.Equal(t, files[23].Name, common.RootLoginRestrictedSystemConsole)
-	assert.Equal(t, files[24].Name, common.EnsureAccessSuCommandRestricted)
-	assert.Equal(t, files[25].Name, common.SystemFilePermissions)
-	assert.Equal(t, files[26].Name, common.UserAndGroupSettings)
 }
 
 func Test_ArgsSanitizer(t *testing.T) {
@@ -72,7 +46,7 @@ func Test_ArgsSanitizer(t *testing.T) {
 //Test_LxdProbeHelpFunc test
 func Test_LxdProbeHelpFunc(t *testing.T) {
 	cm := make(map[string]cli.CommandFactory)
-	bhf := LxdProbeHelpFunc(common.LxdProbe)
+	bhf := LxdProbeHelpFunc(common.MeshKridik)
 	helpFile := bhf(cm)
 	assert.True(t, strings.Contains(helpFile, "Available commands are:"))
 	assert.True(t, strings.Contains(helpFile, "Usage: mesh-kridik [--version] [--help] <command> [<args>]"))
@@ -85,7 +59,7 @@ func Test_createCliBuilderData(t *testing.T) {
 	cmdArgs = append(cmdArgs, ad.Filters...)
 	cmds := make([]cli.Command, 0)
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	// invoke cli
 	cmds = append(cmds, commands.NewLxdAudit(ad.Filters, plChan, completedChan, []utils.FilesInfo{}, eval.NewEvalCmd()))
 	c := createCliBuilderData(cmdArgs, cmds)
@@ -105,14 +79,14 @@ func Test_InvokeCli(t *testing.T) {
 	evalCmd := mocks.NewMockCmdEvaluator(ctrl)
 	evalCmd.EXPECT().EvalCommand([]string{"aaa"}, ab.EvalExpr).Return(eval.CmdEvalResult{Match: true}).Times(1)
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	tl := m3.NewMockTestLoader(ctrl)
 	tl.EXPECT().LoadAuditTests(nil).Return([]*models.SubCategory{{Name: "te", AuditTests: []*models.AuditBench{ab}}})
 	go func() {
 		<-plChan
 		completedChan <- true
 	}()
-	kb := &commands.LxdAudit{Evaluator: evalCmd, ResultProcessor: commands.GetResultProcessingFunction([]string{}), FileLoader: tl, OutputGenerator: commands.ConsoleOutputGenerator, PlChan: plChan, CompletedChan: completedChan}
+	kb := &commands.MeshCheck{Evaluator: evalCmd, ResultProcessor: commands.GetResultProcessingFunction([]string{}), FileLoader: tl, OutputGenerator: commands.ConsoleOutputGenerator, PlChan: plChan, CompletedChan: completedChan}
 	cmdArgs := []string{"a"}
 	cmds := make([]cli.Command, 0)
 	// invoke cli
@@ -130,9 +104,9 @@ func Test_InitPluginFolder(t *testing.T) {
 
 func Test_InitPluginWorker(t *testing.T) {
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	go func() {
-		plChan <- m2.LxdAuditResults{}
+		plChan <- m2.MeshCheckResults{}
 		completedChan <- true
 	}()
 	initPluginWorker(plChan, completedChan)

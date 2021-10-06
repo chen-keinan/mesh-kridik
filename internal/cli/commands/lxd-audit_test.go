@@ -20,18 +20,18 @@ func TestRunAuditTests(t *testing.T) {
 		name              string
 		testFile          string
 		completedChan     chan bool
-		plChan            chan m2.LxdAuditResults
+		plChan            chan m2.MeshCheckResults
 		wantTestSucceeded bool
 	}{
 
-		{name: "Test_MultiCommandParams_OK", testFile: "CheckMultiParamOK.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: true},
-		{name: "Test_MultiCommandParams_OK_With_IN", testFile: "CheckMultiParamOKWithIN.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: true},
-		{name: "Test_MultiCommandParams_NOKWith_IN", testFile: "CheckMultiParamNOKWithIN.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: false},
-		{name: "Test_MultiCommandParamsPass1stResultToNext", testFile: "CheckMultiParamPass1stResultToNext.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: false},
-		{name: "Test_MultiCommandParamsComplex", testFile: "CheckMultiParamComplex.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: true},
-		{name: "Test_MultiCommandParamsComplexOppositeEmptyReturn", testFile: "CheckInClauseOppositeEmptyReturn.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: false},
-		{name: "Test_MultiCommandParamsComplexOppositeWithNumber", testFile: "CheckInClauseOppositeWithNum.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: false},
-		{name: "Test_MultiCommand4_2_13", testFile: "CheckInClause4.2.13.yml", completedChan: make(chan bool), plChan: make(chan m2.LxdAuditResults), wantTestSucceeded: false},
+		{name: "Test_MultiCommandParams_OK", testFile: "CheckMultiParamOK.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: true},
+		{name: "Test_MultiCommandParams_OK_With_IN", testFile: "CheckMultiParamOKWithIN.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: true},
+		{name: "Test_MultiCommandParams_NOKWith_IN", testFile: "CheckMultiParamNOKWithIN.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: false},
+		{name: "Test_MultiCommandParamsPass1stResultToNext", testFile: "CheckMultiParamPass1stResultToNext.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: false},
+		{name: "Test_MultiCommandParamsComplex", testFile: "CheckMultiParamComplex.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: true},
+		{name: "Test_MultiCommandParamsComplexOppositeEmptyReturn", testFile: "CheckInClauseOppositeEmptyReturn.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: false},
+		{name: "Test_MultiCommandParamsComplexOppositeWithNumber", testFile: "CheckInClauseOppositeWithNum.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: false},
+		{name: "Test_MultiCommand4_2_13", testFile: "CheckInClause4.2.13.yml", completedChan: make(chan bool), plChan: make(chan m2.MeshCheckResults), wantTestSucceeded: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -45,7 +45,7 @@ func TestRunAuditTests(t *testing.T) {
 			evalCmd := mocks.NewMockCmdEvaluator(ctrl)
 			testBench := ab.Categories[0].SubCategory.AuditTests[0]
 			evalCmd.EXPECT().EvalCommand(testBench.AuditCommand, testBench.EvalExpr).Return(eval.CmdEvalResult{Match: tt.wantTestSucceeded, Error: nil}).Times(1)
-			kb := LxdAudit{Evaluator: evalCmd, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: tt.plChan, CompletedChan: tt.completedChan}
+			kb := MeshCheck{Evaluator: evalCmd, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: tt.plChan, CompletedChan: tt.completedChan}
 			kb.runAuditTest(ab.Categories[0].SubCategory.AuditTests[0])
 			assert.Equal(t, ab.Categories[0].SubCategory.AuditTests[0].TestSucceed, tt.wantTestSucceeded)
 			go func() {
@@ -73,7 +73,7 @@ func readTestData(fileName string, t *testing.T) []byte {
 func Test_NewLxdAudit(t *testing.T) {
 	args := []string{"a", "i=1.2.3"}
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	evaluator := eval.NewEvalCmd()
 	ka := NewLxdAudit(args, plChan, completedChan, []utils.FilesInfo{}, evaluator)
 	assert.True(t, len(ka.PredicateParams) == 2)
@@ -89,7 +89,7 @@ func Test_NewLxdAudit(t *testing.T) {
 func Test_Help(t *testing.T) {
 	args := []string{"a", "i=1.2.3"}
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	evaluator := eval.NewEvalCmd()
 	ka := NewLxdAudit(args, plChan, completedChan, []utils.FilesInfo{}, evaluator)
 	help := ka.Help()
@@ -114,7 +114,7 @@ func Test_reportResultProcessor(t *testing.T) {
 func Test_LxdSynopsis(t *testing.T) {
 	args := []string{"a", "i=1.2.3"}
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
+	plChan := make(chan m2.MeshCheckResults)
 	evaluator := eval.NewEvalCmd()
 	ka := NewLxdAudit(args, plChan, completedChan, []utils.FilesInfo{}, evaluator)
 	s := ka.Synopsis()
@@ -126,7 +126,7 @@ func Test_LxdSynopsis(t *testing.T) {
 }
 
 func Test_sendResultToPlugin(t *testing.T) {
-	pChan := make(chan m2.LxdAuditResults)
+	pChan := make(chan m2.MeshCheckResults)
 	cChan := make(chan bool)
 	auditTests := make([]*models.SubCategory, 0)
 	ab := make([]*models.AuditBench, 0)

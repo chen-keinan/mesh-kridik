@@ -101,7 +101,7 @@ func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.LxdBenchAuditResultHook 
 	}
 	apiPlugin := hooks.LxdBenchAuditResultHook{Plugins: make([]plugin.Symbol, 0), Plug: pl}
 	for _, name := range names {
-		sym, err := pl.Load(name, common.LxdBenchAuditResultHook)
+		sym, err := pl.Load(name, common.MeshSecurityCheckResultHook)
 		if err != nil {
 			log.Error(fmt.Sprintf("failed to load sym %s error %s", name, err.Error()))
 			continue
@@ -112,7 +112,7 @@ func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.LxdBenchAuditResultHook 
 }
 
 // init new plugin worker , accept audit result chan and audit result plugin hooks
-func initPluginWorker(plChan chan models.LxdAuditResults, completedChan chan bool) {
+func initPluginWorker(plChan chan models.MeshCheckResults, completedChan chan bool) {
 	log, err := zap.NewProduction()
 	if err != nil {
 		panic(err)
@@ -124,7 +124,7 @@ func initPluginWorker(plChan chan models.LxdAuditResults, completedChan chan boo
 }
 
 //StartCLICommand invoke cli lxd command mesh-kridik cli
-func StartCLICommand(fm utils.FolderMgr, plChan chan models.LxdAuditResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.LdxProbeLogger) {
+func StartCLICommand(fm utils.FolderMgr, plChan chan models.MeshCheckResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.LdxProbeLogger) {
 	// init plugin folders
 	initPluginFolders(fm)
 	// init plugin worker
@@ -149,7 +149,7 @@ func NewCommandArgs(ad ArgsData) []string {
 
 //NewCliCommands return cli lxd obj commands
 // accept cli args data , completion chan , result chan , spec files and return artay of cli commands
-func NewCliCommands(ad ArgsData, plChan chan models.LxdAuditResults, completedChan chan bool, fi []utils.FilesInfo) []cli.Command {
+func NewCliCommands(ad ArgsData, plChan chan models.MeshCheckResults, completedChan chan bool, fi []utils.FilesInfo) []cli.Command {
 	cmds := make([]cli.Command, 0)
 	// invoke cli
 	evaluator := eval.NewEvalCmd()
@@ -175,8 +175,8 @@ func NewCompletionChan() chan bool {
 }
 
 //NewLxdResultChan return plugin test result chan
-func NewLxdResultChan() chan models.LxdAuditResults {
-	plChan := make(chan models.LxdAuditResults)
+func NewLxdResultChan() chan models.MeshCheckResults {
+	plChan := make(chan models.MeshCheckResults)
 	return plChan
 }
 
@@ -195,10 +195,10 @@ func createCliBuilderData(ca []string, cmd []cli.Command) map[string]cli.Command
 
 // invokeCommandCli invoke cli command with params
 func invokeCommandCli(args []string, commands map[string]cli.CommandFactory) (int, error) {
-	app := cli.NewCLI(common.LdxProbeCli, common.LdxProbeVersion)
+	app := cli.NewCLI(common.MeshKridikCli, common.MeshKridikVersion)
 	app.Args = append(app.Args, args...)
 	app.Commands = commands
-	app.HelpFunc = LxdProbeHelpFunc(common.LdxProbeCli)
+	app.HelpFunc = LxdProbeHelpFunc(common.MeshKridikCli)
 	status, err := app.Run()
 	return status, err
 }

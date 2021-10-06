@@ -16,14 +16,14 @@ import (
 	"os"
 )
 
-//LxdAudit lxd benchmark object
-type LxdAudit struct {
+//MeshCheck lxd benchmark object
+type MeshCheck struct {
 	ResultProcessor ResultProcessor
 	OutputGenerator ui.OutputGenerator
 	FileLoader      TestLoader
 	PredicateChain  []filters.Predicate
 	PredicateParams []string
-	PlChan          chan m2.LxdAuditResults
+	PlChan          chan m2.MeshCheckResults
 	CompletedChan   chan bool
 	FilesInfo       []utils.FilesInfo
 	Evaluator       eval.CmdEvaluator
@@ -110,8 +110,8 @@ type CmdEvaluator interface {
 }
 
 //NewLxdAudit new audit object
-func NewLxdAudit(filters []string, plChan chan m2.LxdAuditResults, completedChan chan bool, fi []utils.FilesInfo, evaluator CmdEvaluator) *LxdAudit {
-	return &LxdAudit{
+func NewLxdAudit(filters []string, plChan chan m2.MeshCheckResults, completedChan chan bool, fi []utils.FilesInfo, evaluator CmdEvaluator) *MeshCheck {
+	return &MeshCheck{
 		PredicateChain:  buildPredicateChain(filters),
 		PredicateParams: buildPredicateChainParams(filters),
 		ResultProcessor: GetResultProcessingFunction(filters),
@@ -124,12 +124,12 @@ func NewLxdAudit(filters []string, plChan chan m2.LxdAuditResults, completedChan
 }
 
 //Help return benchmark command help
-func (ldx LxdAudit) Help() string {
+func (ldx MeshCheck) Help() string {
 	return startup.GetHelpSynopsis()
 }
 
 //Run execute the full lxd benchmark
-func (ldx *LxdAudit) Run(args []string) int {
+func (ldx *MeshCheck) Run(args []string) int {
 	// load audit tests fro benchmark folder
 	auditTests := ldx.FileLoader.LoadAuditTests(ldx.FilesInfo)
 	// filter tests by cmd criteria
@@ -143,8 +143,8 @@ func (ldx *LxdAudit) Run(args []string) int {
 	return 0
 }
 
-func sendResultToPlugin(plChan chan m2.LxdAuditResults, completedChan chan bool, auditTests []*models.SubCategory) {
-	ka := m2.LxdAuditResults{BenchmarkType: "lxd", Categories: make([]m2.AuditBenchResult, 0)}
+func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool, auditTests []*models.SubCategory) {
+	ka := m2.MeshCheckResults{BenchmarkType: "lxd", Categories: make([]m2.AuditBenchResult, 0)}
 	for _, at := range auditTests {
 		for _, ab := range at.AuditTests {
 			var testResult = "FAIL"
@@ -160,7 +160,7 @@ func sendResultToPlugin(plChan chan m2.LxdAuditResults, completedChan chan bool,
 }
 
 // runAuditTest execute category of audit tests
-func (ldx *LxdAudit) runAuditTest(at *models.AuditBench) []*models.AuditBench {
+func (ldx *MeshCheck) runAuditTest(at *models.AuditBench) []*models.AuditBench {
 	auditRes := make([]*models.AuditBench, 0)
 	if at.NonApplicable {
 		auditRes = append(auditRes, at)
@@ -174,6 +174,6 @@ func (ldx *LxdAudit) runAuditTest(at *models.AuditBench) []*models.AuditBench {
 }
 
 //Synopsis for help
-func (ldx *LxdAudit) Synopsis() string {
+func (ldx *MeshCheck) Synopsis() string {
 	return ldx.Help()
 }

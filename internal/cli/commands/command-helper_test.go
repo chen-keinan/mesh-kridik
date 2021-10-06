@@ -178,8 +178,8 @@ func Test_executeTests(t *testing.T) {
 	evalcmd := mocks.NewMockCmdEvaluator(ctrl)
 	evalcmd.EXPECT().EvalCommand([]string{"aaa", "bbb"}, ab.EvalExpr).Return(eval.CmdEvalResult{Match: true, CmdEvalExpr: ab.EvalExpr, Error: nil})
 	completedChan := make(chan bool)
-	plChan := make(chan m2.LxdAuditResults)
-	kb := LxdAudit{ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
+	plChan := make(chan m2.MeshCheckResults)
+	kb := MeshCheck{ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
 	sc := []*models.SubCategory{{AuditTests: []*models.AuditBench{ab}}}
 	executeTests(sc, kb.runAuditTest, logger.GetLog())
 	assert.True(t, ab.TestSucceed)

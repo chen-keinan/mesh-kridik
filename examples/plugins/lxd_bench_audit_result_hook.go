@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-//LxdBenchAuditResultHook this plugin method accept lxd audit bench results
+//MeshSecurityCheckResultHook this plugin method accept mesh security check results
 //event include test data , description , audit, remediation and result
-func LxdBenchAuditResultHook(lxdAuditResults models.LxdAuditResults) error {
+func MeshSecurityCheckResultHook(lxdAuditResults models.MeshCheckResults) error {
 	var sb = new(bytes.Buffer)
 	err := json.NewEncoder(sb).Encode(lxdAuditResults)
 	fmt.Print(lxdAuditResults)

@@ -26,13 +26,13 @@ func NewPluginWorker(commandMatchData *PluginWorkerData, log *zap.Logger) *Plugi
 }
 
 //NewPluginWorkerData return new plugin worker instance
-func NewPluginWorkerData(plChan chan models.LxdAuditResults, hook LxdBenchAuditResultHook, completedChan chan bool) *PluginWorkerData {
+func NewPluginWorkerData(plChan chan models.MeshCheckResults, hook LxdBenchAuditResultHook, completedChan chan bool) *PluginWorkerData {
 	return &PluginWorkerData{plChan: plChan, plugins: hook, completedChan: completedChan}
 }
 
 //PluginWorkerData encapsulate plugin worker properties
 type PluginWorkerData struct {
-	plChan        chan models.LxdAuditResults
+	plChan        chan models.MeshCheckResults
 	completedChan chan bool
 	plugins       LxdBenchAuditResultHook
 }
