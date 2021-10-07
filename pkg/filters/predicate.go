@@ -11,7 +11,7 @@ type Predicate func(tests *models.SubCategory, params string) *models.SubCategor
 
 // IncludeAudit include audit tests , only included tests will be executed
 var IncludeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
-	sat := make([]*models.AuditBench, 0)
+	sat := make([]*models.SecurityCheck, 0)
 	spt := utils.GetAuditTestsList("i", params)
 	// check if param include category
 	for _, sp := range spt {
@@ -20,7 +20,7 @@ var IncludeAudit Predicate = func(tests *models.SubCategory, params string) *mod
 		}
 	}
 	// check tests
-	for _, at := range tests.AuditTests {
+	for _, at := range tests.Checks {
 		for _, sp := range spt {
 			if strings.HasPrefix(at.Name, sp) {
 				sat = append(sat, at)
@@ -28,22 +28,22 @@ var IncludeAudit Predicate = func(tests *models.SubCategory, params string) *mod
 		}
 	}
 	if len(sat) == 0 {
-		return &models.SubCategory{Name: tests.Name, AuditTests: make([]*models.AuditBench, 0)}
+		return &models.SubCategory{Name: tests.Name, Checks: make([]*models.SecurityCheck, 0)}
 	}
-	return &models.SubCategory{Name: tests.Name, AuditTests: sat}
+	return &models.SubCategory{Name: tests.Name, Checks: sat}
 }
 
 // ExcludeAudit audit test from been executed
 var ExcludeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
-	sat := make([]*models.AuditBench, 0)
+	sat := make([]*models.SecurityCheck, 0)
 	spt := utils.GetAuditTestsList("e", params)
 	// if exclude category
 	for _, sp := range spt {
 		if strings.HasPrefix(tests.Name, sp) {
-			return &models.SubCategory{Name: tests.Name, AuditTests: []*models.AuditBench{}}
+			return &models.SubCategory{Name: tests.Name, Checks: []*models.SecurityCheck{}}
 		}
 	}
-	for _, at := range tests.AuditTests {
+	for _, at := range tests.Checks {
 		var skipTest bool
 		for _, sp := range spt {
 			if strings.HasPrefix(at.Name, sp) {
@@ -55,15 +55,15 @@ var ExcludeAudit Predicate = func(tests *models.SubCategory, params string) *mod
 		}
 		sat = append(sat, at)
 	}
-	return &models.SubCategory{Name: tests.Name, AuditTests: sat}
+	return &models.SubCategory{Name: tests.Name, Checks: sat}
 }
 
 // NodeAudit audit test from been executed
 var NodeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
-	sat := make([]*models.AuditBench, 0)
+	sat := make([]*models.SecurityCheck, 0)
 	spt := utils.GetAuditTestsList("n", params)
 	// check tests
-	for _, at := range tests.AuditTests {
+	for _, at := range tests.Checks {
 		for _, sp := range spt {
 			if strings.ToLower(at.ProfileApplicability) == sp {
 				sat = append(sat, at)
@@ -71,9 +71,9 @@ var NodeAudit Predicate = func(tests *models.SubCategory, params string) *models
 		}
 	}
 	if len(sat) == 0 {
-		return &models.SubCategory{Name: tests.Name, AuditTests: make([]*models.AuditBench, 0)}
+		return &models.SubCategory{Name: tests.Name, Checks: make([]*models.SecurityCheck, 0)}
 	}
-	return &models.SubCategory{Name: tests.Name, AuditTests: sat}
+	return &models.SubCategory{Name: tests.Name, Checks: sat}
 }
 
 // Basic filter by specific audit tests as set in command

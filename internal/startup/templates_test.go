@@ -15,7 +15,7 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 		t.Fatal(err)
 	}
 	// generate test with packr
-	assert.Equal(t, bFiles[0].Name, common.FilesystemConfiguration)
+	assert.Equal(t, bFiles[0].Name, common.IstioSecurityChecks)
 	fm := utils.NewKFolder()
 	err = utils.CreateSecurityFolderIfNotExist("mesh", "v1.0.0", fm)
 	assert.NoError(t, err)
@@ -24,7 +24,7 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 	assert.NoError(t, err)
 	// fetch files from benchmark folder
 	bFiles, err = utils.GetMeshSecurityChecksFiles("mesh", "v1.0.0", fm)
-	assert.Equal(t, bFiles[0].Name, common.FilesystemConfiguration)
+	assert.Equal(t, bFiles[0].Name, common.IstioSecurityChecks)
 	assert.NoError(t, err)
 	err = os.RemoveAll(utils.GetHomeFolder())
 	assert.NoError(t, err)

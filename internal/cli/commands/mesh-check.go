@@ -31,7 +31,7 @@ type MeshCheck struct {
 }
 
 // ResultProcessor process audit results
-type ResultProcessor func(at *models.AuditBench, isSucceeded bool) []*models.AuditBench
+type ResultProcessor func(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck
 
 // ConsoleOutputGenerator print audit tests to stdout
 var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
@@ -41,7 +41,7 @@ var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 	table.SetAutoWrapText(false)
 	table.SetBorder(true) // Set
 	for _, a := range at {
-		categoryTotal := printTestResults(a.AuditTests, table, a.Name)
+		categoryTotal := printTestResults(a.Checks, table, a.Name)
 		grandTotal = append(grandTotal, categoryTotal)
 	}
 	table.SetAutoMergeCellsByColumnIndex([]int{0})
@@ -55,7 +55,7 @@ var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 	grandTotal := make([]models.CheckTotals, 0)
 	for _, a := range at {
 		log.Console(fmt.Sprintf("%s %s\n", "[Category]", a.Name))
-		categoryTotal := printClassicTestResults(a.AuditTests, log)
+		categoryTotal := printClassicTestResults(a.Checks, log)
 		grandTotal = append(grandTotal, categoryTotal)
 	}
 	log.Console(printFinalResults(grandTotal))
@@ -87,17 +87,17 @@ func calculateFinalTotal(granTotal []models.CheckTotals) models.CheckTotals {
 // ReportOutputGenerator print failed audit test to human report
 var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
 	for _, a := range at {
-		log.Table(reports.GenerateAuditReport(a.AuditTests))
+		log.Table(reports.GenerateAuditReport(a.Checks))
 	}
 }
 
 // simpleResultProcessor process audit results to stdout print only
-var simpleResultProcessor ResultProcessor = func(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
+var simpleResultProcessor ResultProcessor = func(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck {
 	return AddAllMessages(at, isSucceeded)
 }
 
 // ResultProcessor process audit results to std out and failure results
-var reportResultProcessor ResultProcessor = func(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
+var reportResultProcessor ResultProcessor = func(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck {
 	// append failed messages
 	return AddFailedMessages(at, isSucceeded)
 }
@@ -147,12 +147,12 @@ func (ldx *MeshCheck) Run(args []string) int {
 func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool, auditTests []*models.SubCategory) {
 	ka := m2.MeshCheckResults{BenchmarkType: "mesh", Categories: make([]m2.AuditBenchResult, 0)}
 	for _, at := range auditTests {
-		for _, ab := range at.AuditTests {
+		for _, ab := range at.Checks {
 			var testResult = "FAIL"
 			if ab.TestSucceed {
 				testResult = "PASS"
 			}
-			abr := m2.AuditBenchResult{Category: at.Name, ProfileApplicability: ab.ProfileApplicability, Description: ab.Description, AuditCommand: ab.AuditCommand, Remediation: ab.Remediation, Impact: ab.Impact, AdditionalInfo: ab.AdditionalInfo, References: ab.References, TestResult: testResult}
+			abr := m2.AuditBenchResult{Category: at.Name, ProfileApplicability: ab.ProfileApplicability, Description: ab.Description, AuditCommand: ab.CheckCommand, Remediation: ab.Remediation, Impact: ab.Impact, AdditionalInfo: ab.AdditionalInfo, References: ab.References, TestResult: testResult}
 			ka.Categories = append(ka.Categories, abr)
 		}
 	}
@@ -161,14 +161,14 @@ func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool
 }
 
 // runAuditTest execute category of audit tests
-func (ldx *MeshCheck) runAuditTest(at *models.AuditBench) []*models.AuditBench {
-	auditRes := make([]*models.AuditBench, 0)
+func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck) []*models.SecurityCheck {
+	auditRes := make([]*models.SecurityCheck, 0)
 	if at.NonApplicable {
 		auditRes = append(auditRes, at)
 		return auditRes
 	}
 	// execute audit test command
-	cmdEvalResult := ldx.Evaluator.EvalCommand(at.AuditCommand, at.EvalExpr)
+	cmdEvalResult := ldx.Evaluator.EvalCommand(at.CheckCommand, at.EvalExpr)
 	// continue with result processing
 	auditRes = append(auditRes, ldx.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes

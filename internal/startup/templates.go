@@ -16,11 +16,11 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 	box := packr.NewBox("./../security/mesh/istio/")
 	// Add Master Node Configuration tests
 	//1
-	mnc, err := box.FindString(common.FilesystemConfiguration)
+	mnc, err := box.FindString(common.IstioSecurityChecks)
 	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.FilesystemConfiguration, err.Error())
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioSecurityChecks, err.Error())
 	}
-	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.FilesystemConfiguration, Data: mnc})
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioSecurityChecks, Data: mnc})
 	return fileInfo, nil
 }
 

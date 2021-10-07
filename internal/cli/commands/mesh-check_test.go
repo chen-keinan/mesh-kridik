@@ -43,11 +43,11 @@ func TestRunAuditTests(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			evalCmd := mocks.NewMockCmdEvaluator(ctrl)
-			testBench := ab.Categories[0].SubCategory.AuditTests[0]
-			evalCmd.EXPECT().EvalCommand(testBench.AuditCommand, testBench.EvalExpr).Return(eval.CmdEvalResult{Match: tt.wantTestSucceeded, Error: nil}).Times(1)
+			testBench := ab.Categories[0].SubCategory.Checks[0]
+			evalCmd.EXPECT().EvalCommand(testBench.CheckCommand, testBench.EvalExpr).Return(eval.CmdEvalResult{Match: tt.wantTestSucceeded, Error: nil}).Times(1)
 			kb := MeshCheck{Evaluator: evalCmd, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: tt.plChan, CompletedChan: tt.completedChan}
-			kb.runAuditTest(ab.Categories[0].SubCategory.AuditTests[0])
-			assert.Equal(t, ab.Categories[0].SubCategory.AuditTests[0].TestSucceed, tt.wantTestSucceeded)
+			kb.runAuditTest(ab.Categories[0].SubCategory.Checks[0])
+			assert.Equal(t, ab.Categories[0].SubCategory.Checks[0].TestSucceed, tt.wantTestSucceeded)
 			go func() {
 				<-tt.plChan
 				tt.completedChan <- true
@@ -102,7 +102,7 @@ func Test_Help(t *testing.T) {
 
 //Test_reportResultProcessor test
 func Test_reportResultProcessor(t *testing.T) {
-	ad := &models.AuditBench{Name: "1.2.1 aaa"}
+	ad := &models.SecurityCheck{Name: "1.2.1 aaa"}
 	fm := reportResultProcessor(ad, true)
 	assert.True(t, len(fm) == 0)
 	fm = reportResultProcessor(ad, false)
@@ -129,12 +129,12 @@ func Test_sendResultToPlugin(t *testing.T) {
 	pChan := make(chan m2.MeshCheckResults)
 	cChan := make(chan bool)
 	auditTests := make([]*models.SubCategory, 0)
-	ab := make([]*models.AuditBench, 0)
-	ats := &models.AuditBench{Name: "bbb", TestSucceed: true}
-	atf := &models.AuditBench{Name: "ccc", TestSucceed: false}
+	ab := make([]*models.SecurityCheck, 0)
+	ats := &models.SecurityCheck{Name: "bbb", TestSucceed: true}
+	atf := &models.SecurityCheck{Name: "ccc", TestSucceed: false}
 	ab = append(ab, ats)
 	ab = append(ab, atf)
-	mst := &models.SubCategory{Name: "aaa", AuditTests: ab}
+	mst := &models.SubCategory{Name: "aaa", Checks: ab}
 	auditTests = append(auditTests, mst)
 	go func() {
 		<-pChan

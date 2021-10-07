@@ -15,14 +15,14 @@ func PrintOutput(auditTests []*models.SubCategory, outputGenerator OutputGenerat
 }
 
 //ExecuteSpecs execute audit test and show progress bar
-func ExecuteSpecs(a *models.SubCategory, execTestFunc func(ad *models.AuditBench) []*models.AuditBench) *models.SubCategory {
-	if len(a.AuditTests) == 0 {
+func ExecuteSpecs(a *models.SubCategory, execTestFunc func(ad *models.SecurityCheck) []*models.SecurityCheck) *models.SubCategory {
+	if len(a.Checks) == 0 {
 		return a
 	}
-	completedTest := make([]*models.AuditBench, 0)
-	for _, test := range a.AuditTests {
+	completedTest := make([]*models.SecurityCheck, 0)
+	for _, test := range a.Checks {
 		ar := execTestFunc(test)
 		completedTest = append(completedTest, ar...)
 	}
-	return &models.SubCategory{Name: a.Name, AuditTests: completedTest}
+	return &models.SubCategory{Name: a.Name, Checks: completedTest}
 }

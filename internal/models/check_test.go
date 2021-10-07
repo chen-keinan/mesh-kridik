@@ -25,7 +25,7 @@ func TestAuditBench_UnmarshalYAML(t *testing.T) {
 			if err != nil {
 				t.Errorf("TestAuditBench_UnmarshalYAML failed to unmarshal json %v", err)
 			}
-			got := ab.Categories[0].SubCategory.AuditTests[0].TestType
+			got := ab.Categories[0].SubCategory.Checks[0].TestType
 			if tt.want != got {
 				t.Errorf("TestAuditBench_UnmarshalYAML want %v got %v", tt.want, got)
 			}

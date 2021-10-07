@@ -1,0 +1,8 @@
+const policy = `package itsio
+default deny = false
+deny {
+	some i
+	input.kind == "PeerAuthentication"
+	mode := input.spec.mtls.mode
+	mode == "PERMISSIVE"
+}

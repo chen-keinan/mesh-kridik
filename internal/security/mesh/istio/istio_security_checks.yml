@@ -1,0 +1,26 @@
+---
+benchmark_type: mesh
+categories:
+  -
+    name: Istio Security Best practices
+    sub_category:
+      name: Itsio Security Checks
+      security_checks:
+        -
+          name: '1.0 make sure mTLS is not configured in permissive mode'
+          description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
+          profile_applicability: Level 1
+          check_command:
+            - mount | grep -E '\s/tmp\s'
+            - grep -E '\s/tmp\s' /etc/fstab | grep -E -v '^\s*#'
+            - systemctl is-enabled tmp.mount 2>/dev/null
+          remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
+                        https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
+          check_type: multi_param
+          impact: 'proxies will accept both mutual TLS and plaintext traffic.'
+          eval_expr: "'${0}' == 'tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)'; || '${1}' == 'tmpfs /tmp tmpfs defaults,noexec,nosuid,nodev 0 0'; || '${2}' == 'enabled'"
+          default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
+          additional_info: If an entry for /tmp exists in /etc/fstab it will take precedence over entries in the tmp.mount file
+          references:
+            - AJ Lewis, "LVM HOWTO", http://tldp.org/HOWTO/LVM-HOWTO/
+            - https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems/

@@ -1,8 +1,8 @@
 package common
 
 const (
-	//FilesystemConfiguration file name
-	FilesystemConfiguration = "1.1_filesystem_configuration.yml"
+	//IstioSecurityChecks file name
+	IstioSecurityChecks = "istio_security_checks.yml"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

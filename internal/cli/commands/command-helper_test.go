@@ -21,10 +21,10 @@ import (
 
 //Test_AddFailedMessages text
 func Test_AddFailedMessages(t *testing.T) {
-	atb1 := &models.AuditBench{TestSucceed: false}
+	atb1 := &models.SecurityCheck{TestSucceed: false}
 	afm := AddFailedMessages(atb1, false)
 	assert.True(t, len(afm) == 1)
-	atb2 := &models.AuditBench{TestSucceed: true}
+	atb2 := &models.SecurityCheck{TestSucceed: true}
 	afm = AddFailedMessages(atb2, true)
 	assert.True(t, len(afm) == 0)
 }
@@ -100,15 +100,15 @@ func Test_LoadAuditTest(t *testing.T) {
 	}
 	at := NewFileLoader().LoadAuditTests(bFiles)
 	assert.True(t, len(at) != 0)
-	assert.True(t, strings.Contains(at[0].AuditTests[0].Name, "1.1.1"))
+	assert.True(t, strings.Contains(at[0].Checks[0].Name, "1.1.1"))
 }
 
 //Test_FilterAuditTests test
 func Test_FilterAuditTests(t *testing.T) {
-	at := &models.SubCategory{AuditTests: []*models.AuditBench{{Name: "1.2.1 aaa"}, {Name: "2.2.2"}}}
+	at := &models.SubCategory{Checks: []*models.SecurityCheck{{Name: "1.2.1 aaa"}, {Name: "2.2.2"}}}
 	fab := FilterAuditTests([]filters.Predicate{filters.IncludeAudit}, []string{"1.2.1"}, at)
-	assert.Equal(t, fab.AuditTests[0].Name, "1.2.1 aaa")
-	assert.True(t, len(fab.AuditTests) == 1)
+	assert.Equal(t, fab.Checks[0].Name, "1.2.1 aaa")
+	assert.True(t, len(fab.Checks) == 1)
 }
 
 //Test_buildPredicateChain test
@@ -130,7 +130,7 @@ func Test_buildPredicateChainParams(t *testing.T) {
 }
 
 func Test_filteredAuditBenchTests(t *testing.T) {
-	asc := []*models.SubCategory{{AuditTests: []*models.AuditBench{{Name: "1.1.0 bbb"}}}}
+	asc := []*models.SubCategory{{Checks: []*models.SecurityCheck{{Name: "1.1.0 bbb"}}}}
 	fp := []filters.Predicate{filters.IncludeAudit, filters.ExcludeAudit}
 	st := []string{"i=1.1.0", "e=1.1.0"}
 	fr := filteredAuditBenchTests(asc, fp, st)
@@ -139,8 +139,8 @@ func Test_filteredAuditBenchTests(t *testing.T) {
 
 //Test_executeTests test
 func Test_executeTests(t *testing.T) {
-	ab := &models.AuditBench{}
-	ab.AuditCommand = []string{"aaa", "bbb"}
+	ab := &models.SecurityCheck{}
+	ab.CheckCommand = []string{"aaa", "bbb"}
 	ab.EvalExpr = "'$0' == ''; && '$1' == '';"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
@@ -150,7 +150,7 @@ func Test_executeTests(t *testing.T) {
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	kb := MeshCheck{ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
-	sc := []*models.SubCategory{{AuditTests: []*models.AuditBench{ab}}}
+	sc := []*models.SubCategory{{Checks: []*models.SecurityCheck{ab}}}
 	executeTests(sc, kb.runAuditTest, logger.GetLog())
 	assert.True(t, ab.TestSucceed)
 	go func() {
@@ -162,15 +162,15 @@ func Test_executeTests(t *testing.T) {
 func TestPrintTestResults(t *testing.T) {
 	tests := []struct {
 		name         string
-		tests        []*models.AuditBench
+		tests        []*models.SecurityCheck
 		testCategory string
 		testType     string
 		warn         int
 		pass         int
 		fail         int
 	}{
-		{name: "regular result", testCategory: "aaa", tests: []*models.AuditBench{{Name: "bbb", TestSucceed: true}, {Name: "ccc", TestSucceed: false}, {Name: "ddd", NonApplicable: true}}, warn: 1, pass: 1, fail: 1, testType: "regular"},
-		{name: "classic result", testCategory: "aaa", tests: []*models.AuditBench{{Name: "bbb", TestSucceed: true}, {Name: "ccc", TestSucceed: false}, {Name: "ddd", NonApplicable: true}}, warn: 1, pass: 1, fail: 1, testType: "classic"},
+		{name: "regular result", testCategory: "aaa", tests: []*models.SecurityCheck{{Name: "bbb", TestSucceed: true}, {Name: "ccc", TestSucceed: false}, {Name: "ddd", NonApplicable: true}}, warn: 1, pass: 1, fail: 1, testType: "regular"},
+		{name: "classic result", testCategory: "aaa", tests: []*models.SecurityCheck{{Name: "bbb", TestSucceed: true}, {Name: "ccc", TestSucceed: false}, {Name: "ddd", NonApplicable: true}}, warn: 1, pass: 1, fail: 1, testType: "classic"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

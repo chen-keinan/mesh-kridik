@@ -26,7 +26,7 @@ func Test_StartCli(t *testing.T) {
 		t.Fatal(err)
 	}
 	assert.Equal(t, len(files), 1)
-	assert.Equal(t, files[0].Name, common.FilesystemConfiguration)
+	assert.Equal(t, files[0].Name, common.IstioSecurityChecks)
 }
 
 func Test_ArgsSanitizer(t *testing.T) {
@@ -70,8 +70,8 @@ func Test_createCliBuilderData(t *testing.T) {
 
 //Test_InvokeCli test
 func Test_InvokeCli(t *testing.T) {
-	ab := &models.AuditBench{}
-	ab.AuditCommand = []string{"aaa"}
+	ab := &models.SecurityCheck{}
+	ab.CheckCommand = []string{"aaa"}
 	ab.EvalExpr = "'$0' != '';"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
@@ -81,7 +81,7 @@ func Test_InvokeCli(t *testing.T) {
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	tl := m3.NewMockTestLoader(ctrl)
-	tl.EXPECT().LoadAuditTests(nil).Return([]*models.SubCategory{{Name: "te", AuditTests: []*models.AuditBench{ab}}})
+	tl.EXPECT().LoadAuditTests(nil).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}})
 	go func() {
 		<-plChan
 		completedChan <- true

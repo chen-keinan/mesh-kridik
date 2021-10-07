@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func printTestResults(at []*models.AuditBench, table *tablewriter.Table, category string) models.CheckTotals {
+func printTestResults(at []*models.SecurityCheck, table *tablewriter.Table, category string) models.CheckTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -49,7 +49,7 @@ func printTestResults(at []*models.AuditBench, table *tablewriter.Table, categor
 	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
-func printClassicTestResults(at []*models.AuditBench, log *logger.MeshKridikLogger) models.CheckTotals {
+func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikLogger) models.CheckTotals {
 	var (
 		warnCounter int
 		passCounter int
@@ -76,8 +76,8 @@ func printClassicTestResults(at []*models.AuditBench, log *logger.MeshKridikLogg
 }
 
 //AddFailedMessages add failed audit test to report data
-func AddFailedMessages(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
-	av := make([]*models.AuditBench, 0)
+func AddFailedMessages(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck {
+	av := make([]*models.SecurityCheck, 0)
 	at.TestSucceed = isSucceeded
 	if !isSucceeded || at.NonApplicable {
 		av = append(av, at)
@@ -86,8 +86,8 @@ func AddFailedMessages(at *models.AuditBench, isSucceeded bool) []*models.AuditB
 }
 
 //AddAllMessages add all audit test to report data
-func AddAllMessages(at *models.AuditBench, isSucceeded bool) []*models.AuditBench {
-	av := make([]*models.AuditBench, 0)
+func AddAllMessages(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck {
+	av := make([]*models.SecurityCheck, 0)
 	at.TestSucceed = isSucceeded
 	av = append(av, at)
 	return av
@@ -195,7 +195,7 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 	ft := make([]*models.SubCategory, 0)
 	for _, adt := range auditTests {
 		filteredAudit := FilterAuditTests(pc, pp, adt)
-		if len(filteredAudit.AuditTests) == 0 {
+		if len(filteredAudit.Checks) == 0 {
 			continue
 		}
 		ft = append(ft, filteredAudit)
@@ -203,7 +203,7 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 	return ft
 }
 
-func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.AuditBench) []*models.AuditBench, log *logger.MeshKridikLogger) []*models.SubCategory {
+func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.SecurityCheck) []*models.SecurityCheck, log *logger.MeshKridikLogger) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
 	log.Console(ui.MeshCheck)
 	bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")

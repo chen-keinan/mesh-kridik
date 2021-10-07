@@ -26,22 +26,24 @@ type Category struct {
 
 //SubCategory data model
 type SubCategory struct {
-	Name       string        `yaml:"name"`
-	AuditTests []*AuditBench `yaml:"audit_tests"`
+	Name   string           `yaml:"name"`
+	Checks []*SecurityCheck `yaml:"security_checks"`
 }
 
-//AuditBench data model
-type AuditBench struct {
+//SecurityCheck data model
+type SecurityCheck struct {
 	Name                 string   `mapstructure:"name" yaml:"name"`
 	ProfileApplicability string   `mapstructure:"profile_applicability" yaml:"profile_applicability"`
 	Description          string   `mapstructure:"description" yaml:"description"`
-	AuditCommand         []string `mapstructure:"audit" json:"audit"`
+	CheckCommand         []string `mapstructure:"check_command" json:"check_command"`
 	CheckType            string   `mapstructure:"check_type" yaml:"check_type"`
 	Remediation          string   `mapstructure:"remediation" yaml:"remediation"`
 	Impact               string   `mapstructure:"impact" yaml:"impact"`
 	AdditionalInfo       string   `mapstructure:"additional_info" yaml:"additional_info"`
 	References           []string `mapstructure:"references" yaml:"references"`
+	DefaultValue         string   `mapstructure:"default_value" yaml:"default_value"`
 	EvalExpr             string   `mapstructure:"eval_expr" yaml:"eval_expr"`
+	PolicyName           string   `mapstructure:"policy_name" yaml:"policy_name"`
 	TestSucceed          bool
 	CommandParams        map[int][]string
 	Category             string
@@ -56,7 +58,7 @@ type AuditResult struct {
 }
 
 //UnmarshalYAML over unmarshall to add logic
-func (at *AuditBench) UnmarshalYAML(unmarshal func(interface{}) error) error {
+func (at *SecurityCheck) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var res map[string]interface{}
 	if err := unmarshal(&res); err != nil {
 		return err
