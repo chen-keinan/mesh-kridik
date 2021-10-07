@@ -8,9 +8,9 @@ import (
 	"testing"
 )
 
-//Test_CreateLxdBenchmarkFilesIfNotExist test
-func Test_CreateLxdBenchmarkFilesIfNotExist(t *testing.T) {
-	bFiles, err := GenerateLxdSecurityFiles()
+//Test_CreateMeshSecurityFilesIfNotExist test
+func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
+	bFiles, err := GenerateMeshSecurityFiles()
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -90,7 +90,7 @@ func Test_LoadAuditTest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	bFiles, err := startup.GenerateLxdSecurityFiles()
+	bFiles, err := startup.GenerateMeshSecurityFiles()
 	if err != nil {
 		t.Fatal(err)
 	}

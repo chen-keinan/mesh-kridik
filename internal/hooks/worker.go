@@ -14,8 +14,8 @@ type PluginWorker struct {
 	log *zap.Logger
 }
 
-//LxdBenchAuditResultHook hold the plugin symbol for Lxd bench audit result Hook
-type LxdBenchAuditResultHook struct {
+//MeshChecksResultHook hold the plugin symbol for Lxd bench audit result Hook
+type MeshChecksResultHook struct {
 	Plugins []plugin.Symbol
 	Plug    *uplugin.PluginLoader
 }
@@ -26,7 +26,7 @@ func NewPluginWorker(commandMatchData *PluginWorkerData, log *zap.Logger) *Plugi
 }
 
 //NewPluginWorkerData return new plugin worker instance
-func NewPluginWorkerData(plChan chan models.MeshCheckResults, hook LxdBenchAuditResultHook, completedChan chan bool) *PluginWorkerData {
+func NewPluginWorkerData(plChan chan models.MeshCheckResults, hook MeshChecksResultHook, completedChan chan bool) *PluginWorkerData {
 	return &PluginWorkerData{plChan: plChan, plugins: hook, completedChan: completedChan}
 }
 
@@ -34,7 +34,7 @@ func NewPluginWorkerData(plChan chan models.MeshCheckResults, hook LxdBenchAudit
 type PluginWorkerData struct {
 	plChan        chan models.MeshCheckResults
 	completedChan chan bool
-	plugins       LxdBenchAuditResultHook
+	plugins       MeshChecksResultHook
 }
 
 //Invoke invoke plugin accept audit bench results

@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 )
 
-//GenerateLxdSecurityFiles use packr to load benchmark audit test yaml
+//GenerateMeshSecurityFiles use packr to load benchmark audit test yaml
 //nolint:gocyclo
-func GenerateLxdSecurityFiles() ([]utils.FilesInfo, error) {
+func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 	fileInfo := make([]utils.FilesInfo, 0)
 	box := packr.NewBox("./../security/mesh/istio/")
 	// Add Master Node Configuration tests

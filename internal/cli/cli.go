@@ -26,7 +26,7 @@ func StartCLI() {
 	app := fx.New(
 		// dependency injection
 		fx.NopLogger,
-		fx.Provide(NewLxdResultChan),
+		fx.Provide(NewMeshResultChan),
 		fx.Provide(NewCompletionChan),
 		fx.Provide(NewArgFunc),
 		fx.Provide(NewCliArgs),
@@ -57,7 +57,7 @@ func initBenchmarkSpecData(fm utils.FolderMgr, ad ArgsData) []utils.FilesInfo {
 	switch ad.SpecType {
 	case "mesh":
 		if ad.SpecVersion == "istio" {
-			filesData, err = startup.GenerateLxdSecurityFiles()
+			filesData, err = startup.GenerateMeshSecurityFiles()
 		}
 	}
 	if err != nil {
@@ -83,7 +83,7 @@ func initPluginFolders(fm utils.FolderMgr) {
 }
 
 //loadAuditBenchPluginSymbols load API call plugin symbols
-func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.LxdBenchAuditResultHook {
+func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.MeshChecksResultHook {
 	fm := utils.NewKFolder()
 	sourceFolder, err := utils.GetPluginSourceSubFolder(fm)
 	if err != nil {
@@ -99,7 +99,7 @@ func loadAuditBenchPluginSymbols(log *zap.Logger) hooks.LxdBenchAuditResultHook 
 	if err != nil {
 		panic(fmt.Sprintf("failed to get plugin compiled plugins %s", err.Error()))
 	}
-	apiPlugin := hooks.LxdBenchAuditResultHook{Plugins: make([]plugin.Symbol, 0), Plug: pl}
+	apiPlugin := hooks.MeshChecksResultHook{Plugins: make([]plugin.Symbol, 0), Plug: pl}
 	for _, name := range names {
 		sym, err := pl.Load(name, common.MeshSecurityCheckResultHook)
 		if err != nil {
@@ -117,13 +117,13 @@ func initPluginWorker(plChan chan models.MeshCheckResults, completedChan chan bo
 	if err != nil {
 		panic(err)
 	}
-	lxdHooks := loadAuditBenchPluginSymbols(log)
-	pluginData := hooks.NewPluginWorkerData(plChan, lxdHooks, completedChan)
+	meskHooks := loadAuditBenchPluginSymbols(log)
+	pluginData := hooks.NewPluginWorkerData(plChan, meskHooks, completedChan)
 	worker := hooks.NewPluginWorker(pluginData, log)
 	worker.Invoke()
 }
 
-//StartCLICommand invoke cli lxd command mesh-kridik cli
+//StartCLICommand invoke cli mesh command mesh-kridik cli
 func StartCLICommand(fm utils.FolderMgr, plChan chan models.MeshCheckResults, completedChan chan bool, ad ArgsData, cmdArgs []string, commands map[string]cli.CommandFactory, log *logger.MeshKridikLogger) {
 	// init plugin folders
 	initPluginFolders(fm)
@@ -147,13 +147,13 @@ func NewCommandArgs(ad ArgsData) []string {
 	return cmdArgs
 }
 
-//NewCliCommands return cli lxd obj commands
+//NewCliCommands return cli mesh obj commands
 // accept cli args data , completion chan , result chan , spec files and return artay of cli commands
 func NewCliCommands(ad ArgsData, plChan chan models.MeshCheckResults, completedChan chan bool, fi []utils.FilesInfo) []cli.Command {
 	cmds := make([]cli.Command, 0)
 	// invoke cli
 	evaluator := eval.NewEvalCmd()
-	cmds = append(cmds, commands.NewLxdAudit(ad.Filters, plChan, completedChan, fi, evaluator))
+	cmds = append(cmds, commands.NewMeshCheck(ad.Filters, plChan, completedChan, fi, evaluator))
 	return cmds
 }
 
@@ -174,8 +174,8 @@ func NewCompletionChan() chan bool {
 	return completedChan
 }
 
-//NewLxdResultChan return plugin test result chan
-func NewLxdResultChan() chan models.MeshCheckResults {
+//NewMeshResultChan return plugin test result chan
+func NewMeshResultChan() chan models.MeshCheckResults {
 	plChan := make(chan models.MeshCheckResults)
 	return plChan
 }
@@ -198,14 +198,14 @@ func invokeCommandCli(args []string, commands map[string]cli.CommandFactory) (in
 	app := cli.NewCLI(common.MeshKridikCli, common.MeshKridikVersion)
 	app.Args = append(app.Args, args...)
 	app.Commands = commands
-	app.HelpFunc = LxdProbeHelpFunc(common.MeshKridikCli)
+	app.HelpFunc = MeshKridikHelpFunc(common.MeshKridikCli)
 	status, err := app.Run()
 	return status, err
 }
 
 //ArgsSanitizer sanitize CLI arguments
 var ArgsSanitizer SanitizeArgs = func(str []string) ArgsData {
-	ad := ArgsData{SpecType: "lxd"}
+	ad := ArgsData{SpecType: "mesh"}
 	args := make([]string, 0)
 	if len(str) == 0 {
 		args = append(args, "")
@@ -229,8 +229,8 @@ var ArgsSanitizer SanitizeArgs = func(str []string) ArgsData {
 			args = append(args, arg)
 		}
 	}
-	if ad.SpecType == "lxd" && len(ad.SpecVersion) == 0 {
-		ad.SpecVersion = "v1.0.0"
+	if ad.SpecType == "mesh" && len(ad.SpecVersion) == 0 {
+		ad.SpecVersion = "istio"
 	}
 	ad.Filters = args
 	return ad
@@ -247,8 +247,8 @@ type ArgsData struct {
 //SanitizeArgs sanitizer func
 type SanitizeArgs func(str []string) ArgsData
 
-// LxdProbeHelpFunc mesh-kridik Help function with all supported commands
-func LxdProbeHelpFunc(app string) cli.HelpFunc {
+// MeshKridikHelpFunc mesh-kridik Help function with all supported commands
+func MeshKridikHelpFunc(app string) cli.HelpFunc {
 	return func(commands map[string]cli.CommandFactory) string {
 		var buf bytes.Buffer
 		buf.WriteString(fmt.Sprintf(startup.GetHelpSynopsis(), app))

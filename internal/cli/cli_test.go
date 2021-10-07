@@ -46,7 +46,7 @@ func Test_ArgsSanitizer(t *testing.T) {
 //Test_LxdProbeHelpFunc test
 func Test_LxdProbeHelpFunc(t *testing.T) {
 	cm := make(map[string]cli.CommandFactory)
-	bhf := LxdProbeHelpFunc(common.MeshKridik)
+	bhf := MeshKridikHelpFunc(common.MeshKridik)
 	helpFile := bhf(cm)
 	assert.True(t, strings.Contains(helpFile, "Available commands are:"))
 	assert.True(t, strings.Contains(helpFile, "Usage: mesh-kridik [--version] [--help] <command> [<args>]"))
@@ -61,7 +61,7 @@ func Test_createCliBuilderData(t *testing.T) {
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	// invoke cli
-	cmds = append(cmds, commands.NewLxdAudit(ad.Filters, plChan, completedChan, []utils.FilesInfo{}, eval.NewEvalCmd()))
+	cmds = append(cmds, commands.NewMeshCheck(ad.Filters, plChan, completedChan, []utils.FilesInfo{}, eval.NewEvalCmd()))
 	c := createCliBuilderData(cmdArgs, cmds)
 	_, ok := c["a"]
 	assert.True(t, ok)

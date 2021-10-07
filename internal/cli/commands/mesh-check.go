@@ -110,8 +110,8 @@ type CmdEvaluator interface {
 	EvalCommandPolicy(commands []string, policy string, propertyEval string, commNum int) eval.CmdEvalResult
 }
 
-//NewLxdAudit new audit object
-func NewLxdAudit(filters []string, plChan chan m2.MeshCheckResults, completedChan chan bool, fi []utils.FilesInfo, evaluator CmdEvaluator) *MeshCheck {
+//NewMeshCheck new audit object
+func NewMeshCheck(filters []string, plChan chan m2.MeshCheckResults, completedChan chan bool, fi []utils.FilesInfo, evaluator CmdEvaluator) *MeshCheck {
 	return &MeshCheck{
 		PredicateChain:  buildPredicateChain(filters),
 		PredicateParams: buildPredicateChainParams(filters),

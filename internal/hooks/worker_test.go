@@ -12,7 +12,7 @@ func Test_NewPluginWorker(t *testing.T) {
 	assert.NoError(t, err)
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
-	pw := NewPluginWorker(NewPluginWorkerData(plChan, LxdBenchAuditResultHook{}, completedChan), production)
+	pw := NewPluginWorker(NewPluginWorkerData(plChan, MeshChecksResultHook{}, completedChan), production)
 	assert.True(t, len(pw.cmd.plugins.Plugins) == 0)
 
 }

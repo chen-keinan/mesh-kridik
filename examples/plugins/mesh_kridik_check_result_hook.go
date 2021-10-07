@@ -11,10 +11,10 @@ import (
 
 //MeshSecurityCheckResultHook this plugin method accept mesh security check results
 //event include test data , description , audit, remediation and result
-func MeshSecurityCheckResultHook(lxdAuditResults models.MeshCheckResults) error {
+func MeshSecurityCheckResultHook(MeshChecksResults models.MeshCheckResults) error {
 	var sb = new(bytes.Buffer)
-	err := json.NewEncoder(sb).Encode(lxdAuditResults)
-	fmt.Print(lxdAuditResults)
+	err := json.NewEncoder(sb).Encode(MeshChecksResults)
+	fmt.Print(MeshChecksResults)
 	if err != nil {
 		return err
 	}
