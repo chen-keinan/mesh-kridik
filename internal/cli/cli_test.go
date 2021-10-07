@@ -20,8 +20,8 @@ import (
 //Test_StartCli tests
 func Test_StartCli(t *testing.T) {
 	fm := utils.NewKFolder()
-	initBenchmarkSpecData(fm, ArgsData{SpecType: "lxd", SpecVersion: "v1.0.0"})
-	files, err := utils.GetMeshSecurityChecksFiles("lxd", "v1.0.0", fm)
+	initBenchmarkSpecData(fm, ArgsData{SpecType: "mesh", SpecVersion: "istio"})
+	files, err := utils.GetMeshSecurityChecksFiles("mesh", "istio", fm)
 	if err != nil {
 		t.Fatal(err)
 	}
