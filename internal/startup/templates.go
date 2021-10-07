@@ -9,16 +9,16 @@ import (
 	"path/filepath"
 )
 
-//GenerateLxdBenchmarkFiles use packr to load benchmark audit test yaml
+//GenerateLxdSecurityFiles use packr to load benchmark audit test yaml
 //nolint:gocyclo
-func GenerateLxdBenchmarkFiles() ([]utils.FilesInfo, error) {
+func GenerateLxdSecurityFiles() ([]utils.FilesInfo, error) {
 	fileInfo := make([]utils.FilesInfo, 0)
-	box := packr.NewBox("./../benchmark/mesh/v1.0.0/")
+	box := packr.NewBox("./../security/mesh/istio/")
 	// Add Master Node Configuration tests
 	//1
 	mnc, err := box.FindString(common.FilesystemConfiguration)
 	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load lxd benchmarks audit tests %s  %s", common.FilesystemConfiguration, err.Error())
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.FilesystemConfiguration, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.FilesystemConfiguration, Data: mnc})
 	return fileInfo, nil
@@ -35,10 +35,10 @@ func GetHelpSynopsis() string {
 	return hs
 }
 
-//SaveBenchmarkFilesIfNotExist create benchmark audit file if not exist
-func SaveBenchmarkFilesIfNotExist(spec, version string, filesData []utils.FilesInfo) error {
+//SaveSecurityFilesIfNotExist create benchmark audit file if not exist
+func SaveSecurityFilesIfNotExist(spec, version string, filesData []utils.FilesInfo) error {
 	fm := utils.NewKFolder()
-	folder, err := utils.GetBenchmarkFolder(spec, version, fm)
+	folder, err := utils.GetSecurityFolder(spec, version, fm)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func SaveBenchmarkFilesIfNotExist(spec, version string, filesData []utils.FilesI
 			}
 			_, err = f.WriteString(fileData.Data)
 			if err != nil {
-				return fmt.Errorf("failed to write benchmark file")
+				return fmt.Errorf("failed to write security file")
 			}
 			err = f.Close()
 			if err != nil {

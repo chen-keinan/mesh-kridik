@@ -14,7 +14,7 @@ const (
 	//Synopsis help
 	Synopsis = "synopsis"
 	//MeshKridikCli Name
-	MeshKridikCli = "ldx-probe"
+	MeshKridikCli = "mesh-kridik"
 	//MeshKridikVersion version
 	MeshKridikVersion = "0.1"
 	//IncludeParam param

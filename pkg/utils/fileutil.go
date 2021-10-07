@@ -119,28 +119,28 @@ func CreateHomeFolderIfNotExist(fm FolderMgr) error {
 	return nil
 }
 
-//GetBenchmarkFolder return benchmark folder
-func GetBenchmarkFolder(spec, version string, fm FolderMgr) (string, error) {
+//GetSecurityFolder return benchmark folder
+func GetSecurityFolder(spec, kind string, fm FolderMgr) (string, error) {
 	folder, err := fm.GetHomeFolder()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(folder, fmt.Sprintf("benchmarks/%s/%s/", spec, version)), nil
+	return filepath.Join(folder, fmt.Sprintf("security/%s/%s/", spec, kind)), nil
 }
 
-//CreateBenchmarkFolderIfNotExist create mesh-kridik benchmark folder if not exist
-func CreateBenchmarkFolderIfNotExist(spec, version string, fm FolderMgr) error {
-	benchmarkFolder, err := GetBenchmarkFolder(spec, version, fm)
+//CreateSecurityFolderIfNotExist create mesh-kridik benchmark folder if not exist
+func CreateSecurityFolderIfNotExist(spec, version string, fm FolderMgr) error {
+	benchmarkFolder, err := GetSecurityFolder(spec, version, fm)
 	if err != nil {
 		return err
 	}
 	return fm.CreateFolder(benchmarkFolder)
 }
 
-//GetLxdBenchAuditFiles return lxd benchmark file
-func GetLxdBenchAuditFiles(spec, version string, fm FolderMgr) ([]FilesInfo, error) {
+//GetMeshSecurityChecksFiles return lxd benchmark file
+func GetMeshSecurityChecksFiles(spec, version string, fm FolderMgr) ([]FilesInfo, error) {
 	filesData := make([]FilesInfo, 0)
-	folder, err := GetBenchmarkFolder(spec, version, fm)
+	folder, err := GetSecurityFolder(spec, version, fm)
 	if err != nil {
 		return filesData, err
 	}

@@ -49,21 +49,21 @@ func initBenchmarkSpecData(fm utils.FolderMgr, ad ArgsData) []utils.FilesInfo {
 	if err != nil {
 		panic(err)
 	}
-	err = utils.CreateBenchmarkFolderIfNotExist(ad.SpecType, ad.SpecVersion, fm)
+	err = utils.CreateSecurityFolderIfNotExist(ad.SpecType, ad.SpecVersion, fm)
 	if err != nil {
 		panic(err)
 	}
 	var filesData []utils.FilesInfo
 	switch ad.SpecType {
-	case "lxd":
-		if ad.SpecVersion == "v1.0.0" {
-			filesData, err = startup.GenerateLxdBenchmarkFiles()
+	case "mesh":
+		if ad.SpecVersion == "istio" {
+			filesData, err = startup.GenerateLxdSecurityFiles()
 		}
 	}
 	if err != nil {
 		panic(err)
 	}
-	err = startup.SaveBenchmarkFilesIfNotExist(ad.SpecType, ad.SpecVersion, filesData)
+	err = startup.SaveSecurityFilesIfNotExist(ad.SpecType, ad.SpecVersion, filesData)
 	if err != nil {
 		panic(err)
 	}

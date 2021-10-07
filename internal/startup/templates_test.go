@@ -10,20 +10,20 @@ import (
 
 //Test_CreateLxdBenchmarkFilesIfNotExist test
 func Test_CreateLxdBenchmarkFilesIfNotExist(t *testing.T) {
-	bFiles, err := GenerateLxdBenchmarkFiles()
+	bFiles, err := GenerateLxdSecurityFiles()
 	if err != nil {
 		t.Fatal(err)
 	}
 	// generate test with packr
 	assert.Equal(t, bFiles[0].Name, common.FilesystemConfiguration)
 	fm := utils.NewKFolder()
-	err = utils.CreateBenchmarkFolderIfNotExist("mesh", "v1.0.0", fm)
+	err = utils.CreateSecurityFolderIfNotExist("mesh", "v1.0.0", fm)
 	assert.NoError(t, err)
 	// save benchmark files to folder
-	err = SaveBenchmarkFilesIfNotExist("mesh", "v1.0.0", bFiles)
+	err = SaveSecurityFilesIfNotExist("mesh", "v1.0.0", bFiles)
 	assert.NoError(t, err)
 	// fetch files from benchmark folder
-	bFiles, err = utils.GetLxdBenchAuditFiles("mesh", "v1.0.0", fm)
+	bFiles, err = utils.GetMeshSecurityChecksFiles("mesh", "v1.0.0", fm)
 	assert.Equal(t, bFiles[0].Name, common.FilesystemConfiguration)
 	assert.NoError(t, err)
 	err = os.RemoveAll(utils.GetHomeFolder())
@@ -39,7 +39,7 @@ func Test_GetHelpSynopsis(t *testing.T) {
 //Test_SaveBenchmarkFilesIfNotExist test
 func Test_SaveBenchmarkFilesIfNotExist(t *testing.T) {
 	fm := utils.NewKFolder()
-	folder, err2 := utils.GetBenchmarkFolder("lxd", "v1.6.0", fm)
+	folder, err2 := utils.GetSecurityFolder("lxd", "v1.6.0", fm)
 	assert.NoError(t, err2)
 	err := os.RemoveAll(folder)
 	assert.NoError(t, err)

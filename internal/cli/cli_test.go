@@ -21,7 +21,7 @@ import (
 func Test_StartCli(t *testing.T) {
 	fm := utils.NewKFolder()
 	initBenchmarkSpecData(fm, ArgsData{SpecType: "lxd", SpecVersion: "v1.0.0"})
-	files, err := utils.GetLxdBenchAuditFiles("lxd", "v1.0.0", fm)
+	files, err := utils.GetMeshSecurityChecksFiles("lxd", "v1.0.0", fm)
 	if err != nil {
 		t.Fatal(err)
 	}
