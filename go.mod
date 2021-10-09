@@ -2,11 +2,11 @@ module github.com/chen-keinan/mesh-kridik
 
 go 1.16
 
-replace github.com/chen-keinan/go-opa-validate => github.com/chen-keinan/go-opa-validate v0.0.4
+replace github.com/chen-keinan/go-opa-validate => github.com/chen-keinan/go-opa-validate v0.0.5
 
 require (
 	github.com/cheggaaa/pb v1.0.29
-	github.com/chen-keinan/go-command-eval v0.0.3
+	github.com/chen-keinan/go-command-eval v0.0.4
 	github.com/chen-keinan/go-user-plugins v0.0.4
 	github.com/gobuffalo/packr v1.30.1
 	github.com/golang/mock v1.6.0
@@ -21,6 +21,5 @@ require (
 	go.uber.org/fx v1.13.1
 	go.uber.org/zap v1.19.1
 	golang.org/x/sys v0.0.0-20211006225509-1a26e0398eed // indirect
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
