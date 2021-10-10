@@ -19,7 +19,5 @@ categories:
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.allow];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
-          additional_info: If an entry for /tmp exists in /etc/fstab it will take precedence over entries in the tmp.mount file
           references:
-            - AJ Lewis, "LVM HOWTO", http://tldp.org/HOWTO/LVM-HOWTO/
-            - https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems/
+            - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
