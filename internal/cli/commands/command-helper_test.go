@@ -139,19 +139,30 @@ func Test_filteredAuditBenchTests(t *testing.T) {
 
 //Test_executeTests test
 func Test_executeTests(t *testing.T) {
+	const policy = `package example
+	default deny = false
+	deny {
+		some i
+		input.kind == "Pod"
+		image := input.spec.containers[i].image
+		not startswith(image, "kalpine")
+		}`
 	ab := &models.SecurityCheck{}
 	ab.CheckCommand = []string{"aaa", "bbb"}
-	ab.EvalExpr = "'$0' == ''; && '$1' == '';"
+	ab.EvalExpr = "'${0}' != ''; && [${1} MATCH no_permission.policy QUERY example.deny]"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	evalcmd := mocks.NewMockCmdEvaluator(ctrl)
-	evalcmd.EXPECT().EvalCommand([]string{"aaa", "bbb"}, ab.EvalExpr).Return(eval.CmdEvalResult{Match: true, CmdEvalExpr: ab.EvalExpr, Error: nil})
+	evalcmd.EXPECT().EvalCommandPolicy([]string{"aaa", "bbb"}, ab.EvalExpr, policy).Return(eval.CmdEvalResult{Match: true, CmdEvalExpr: ab.EvalExpr, Error: nil})
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
-	kb := MeshCheck{ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
+	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
+	kb := MeshCheck{FilesInfo: infos, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
 	sc := []*models.SubCategory{{Checks: []*models.SecurityCheck{ab}}}
-	executeTests(sc, kb.runAuditTest, logger.GetLog(), make(map[string]string))
+	policyMap := make(map[string]string)
+	policyMap["no_permission.policy"] = policy
+	executeTests(sc, kb.runAuditTest, logger.GetLog(), policyMap)
 	assert.True(t, ab.TestSucceed)
 	go func() {
 		<-plChan
