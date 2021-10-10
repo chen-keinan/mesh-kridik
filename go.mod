@@ -6,7 +6,7 @@ replace github.com/chen-keinan/go-opa-validate => github.com/chen-keinan/go-opa-
 
 require (
 	github.com/cheggaaa/pb v1.0.29
-	github.com/chen-keinan/go-command-eval v0.0.4
+	github.com/chen-keinan/go-command-eval v0.0.5
 	github.com/chen-keinan/go-user-plugins v0.0.4
 	github.com/gobuffalo/packr v1.30.1
 	github.com/golang/mock v1.6.0

@@ -175,7 +175,8 @@ func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string
 		ldx.log.Console("failed to read policy data")
 	}
 	// execute audit test command
-	cmdEvalResult := ldx.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policies[policyParam.PolicyName])
+	policy := policies[policyParam.PolicyName]
+	cmdEvalResult := ldx.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
 	// continue with result processing
 	auditRes = append(auditRes, ldx.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes
