@@ -1,10 +1,10 @@
 ---
-benchmark_type: lxd
+benchmark_type: mesh
 categories:
   - name: Control Plane Components
     sub_category:
       name: API Server
-      audit_tests:
+      security_checks:
         - name: 1.2.20 Ensure that the --secure-port argument is not set to 0
           description: Do not disable the secure port.
           profile_applicability: Level 1 - Master Node

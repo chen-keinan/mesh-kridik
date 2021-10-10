@@ -1,10 +1,10 @@
 ---
-benchmark_type: lxd
+benchmark_type: mesh
 categories:
   - name: Control Plane Components
     sub_category:
       name: API Server
-      audit_tests:
+      security_checks:
         - name: 4.2.13 Ensure that the Kubelet only makes use of Strong Cryptographic
             Ciphers
           description: Ensure that the Kubelet is configured to only use strong cryptographic

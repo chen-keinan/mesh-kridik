@@ -1,10 +1,10 @@
 ---
-benchmark_type: lxd
+benchmark_type: mesh
 categories:
   - name: Control Plane Components
     sub_category:
       name: API Server
-      audit_tests:
+      security_checks:
         - name: 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
           description: Do not allow all requests.
           profile_applicability: Level 1 - Master Node

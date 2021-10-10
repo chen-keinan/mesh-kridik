@@ -1,10 +1,10 @@
 ---
-benchmark_type: lxd
+benchmark_type: mesh
 categories:
   - name: Control Plane Components
     sub_category:
       name: API Server
-      audit_tests:
+      security_checks:
         - name: Ensure that the --authorization-mode argument includes RBAC (Automated)
           description: Turn on Role Based Access Control.
           profile_applicability: Level 1 - Master Node
