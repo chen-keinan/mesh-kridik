@@ -20,7 +20,7 @@ import (
 //Test_StartCli tests
 func Test_StartCli(t *testing.T) {
 	fm := utils.NewKFolder()
-	initBenchmarkSpecData(fm, ArgsData{SpecType: "mesh", SpecVersion: "istio"})
+	initSecurityChecksData(fm, ArgsData{SpecType: "mesh", SpecVersion: "istio"})
 	files, err := utils.GetMeshSecurityChecksFiles("mesh", "istio", fm)
 	if err != nil {
 		t.Fatal(err)
@@ -70,23 +70,32 @@ func Test_createCliBuilderData(t *testing.T) {
 
 //Test_InvokeCli test
 func Test_InvokeCli(t *testing.T) {
+	const policy = `package example
+	default deny = false
+	deny {
+		some i
+		input.kind == "Pod"
+		image := input.spec.containers[i].image
+		not startswith(image, "kalpine")
+		}`
 	ab := &models.SecurityCheck{}
 	ab.CheckCommand = []string{"aaa"}
-	ab.EvalExpr = "'$0' != '';"
+	ab.EvalExpr = "'${0}' != '';&& [${1} MATCH no_permission.policy QUERY example.deny]"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	evalCmd := mocks.NewMockCmdEvaluator(ctrl)
-	evalCmd.EXPECT().EvalCommand([]string{"aaa"}, ab.EvalExpr).Return(eval.CmdEvalResult{Match: true}).Times(1)
+	evalCmd.EXPECT().EvalCommandPolicy([]string{"aaa"}, ab.EvalExpr, policy).Return(eval.CmdEvalResult{Match: true}).Times(1)
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	tl := m3.NewMockTestLoader(ctrl)
-	tl.EXPECT().LoadAuditTests(nil).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}})
+	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
+	tl.EXPECT().LoadSecurityChecks(infos).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}})
 	go func() {
 		<-plChan
 		completedChan <- true
 	}()
-	kb := &commands.MeshCheck{Evaluator: evalCmd, ResultProcessor: commands.GetResultProcessingFunction([]string{}), FileLoader: tl, OutputGenerator: commands.ConsoleOutputGenerator, PlChan: plChan, CompletedChan: completedChan}
+	kb := &commands.MeshCheck{FilesInfo: infos, Evaluator: evalCmd, ResultProcessor: commands.GetResultProcessingFunction([]string{}), FileLoader: tl, OutputGenerator: commands.ConsoleOutputGenerator, PlChan: plChan, CompletedChan: completedChan}
 	cmdArgs := []string{"a"}
 	cmds := make([]cli.Command, 0)
 	// invoke cli

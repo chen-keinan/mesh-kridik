@@ -25,6 +25,7 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 	// fetch files from benchmark folder
 	bFiles, err = utils.GetMeshSecurityChecksFiles("mesh", "v1.0.0", fm)
 	assert.Equal(t, bFiles[0].Name, common.IstioSecurityChecks)
+	assert.Equal(t, bFiles[1].Name, common.DenyMtlsPermissiveMode)
 	assert.NoError(t, err)
 	err = os.RemoveAll(utils.GetHomeFolder())
 	assert.NoError(t, err)

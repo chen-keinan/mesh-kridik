@@ -31,7 +31,7 @@ func StartCLI() {
 		fx.Provide(NewArgFunc),
 		fx.Provide(NewCliArgs),
 		fx.Provide(utils.NewKFolder),
-		fx.Provide(initBenchmarkSpecData),
+		fx.Provide(initSecurityChecksData),
 		fx.Provide(NewCliCommands),
 		fx.Provide(NewCommandArgs),
 		fx.Provide(createCliBuilderData),
@@ -43,8 +43,8 @@ func StartCLI() {
 	}
 }
 
-//initBenchmarkSpecData initialize benchmark spec file and save if to file system
-func initBenchmarkSpecData(fm utils.FolderMgr, ad ArgsData) []utils.FilesInfo {
+//initSecurityChecksData initialize benchmark spec file and save if to file system
+func initSecurityChecksData(fm utils.FolderMgr, ad ArgsData) []utils.FilesInfo {
 	err := utils.CreateHomeFolderIfNotExist(fm)
 	if err != nil {
 		panic(err)
@@ -70,7 +70,7 @@ func initBenchmarkSpecData(fm utils.FolderMgr, ad ArgsData) []utils.FilesInfo {
 	return filesData
 }
 
-//initBenchmarkSpecData initialize benchmark spec file and save if to file system
+//initSecurityChecksData initialize benchmark spec file and save if to file system
 func initPluginFolders(fm utils.FolderMgr) {
 	err := utils.CreatePluginsSourceFolderIfNotExist(fm)
 	if err != nil {
