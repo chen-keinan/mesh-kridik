@@ -11,13 +11,13 @@ categories:
           description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
           profile_applicability: Level 1
           check_command:
-            - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | sed '1d;x'
+            - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
             - kubectl get peerauthentication -n ${0} -o json 2> /dev/null
           remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.deny];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.allow];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
           additional_info: If an entry for /tmp exists in /etc/fstab it will take precedence over entries in the tmp.mount file
           references:

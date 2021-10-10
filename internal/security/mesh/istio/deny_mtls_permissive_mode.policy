@@ -1,8 +1,8 @@
-const policy = `package itsio
-default deny = false
-deny {
+package itsio
+default allow = false
+allow {
 	some i
-	input.kind == "PeerAuthentication"
-	mode := input.spec.mtls.mode
-	mode == "PERMISSIVE"
-}
+	input.items[i].kind == "PeerAuthentication"
+	mtlsMode := input.items[i].spec.mtls.mode
+	mtlsMode ==  "STRICT"
+ }
