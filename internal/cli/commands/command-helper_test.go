@@ -98,7 +98,7 @@ func Test_LoadAuditTest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	at := NewFileLoader().LoadAuditTests(bFiles)
+	at := NewFileLoader().LoadSecurityChecks(bFiles)
 	assert.True(t, len(at) != 0)
 	assert.True(t, strings.Contains(at[0].Checks[0].Name, "1.1.1"))
 }
@@ -151,7 +151,7 @@ func Test_executeTests(t *testing.T) {
 	plChan := make(chan m2.MeshCheckResults)
 	kb := MeshCheck{ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
 	sc := []*models.SubCategory{{Checks: []*models.SecurityCheck{ab}}}
-	executeTests(sc, kb.runAuditTest, logger.GetLog())
+	executeTests(sc, kb.runAuditTest, logger.GetLog(), make(map[string]string))
 	assert.True(t, ab.TestSucceed)
 	go func() {
 		<-plChan

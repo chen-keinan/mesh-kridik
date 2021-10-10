@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"github.com/chen-keinan/go-command-eval/eval"
+	evutils "github.com/chen-keinan/go-command-eval/utils"
 	"github.com/chen-keinan/mesh-kridik/internal/logger"
 	"github.com/chen-keinan/mesh-kridik/internal/models"
 	"github.com/chen-keinan/mesh-kridik/internal/reports"
@@ -107,7 +108,7 @@ var reportResultProcessor ResultProcessor = func(at *models.SecurityCheck, isSuc
 //go:generate mockgen -destination=../mocks/mock_CmdEvaluator.go -package=mocks . CmdEvaluator
 type CmdEvaluator interface {
 	EvalCommand(commands []string, evalExpr string) eval.CmdEvalResult
-	EvalCommandPolicy(commands []string, policy string, propertyEval string, commNum int) eval.CmdEvalResult
+	EvalCommandPolicy(commands []string, evalExpr string, policy string) eval.CmdEvalResult
 }
 
 //NewMeshCheck new audit object
@@ -132,11 +133,13 @@ func (ldx MeshCheck) Help() string {
 //Run execute the full lxd benchmark
 func (ldx *MeshCheck) Run(args []string) int {
 	// load audit tests fro benchmark folder
-	auditTests := ldx.FileLoader.LoadAuditTests(ldx.FilesInfo)
+	auditTests := ldx.FileLoader.LoadSecurityChecks(ldx.FilesInfo)
 	// filter tests by cmd criteria
 	ft := filteredAuditBenchTests(auditTests, ldx.PredicateChain, ldx.PredicateParams)
-	//execute audit tests and show it in progress bar
-	completedTest := executeTests(ft, ldx.runAuditTest, ldx.log)
+	// load load checks policies
+	policies := loadPolicies(ldx.FilesInfo)
+	//execute security checks and show it in progress bar
+	completedTest := executeTests(ft, ldx.runAuditTest, ldx.log, policies)
 	// generate output data
 	ui.PrintOutput(completedTest, ldx.OutputGenerator, ldx.log)
 	// send test results to plugin
@@ -161,14 +164,18 @@ func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool
 }
 
 // runAuditTest execute category of audit tests
-func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck) []*models.SecurityCheck {
+func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck {
 	auditRes := make([]*models.SecurityCheck, 0)
 	if at.NonApplicable {
 		auditRes = append(auditRes, at)
 		return auditRes
 	}
+	policyParam, err := evutils.ReadPolicyExpr(at.EvalExpr)
+	if err != nil {
+		ldx.log.Console("failed to read policy data")
+	}
 	// execute audit test command
-	cmdEvalResult := ldx.Evaluator.EvalCommand(at.CheckCommand, at.EvalExpr)
+	cmdEvalResult := ldx.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policies[policyParam.PolicyName])
 	// continue with result processing
 	auditRes = append(auditRes, ldx.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes

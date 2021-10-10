@@ -97,7 +97,7 @@ func AddAllMessages(at *models.SecurityCheck, isSucceeded bool) []*models.Securi
 //command-helper.go
 //go:generate mockgen -destination=../../mocks/mock_TestLoader.go -package=mocks . TestLoader
 type TestLoader interface {
-	LoadAuditTests(fi []utils.FilesInfo) []*models.SubCategory
+	LoadSecurityChecks(fi []utils.FilesInfo) []*models.SubCategory
 }
 
 //AuditTestLoader object
@@ -110,15 +110,17 @@ func NewFileLoader() TestLoader {
 }
 
 //LoadAuditTests load audit test from benchmark folder
-func (tl AuditTestLoader) LoadAuditTests(auditFiles []utils.FilesInfo) []*models.SubCategory {
+func (tl AuditTestLoader) LoadSecurityChecks(auditFiles []utils.FilesInfo) []*models.SubCategory {
 	auditTests := make([]*models.SubCategory, 0)
 	audit := models.Check{}
 	for _, auditFile := range auditFiles {
-		err := yaml.Unmarshal([]byte(auditFile.Data), &audit)
-		if err != nil {
-			panic("Failed to unmarshal audit test yaml file")
+		if !strings.HasSuffix(auditFile.Name, common.PolicySuffix) {
+			err := yaml.Unmarshal([]byte(auditFile.Data), &audit)
+			if err != nil {
+				panic("Failed to unmarshal audit test yaml file")
+			}
+			auditTests = append(auditTests, audit.Categories[0].SubCategory)
 		}
-		auditTests = append(auditTests, audit.Categories[0].SubCategory)
 	}
 	return auditTests
 }
@@ -203,12 +205,22 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 	return ft
 }
 
-func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.SecurityCheck) []*models.SecurityCheck, log *logger.MeshKridikLogger) []*models.SubCategory {
+func loadPolicies(fi []utils.FilesInfo) map[string]string {
+	policyMap := make(map[string]string)
+	for _, policy := range fi {
+		if strings.HasSuffix(policy.Name, ".policy") {
+			policyMap[policy.Name] = policy.Data
+		}
+	}
+	return policyMap
+}
+
+func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck, log *logger.MeshKridikLogger, policies map[string]string) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
 	log.Console(ui.MeshCheck)
 	bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")
 	for _, f := range ft {
-		tr := ui.ExecuteSpecs(f, execTestFunc)
+		tr := ui.ExecuteSpecs(f, execTestFunc, policies)
 		completedTest = append(completedTest, tr)
 		bar.Increment()
 		time.Sleep(time.Millisecond * 50)

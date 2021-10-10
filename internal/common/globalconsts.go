@@ -3,6 +3,8 @@ package common
 const (
 	//IstioSecurityChecks file name
 	IstioSecurityChecks = "istio_security_checks.yml"
+	//DenyMtlsPermissiveMode policy name
+	DenyMtlsPermissiveMode = "deny_mtls_permissive_mode.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
@@ -33,4 +35,6 @@ const (
 	ManualTest = "manual"
 	//MeshSecurityCheckResultHook hook name
 	MeshSecurityCheckResultHook = "MeshSecurityCheckResultHook"
+	//PolicySuffix name
+	PolicySuffix = ".policy"
 )

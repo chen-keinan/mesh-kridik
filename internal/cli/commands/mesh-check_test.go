@@ -46,7 +46,7 @@ func TestRunAuditTests(t *testing.T) {
 			testBench := ab.Categories[0].SubCategory.Checks[0]
 			evalCmd.EXPECT().EvalCommand(testBench.CheckCommand, testBench.EvalExpr).Return(eval.CmdEvalResult{Match: tt.wantTestSucceeded, Error: nil}).Times(1)
 			kb := MeshCheck{Evaluator: evalCmd, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: tt.plChan, CompletedChan: tt.completedChan}
-			kb.runAuditTest(ab.Categories[0].SubCategory.Checks[0])
+			kb.runAuditTest(ab.Categories[0].SubCategory.Checks[0], make(map[string]string))
 			assert.Equal(t, ab.Categories[0].SubCategory.Checks[0].TestSucceed, tt.wantTestSucceeded)
 			go func() {
 				<-tt.plChan

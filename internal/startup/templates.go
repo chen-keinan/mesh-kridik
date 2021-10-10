@@ -21,6 +21,11 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioSecurityChecks, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioSecurityChecks, Data: mnc})
+	dmpm, err := box.FindString(common.DenyMtlsPermissiveMode)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DenyMtlsPermissiveMode, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DenyMtlsPermissiveMode, Data: dmpm})
 	return fileInfo, nil
 }
 
