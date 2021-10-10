@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestAuditBench_UnmarshalYAML(t *testing.T) {
+func TestSecurityChecks_UnmarshalYAML(t *testing.T) {
 	tests := []struct {
 		name     string
 		fileName string
@@ -23,11 +23,11 @@ func TestAuditBench_UnmarshalYAML(t *testing.T) {
 			ab := Check{}
 			err := yaml.Unmarshal(readTestData(tt.fileName, t), &ab)
 			if err != nil {
-				t.Errorf("TestAuditBench_UnmarshalYAML failed to unmarshal json %v", err)
+				t.Errorf("TestSecurityChecks_UnmarshalYAML failed to unmarshal json %v", err)
 			}
 			got := ab.Categories[0].SubCategory.Checks[0].TestType
 			if tt.want != got {
-				t.Errorf("TestAuditBench_UnmarshalYAML want %v got %v", tt.want, got)
+				t.Errorf("TestSecurityChecks_UnmarshalYAML want %v got %v", tt.want, got)
 			}
 		})
 	}
