@@ -15,6 +15,7 @@ import (
 	"github.com/mitchellh/colorstring"
 	"github.com/olekukonko/tablewriter"
 	"os"
+	"strings"
 )
 
 //MeshCheck lxd benchmark object
@@ -177,6 +178,13 @@ func (mc *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]
 	// execute audit test command
 	policy := policies[policyParam.PolicyName]
 	cmdEvalResult := mc.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
+	for _, pr := range cmdEvalResult.PolicyResult {
+		sentence := at.EvalMessage
+		for key, val := range pr.ReturnValues {
+			sentence = strings.Replace(sentence, fmt.Sprintf("$%s", key), val, -1)
+		}
+		at.PolicyResult = append(at.PolicyResult, sentence)
+	}
 	// continue with result processing
 	auditRes = append(auditRes, mc.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes
