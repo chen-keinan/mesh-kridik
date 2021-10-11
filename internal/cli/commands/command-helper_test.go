@@ -141,7 +141,7 @@ func Test_filteredAuditBenchTests(t *testing.T) {
 func Test_executeTests(t *testing.T) {
 	const policy = `package example
 	default deny = false
-	deny {
+	allow {
 		some i
 		input.kind == "Pod"
 		image := input.spec.containers[i].image
@@ -149,7 +149,7 @@ func Test_executeTests(t *testing.T) {
 		}`
 	ab := &models.SecurityCheck{}
 	ab.CheckCommand = []string{"aaa", "bbb"}
-	ab.EvalExpr = "'${0}' != ''; && [${1} MATCH no_permission.policy QUERY example.deny]"
+	ab.EvalExpr = "'${0}' != ''; && [${1} MATCH no_permission.policy QUERY example.allow RETURN allow]"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()

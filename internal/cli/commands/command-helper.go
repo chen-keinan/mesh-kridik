@@ -109,7 +109,7 @@ func NewFileLoader() TestLoader {
 	return &AuditTestLoader{}
 }
 
-//LoadAuditTests load audit test from benchmark folder
+//LoadSecurityChecks load audit test from benchmark folder
 func (tl AuditTestLoader) LoadSecurityChecks(auditFiles []utils.FilesInfo) []*models.SubCategory {
 	auditTests := make([]*models.SubCategory, 0)
 	audit := models.Check{}
