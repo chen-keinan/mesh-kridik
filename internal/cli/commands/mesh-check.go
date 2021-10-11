@@ -126,24 +126,24 @@ func NewMeshCheck(filters []string, plChan chan m2.MeshCheckResults, completedCh
 }
 
 //Help return benchmark command help
-func (ldx MeshCheck) Help() string {
+func (mc MeshCheck) Help() string {
 	return startup.GetHelpSynopsis()
 }
 
 //Run execute the full lxd benchmark
-func (ldx *MeshCheck) Run(args []string) int {
+func (mc *MeshCheck) Run(args []string) int {
 	// load audit tests fro benchmark folder
-	auditTests := ldx.FileLoader.LoadSecurityChecks(ldx.FilesInfo)
+	auditTests := mc.FileLoader.LoadSecurityChecks(mc.FilesInfo)
 	// filter tests by cmd criteria
-	ft := filteredAuditBenchTests(auditTests, ldx.PredicateChain, ldx.PredicateParams)
+	ft := filteredAuditBenchTests(auditTests, mc.PredicateChain, mc.PredicateParams)
 	// load load checks policies
-	policies := loadPolicies(ldx.FilesInfo)
+	policies := loadPolicies(mc.FilesInfo)
 	//execute security checks and show it in progress bar
-	completedTest := executeTests(ft, ldx.runAuditTest, ldx.log, policies)
+	completedTest := executeTests(ft, mc.runAuditTest, mc.log, policies)
 	// generate output data
-	ui.PrintOutput(completedTest, ldx.OutputGenerator, ldx.log)
+	ui.PrintOutput(completedTest, mc.OutputGenerator, mc.log)
 	// send test results to plugin
-	sendResultToPlugin(ldx.PlChan, ldx.CompletedChan, completedTest)
+	sendResultToPlugin(mc.PlChan, mc.CompletedChan, completedTest)
 	return 0
 }
 
@@ -164,7 +164,7 @@ func sendResultToPlugin(plChan chan m2.MeshCheckResults, completedChan chan bool
 }
 
 // runAuditTest execute category of audit tests
-func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck {
+func (mc *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck {
 	auditRes := make([]*models.SecurityCheck, 0)
 	if at.NonApplicable {
 		auditRes = append(auditRes, at)
@@ -172,17 +172,17 @@ func (ldx *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string
 	}
 	policyParam, err := evutils.ReadPolicyExpr(at.EvalExpr)
 	if err != nil {
-		ldx.log.Console("failed to read policy data")
+		mc.log.Console("failed to read policy data")
 	}
 	// execute audit test command
 	policy := policies[policyParam.PolicyName]
-	cmdEvalResult := ldx.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
+	cmdEvalResult := mc.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
 	// continue with result processing
-	auditRes = append(auditRes, ldx.ResultProcessor(at, cmdEvalResult.Match)...)
+	auditRes = append(auditRes, mc.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes
 }
 
 //Synopsis for help
-func (ldx *MeshCheck) Synopsis() string {
-	return ldx.Help()
+func (mc *MeshCheck) Synopsis() string {
+	return mc.Help()
 }

@@ -17,7 +17,8 @@ categories:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.allow];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.policy_eval RETURN allow,namespace];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
+          eval_message: 'check mTLS STRICT mode for namespace: %namespace result %allow'
           references:
             - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/

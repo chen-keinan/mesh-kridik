@@ -44,6 +44,7 @@ type SecurityCheck struct {
 	DefaultValue         string   `mapstructure:"default_value" yaml:"default_value"`
 	EvalExpr             string   `mapstructure:"eval_expr" yaml:"eval_expr"`
 	PolicyName           string   `mapstructure:"policy_name" yaml:"policy_name"`
+	EvalMessage          string   `mapstructure:"eval_message" yaml:"eval_message"`
 	TestSucceed          bool
 	CommandParams        map[int][]string
 	Category             string
