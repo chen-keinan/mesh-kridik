@@ -2,7 +2,7 @@ package commands
 
 import (
 	"fmt"
-	"github.com/cheggaaa/pb"
+	"github.com/briandowns/spinner"
 	"github.com/chen-keinan/mesh-kridik/internal/common"
 	"github.com/chen-keinan/mesh-kridik/internal/logger"
 	"github.com/chen-keinan/mesh-kridik/internal/models"
@@ -218,13 +218,20 @@ func loadPolicies(fi []utils.FilesInfo) map[string]string {
 func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck, log *logger.MeshKridikLogger, policies map[string]string) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
 	log.Console(ui.MeshCheck)
-	bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")
+	//bar := pb.StartNew(len(ft)).Prefix("Executing LXD specs:")
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+	s.Start()                                                   // Start the spinner
+	// Run for some time to simulate work
+
 	for _, f := range ft {
+		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
+		s.Start()
 		tr := ui.ExecuteSpecs(f, execTestFunc, policies)
 		completedTest = append(completedTest, tr)
-		bar.Increment()
+		//	bar.Increment()
 		time.Sleep(time.Millisecond * 50)
 	}
-	bar.Finish()
+	s.Stop()
+	//bar.Finish()
 	return completedTest
 }
