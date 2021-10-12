@@ -162,9 +162,9 @@ func getOutputGeneratorFunction(args []string) ui.OutputGenerator {
 	case isArgsExist(args, common.Report) || isArgsExist(args, common.ReportFull):
 		return ReportOutputGenerator
 	case isArgsExist(args, common.Classic) || isArgsExist(args, common.ClassicFull):
-		return ClassicOutputGenerator
-	default:
 		return ConsoleOutputGenerator
+	default:
+		return ClassicOutputGenerator
 	}
 }
 

@@ -10,7 +10,7 @@ type OutputGenerator func(at []*models.SubCategory, log *logger.MeshKridikLogger
 
 //PrintOutput print audit test result to console
 func PrintOutput(auditTests []*models.SubCategory, outputGenerator OutputGenerator, log *logger.MeshKridikLogger) {
-	log.Console(auditResult)
+	log.Console(EmptyLines)
 	outputGenerator(auditTests, log)
 }
 

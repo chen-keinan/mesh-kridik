@@ -15,8 +15,8 @@ const MeshCheck = `
 
 `
 
-//auditResult banner
-const auditResult = `
+//EmptyLines banner
+const EmptyLines = `
 	
 
 `
