@@ -74,13 +74,23 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			failCounter++
 		}
 		for index, pr := range a.PolicyResult {
-			log.Console(fmt.Sprintf("       %d. %s\n", index+1, pr))
+			sentence := a.EvalMessage
+			var testStatus string
+			if pr.ReturnValues["allow"] == "true" {
+				testStatus = colorstring.Color("[green][Fail]")
+			} else {
+				testStatus = colorstring.Color("[red][Fail]")
+			}
+			for key, val := range pr.ReturnValues {
+				sentence = strings.Replace(sentence, fmt.Sprintf("$%s", key), val, -1)
+			}
+			log.Console(fmt.Sprintf("       %s %d. %s\n", testStatus, index+1, sentence))
 		}
 	}
 	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
-func calculateTotals(at []*models.SecurityCheck, log *logger.MeshKridikLogger) models.CheckTotals {
+func calculateTotals(at []*models.SecurityCheck) models.CheckTotals {
 	var (
 		warnCounter int
 		passCounter int

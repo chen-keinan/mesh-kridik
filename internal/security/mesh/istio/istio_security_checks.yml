@@ -19,7 +19,7 @@ categories:
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
-          eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
+          eval_message: 'check mTLS STRICT mode for namespace: $namespace'
           references:
             - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
         -   name: 'Make sure mTLS is not configured in permissive mode for all cluster'
@@ -33,6 +33,6 @@ categories:
             impact: 'proxies will accept both mutual TLS and plaintext traffic.'
             eval_expr: "[${0} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
             default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
-            eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
+            eval_message: 'check mTLS STRICT mode for namespace: $namespace'
             references:
               - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/

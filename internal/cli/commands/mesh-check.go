@@ -15,7 +15,6 @@ import (
 	"github.com/mitchellh/colorstring"
 	"github.com/olekukonko/tablewriter"
 	"os"
-	"strings"
 )
 
 //MeshCheck lxd benchmark object
@@ -56,7 +55,7 @@ var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
 	grandTotal := make([]models.CheckTotals, 0)
 	for _, a := range at {
-		categoryTotal := calculateTotals(a.Checks, log)
+		categoryTotal := calculateTotals(a.Checks)
 		grandTotal = append(grandTotal, categoryTotal)
 	}
 	log.Console(printFinalResults(grandTotal))
@@ -177,13 +176,7 @@ func (mc *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]
 	// execute audit test command
 	policy := policies[policyParam.PolicyName]
 	cmdEvalResult := mc.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
-	for _, pr := range cmdEvalResult.PolicyResult {
-		sentence := at.EvalMessage
-		for key, val := range pr.ReturnValues {
-			sentence = strings.Replace(sentence, fmt.Sprintf("$%s", key), val, -1)
-		}
-		at.PolicyResult = append(at.PolicyResult, sentence)
-	}
+	at.PolicyResult = cmdEvalResult.PolicyResult
 	// continue with result processing
 	auditRes = append(auditRes, mc.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes
