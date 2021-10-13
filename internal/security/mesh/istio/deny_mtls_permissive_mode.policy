@@ -1,4 +1,4 @@
-package itsio
+package istio
 
 policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
     count(input.items) > 0

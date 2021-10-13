@@ -2,7 +2,7 @@
 benchmark_type: mesh
 categories:
   -
-    name: Itsio Security Checks
+    name: istio Security Checks
     sub_category:
       name: Istio Mutual TLS
       security_checks:
@@ -17,7 +17,7 @@ categories:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY itsio.policy_eval RETURN allow,namespace];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
           eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
           references:
@@ -31,7 +31,7 @@ categories:
                                   https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
             check_type: multi_param
             impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-            eval_expr: "[${0} MATCH deny_mtls_permissive_mode.policy QUERY itsio.policy_eval RETURN allow,namespace];"
+            eval_expr: "[${0} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
             default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
             eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
             references:
