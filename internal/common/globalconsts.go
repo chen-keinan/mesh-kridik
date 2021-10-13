@@ -1,10 +1,14 @@
 package common
 
 const (
-	//IstioSecurityChecks file name
-	IstioSecurityChecks = "istio_security_checks.yml"
-	//DenyMtlsPermissiveMode policy name
-	DenyMtlsPermissiveMode = "deny_mtls_permissive_mode.policy"
+	//IstioMutualmTLS file name
+	IstioMutualmTLS = "istio_mutual_mtls.yml"
+	//AllowMtlsPermissiveMode policy name
+	AllowMtlsPermissiveMode = "allow_mtls_permissive_mode.policy"
+	//SaferAuthorizationPolicyPatterns file name
+	SaferAuthorizationPolicyPatterns = "safer_authorization_policy_patterns.yml"
+	//AllowWithPositiveMatching policy name
+	AllowWithPositiveMatching = "allow_with_positive_matching.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

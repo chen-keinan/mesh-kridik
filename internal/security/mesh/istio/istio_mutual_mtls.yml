@@ -4,12 +4,11 @@ categories:
   -
     name: istio Security Checks
     sub_category:
-      name: Istio Mutual TLS
+      name: Istio Mutual mTLS
       security_checks:
         -
           name: 'Make sure mTLS is not configured in permissive mode for each namespace'
           description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
-          profile_applicability: Level 1
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
             - 'kubectl get peerauthentication -n ${0} -o json 2> /dev/null |  jq ''. |= . + {"namespace": "${0}"}'''
@@ -17,21 +16,20 @@ categories:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
           impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
           default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
           eval_message: 'check mTLS STRICT mode for namespace: $namespace'
           references:
             - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
         -   name: 'Make sure mTLS is not configured in permissive mode for all cluster'
             description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
-            profile_applicability: Level 1
             check_command:
                - 'kubectl get peerauthentication -n istio-system -o json 2> /dev/null |  jq ''. |= . + {"namespace": "istio-system"}'''
             remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
                                   https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
             check_type: multi_param
             impact: 'proxies will accept both mutual TLS and plaintext traffic.'
-            eval_expr: "[${0} MATCH deny_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
+            eval_expr: "[${0} MATCH allow_mtls_permissive_mode.policy QUERY istio.policy_eval RETURN allow,namespace];"
             default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
             eval_message: 'check mTLS STRICT mode for namespace: $namespace'
             references:

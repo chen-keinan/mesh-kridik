@@ -16,16 +16,27 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 	box := packr.NewBox("./../security/mesh/istio/")
 	// Add Master Node Configuration tests
 	//1
-	mnc, err := box.FindString(common.IstioSecurityChecks)
+	mnc, err := box.FindString(common.IstioMutualmTLS)
 	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioSecurityChecks, err.Error())
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioMutualmTLS, err.Error())
 	}
-	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioSecurityChecks, Data: mnc})
-	dmpm, err := box.FindString(common.DenyMtlsPermissiveMode)
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioMutualmTLS, Data: mnc})
+	dmpm, err := box.FindString(common.AllowMtlsPermissiveMode)
 	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DenyMtlsPermissiveMode, err.Error())
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AllowMtlsPermissiveMode, err.Error())
 	}
-	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DenyMtlsPermissiveMode, Data: dmpm})
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AllowMtlsPermissiveMode, Data: dmpm})
+	//2
+	sap, err := box.FindString(common.SaferAuthorizationPolicyPatterns)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.SaferAuthorizationPolicyPatterns, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.SaferAuthorizationPolicyPatterns, Data: sap})
+	apm, err := box.FindString(common.AllowWithPositiveMatching)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AllowWithPositiveMatching, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AllowWithPositiveMatching, Data: apm})
 	return fileInfo, nil
 }
 

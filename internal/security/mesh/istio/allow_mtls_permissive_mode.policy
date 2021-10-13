@@ -2,7 +2,7 @@ package istio
 
 policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
     count(input.items) > 0
- 	namespace_name = input.items[0].metadata.namespace
+ 	namespace_name = input.namespace
 	some i
 	input.items[i].kind == "PeerAuthentication"
 	mtlsMode := input.items[i].spec.mtls.mode

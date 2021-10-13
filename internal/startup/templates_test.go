@@ -15,7 +15,7 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 		t.Fatal(err)
 	}
 	// generate test with packr
-	assert.Equal(t, bFiles[0].Name, common.IstioSecurityChecks)
+	assert.Equal(t, bFiles[0].Name, common.IstioMutualmTLS)
 	fm := utils.NewKFolder()
 	err = utils.CreateSecurityFolderIfNotExist("mesh", "istio", fm)
 	assert.NoError(t, err)
@@ -24,8 +24,10 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 	assert.NoError(t, err)
 	// fetch files from benchmark folder
 	bFiles, err = utils.GetMeshSecurityChecksFiles("mesh", "istio", fm)
-	assert.Equal(t, bFiles[0].Name, common.DenyMtlsPermissiveMode)
-	assert.Equal(t, bFiles[1].Name, common.IstioSecurityChecks)
+	assert.Equal(t, bFiles[0].Name, common.AllowMtlsPermissiveMode)
+	assert.Equal(t, bFiles[1].Name, common.AllowWithPositiveMatching)
+	assert.Equal(t, bFiles[2].Name, common.IstioMutualmTLS)
+	assert.Equal(t, bFiles[3].Name, common.SaferAuthorizationPolicyPatterns)
 	assert.NoError(t, err)
 	err = os.RemoveAll(utils.GetHomeFolder())
 	assert.NoError(t, err)
