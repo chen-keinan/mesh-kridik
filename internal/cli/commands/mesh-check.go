@@ -139,7 +139,7 @@ func (mc *MeshCheck) Run(args []string) int {
 	// load load checks policies
 	policies := loadPolicies(mc.FilesInfo)
 	//execute security checks and show it in progress bar
-	completedTest := executeTests(ft, mc.runAuditTest, mc.log, policies)
+	completedTest := executeTests(ft, mc, policies)
 	// generate output data
 	ui.PrintOutput(completedTest, mc.OutputGenerator, mc.log)
 	// send test results to plugin

@@ -158,11 +158,11 @@ func Test_executeTests(t *testing.T) {
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
-	kb := MeshCheck{FilesInfo: infos, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd}
+	kb := &MeshCheck{FilesInfo: infos, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd, log: logger.GetLog()}
 	sc := []*models.SubCategory{{Checks: []*models.SecurityCheck{ab}}}
 	policyMap := make(map[string]string)
 	policyMap["no_permission.policy"] = policy
-	executeTests(sc, kb.runAuditTest, logger.GetLog(), policyMap)
+	executeTests(sc, kb, policyMap)
 	assert.True(t, ab.TestSucceed)
 	go func() {
 		<-plChan

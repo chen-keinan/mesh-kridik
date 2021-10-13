@@ -215,19 +215,17 @@ func loadPolicies(fi []utils.FilesInfo) map[string]string {
 	return policyMap
 }
 
-func executeTests(ft []*models.SubCategory, execTestFunc func(ad *models.SecurityCheck, policies map[string]string) []*models.SecurityCheck, log *logger.MeshKridikLogger, policies map[string]string) []*models.SubCategory {
+func executeTests(ft []*models.SubCategory, mc *MeshCheck, policies map[string]string) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
-	log.Console(ui.MeshCheck)
+	mc.log.Console(ui.MeshCheck)
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
 	s.Start()                                                   // Start the spinner
 	for _, f := range ft {
 		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
 		s.Start()
-		tr := ui.ExecuteSpecs(f, execTestFunc, policies)
+		tr := ui.ExecuteSpecs(f, mc.runAuditTest, policies)
 		completedTest = append(completedTest, tr)
-		s.Restart()
+		s.Stop()
 	}
-	s.Stop()
-	//bar.Finish()
 	return completedTest
 }
