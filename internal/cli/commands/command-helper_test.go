@@ -100,7 +100,7 @@ func Test_LoadSecurityCheck(t *testing.T) {
 	}
 	at := NewFileLoader().LoadSecurityChecks(bFiles)
 	assert.True(t, len(at) != 0)
-	assert.True(t, strings.Contains(at[0].Checks[0].Name, "1.0 make sure mTLS is not configured in permissive mode"))
+	assert.True(t, strings.Contains(at[0].Checks[0].Name, "Make sure mTLS is not configured in permissive mode"))
 }
 
 //Test_FilterAuditTests test
