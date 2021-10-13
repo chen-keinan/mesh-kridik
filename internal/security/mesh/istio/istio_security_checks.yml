@@ -7,7 +7,7 @@ categories:
       name: Istio Mutual TLS
       security_checks:
         -
-          name: '1.0 make sure mTLS is not configured in permissive mode'
+          name: '1.0 make sure mTLS is not configured in permissive mode for each namespace'
           description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
           profile_applicability: Level 1
           check_command:
@@ -22,3 +22,17 @@ categories:
           eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
           references:
             - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
+        -   name: '1.1 make sure mTLS is not configured in permissive mode for all cluster'
+            description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
+            profile_applicability: Level 1
+            check_command:
+               - kubectl get peerauthentication -n istio-system -o json 2> /dev/null
+            remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
+                                  https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
+            check_type: multi_param
+            impact: 'proxies will accept both mutual TLS and plaintext traffic.'
+            eval_expr: "[${0} MATCH deny_mtls_permissive_mode.policy QUERY itsio.policy_eval RETURN allow,namespace];"
+            default_value: 'By default, Istio configures the destination workloads using PERMISSIVE mode'
+            eval_message: 'check mTLS STRICT mode for namespace: $namespace result $allow'
+            references:
+              - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/

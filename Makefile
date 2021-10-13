@@ -31,6 +31,12 @@ build:
 	export PATH=$PATH:/home/vagrant/go/bin
 	export PATH=$PATH:/home/root/go/bin
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
+build_local:
+	$(GOPACKR)
+	export PATH=$GOPATH/bin:$PATH;
+	export PATH=$PATH:/home/vagrant/go/bin
+	export PATH=$PATH:/home/root/go/bin
+	$(GOBUILD) ./cmd/mesh-kridik;
 install:build_travis
 	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
 test_travis:
