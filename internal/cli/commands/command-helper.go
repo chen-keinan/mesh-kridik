@@ -73,9 +73,8 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			log.Console(fmt.Sprintf("%s %s\n", failTest, a.Name))
 			failCounter++
 		}
-		for _, pr := range a.PolicyResult {
-			evalMsg := colorstring.Color("[blue][Check]")
-			log.Console(fmt.Sprintf("%s %s\n", evalMsg, pr))
+		for index, pr := range a.PolicyResult {
+			log.Console(fmt.Sprintf("       %d. %s\n", index+1, pr))
 		}
 	}
 	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
