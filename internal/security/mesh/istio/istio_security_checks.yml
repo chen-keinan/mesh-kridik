@@ -12,7 +12,7 @@ categories:
           profile_applicability: Level 1
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
-            - kubectl get peerauthentication -n ${0} -o json 2> /dev/null
+            - 'kubectl get peerauthentication -n ${0} -o json 2> /dev/null |  jq ''. |= . + {"namespace": "${0}"}'''
           remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
@@ -26,7 +26,7 @@ categories:
             description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
             profile_applicability: Level 1
             check_command:
-               - kubectl get peerauthentication -n istio-system -o json 2> /dev/null
+               - 'kubectl get peerauthentication -n istio-system -o json 2> /dev/null |  jq ''. |= . + {"namespace": "istio-system"}'''
             remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
                                   https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
             check_type: multi_param
