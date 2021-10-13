@@ -75,6 +75,26 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
 }
 
+func calculateTotals(at []*models.SecurityCheck, log *logger.MeshKridikLogger) models.CheckTotals {
+	var (
+		warnCounter int
+		passCounter int
+		failCounter int
+	)
+	for _, a := range at {
+		if a.NonApplicable {
+			warnCounter++
+			continue
+		}
+		if a.TestSucceed {
+			passCounter++
+		} else {
+			failCounter++
+		}
+	}
+	return models.CheckTotals{Fail: failCounter, Pass: passCounter, Warn: warnCounter}
+}
+
 //AddFailedMessages add failed audit test to report data
 func AddFailedMessages(at *models.SecurityCheck, isSucceeded bool) []*models.SecurityCheck {
 	av := make([]*models.SecurityCheck, 0)
@@ -224,6 +244,7 @@ func executeTests(ft []*models.SubCategory, mc *MeshCheck, policies map[string]s
 		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
 		s.Start()
 		tr := ui.ExecuteSpecs(f, mc.runAuditTest, policies)
+		printClassicTestResults(f.Checks, mc.log)
 		completedTest = append(completedTest, tr)
 		s.Stop()
 	}

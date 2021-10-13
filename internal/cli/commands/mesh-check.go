@@ -56,7 +56,7 @@ var ConsoleOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
 	grandTotal := make([]models.CheckTotals, 0)
 	for _, a := range at {
-		categoryTotal := printClassicTestResults(a.Checks, log)
+		categoryTotal := calculateTotals(a.Checks, log)
 		grandTotal = append(grandTotal, categoryTotal)
 	}
 	log.Console(printFinalResults(grandTotal))
