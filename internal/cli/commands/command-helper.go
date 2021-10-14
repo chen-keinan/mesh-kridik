@@ -77,7 +77,7 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			sentence := a.EvalMessage
 			var testStatus string
 			if pr.ReturnValues["allow"] == "true" {
-				testStatus = colorstring.Color("[green][Fail]")
+				testStatus = colorstring.Color("[green][Pass]")
 			} else {
 				testStatus = colorstring.Color("[red][Fail]")
 			}
