@@ -4,7 +4,7 @@ package istio
 	x[k]
     }
 
-   policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
+   policy_eval = {"namespace":namespace_name,"match":allow_policy} {
     count(input.items) > 0
  	namespace_name = input.namespace
 	some i
@@ -18,7 +18,7 @@ package istio
     allow_policy = true
    }
 
-  policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
+  policy_eval = {"namespace":namespace_name,"match":allow_policy} {
     count(input.items) == 0
  	namespace_name = input.namespace
     allow_policy = false
@@ -61,17 +61,17 @@ package istio
     has_key(obj,"paths")
  }
 
-   policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
+   policy_eval = {"namespace":namespace_name,"match":allow_policy} {
   	namespace_name = input.namespace
 	not operation_methods_exist
     allow_policy = false
     }
-    policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
+    policy_eval = {"namespace":namespace_name,"match":allow_policy} {
   	namespace_name = input.namespace
 	not operation_hosts_exist
     allow_policy = false
     }
-    policy_eval = {"namespace":namespace_name,"allow":allow_policy} {
+    policy_eval = {"namespace":namespace_name,"match":allow_policy} {
   	namespace_name = input.namespace
 	not operation_paths_exist
     allow_policy = false
