@@ -4,10 +4,10 @@ categories:
   -
     name: istio Security Checks
     sub_category:
-      name: Istio Safer Authorization Policy PatternsMutual mTLS
+      name: Istio Safer Authorization Policy Patterns
       security_checks:
         -
-          name: 'check Use the ALLOW-with-positive-matching for method pattern '
+          name: 'check Use the ALLOW-with-positive-matching for (path / method / host) pattern '
           description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
