@@ -7,7 +7,7 @@ categories:
       name: Istio Safer Authorization Policy Patterns
       security_checks:
         -
-          name: 'check Use the ALLOW-with-positive-matching for (path / method / host) pattern '
+          name: 'check Use the ALLOW-with-positive-matching for ''rules to'' (path / method / host) pattern'
           description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
@@ -15,8 +15,23 @@ categories:
           remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
                         https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
           check_type: multi_param
-          impact: 'namespace will exposed to non restricted api calls'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_with_positive_matching.policy QUERY istio.policy_eval RETURN match,namespace];"
+          impact: 'namespace will exposed to non restricted api calls to namespace'
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_with_positive_matching_rules_to.policy QUERY istio.policy_eval RETURN match,namespace];"
+          default_value: 'By default, Istio is not configure for ALLOW and DENY pattern'
+          eval_message: 'check ALLOW-with-positive-matching with method pattern namespace: $namespace'
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns
+
+        - name: 'check Use the ALLOW-with-positive-matching for ''rules from'' (path / method / host) pattern'
+          description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
+          check_command:
+            - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
+            - 'kubectl get AuthorizationPolicy -n ${0} -o json 2> /dev/null |  jq ''. |= . + {"namespace": "${0}"}'''
+          remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
+                                https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
+          check_type: multi_param
+          impact: 'namespace will exposed to non restricted api calls to namespace'
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_with_positive_matching_rules_from.policy QUERY istio.policy_eval RETURN match,namespace];"
           default_value: 'By default, Istio is not configure for ALLOW and DENY pattern'
           eval_message: 'check ALLOW-with-positive-matching with method pattern namespace: $namespace'
           references:

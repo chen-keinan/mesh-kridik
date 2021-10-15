@@ -8,7 +8,7 @@ const (
 	//SaferAuthorizationPolicyPatterns file name
 	SaferAuthorizationPolicyPatterns = "safer_authorization_policy_patterns.yml"
 	//AllowWithPositiveMatching policy name
-	AllowWithPositiveMatching = "allow_with_positive_matching.policy"
+	AllowWithPositiveMatching = "allow_with_positive_matching_rules_to.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
