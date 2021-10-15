@@ -1,0 +1,65 @@
+package istio
+
+  has_allow_operation(obj) {
+  has_key(obj,["hosts","paths","methods","ports"])
+ }
+
+  has_deny_operation(obj) {
+  has_key(obj,["nothosts","notpaths","notmethods","notPorts"])
+ }
+
+  policy_eval = {"namespace":namespace_name,"match":allow_policy} {
+    count(input.items) > 0
+ 	namespace_name = "input.namespace"
+	some i
+	input.items[i].kind == "AuthorizationPolicy"
+	input.items[i].spec.action == "ALLOW"
+    some k
+    some p
+	count(input.items[i].spec.rules[k].to[p].operation) > 0
+    allow_policy = has_allow_operation(input.items[i].spec.rules[k].to[p].operation)
+    }
+
+     policy_eval = {"namespace":namespace_name,"match":allow_policy} {
+    count(input.items) > 0
+ 	namespace_name = "input.namespace"
+	some i
+	input.items[i].kind == "AuthorizationPolicy"
+	input.items[i].spec.action == "ALLOW"
+    some k
+    some p
+	count(input.items[i].spec.rules[k].to[p].operation) == 0
+     allow_policy = false
+    }
+
+
+     policy_eval = {"namespace":namespace_name,"match":allow_policy} {
+    count(input.items) > 0
+ 	namespace_name = "input.namespace"
+	some i
+	input.items[i].kind == "AuthorizationPolicy"
+	input.items[i].spec.action == "DENY"
+    some k
+    some p
+	count(input.items[i].spec.rules[k].to[p].operation) > 0
+    allow_policy = has_deny_operation(input.items[i].spec.rules[k].to[p].operation)
+    }
+     policy_eval = {"namespace":namespace_name,"match":allow_policy} {
+    count(input.items) > 0
+ 	namespace_name = "input.namespace"
+	some i
+	input.items[i].kind == "AuthorizationPolicy"
+	input.items[i].spec.action == "DENY"
+    some k
+    some p
+	count(input.items[i].spec.rules[k].to[p].operation) == 0
+     allow_policy = false
+    }
+
+
+  has_key(x, a) {
+	some p
+    s:=a[p]
+    x[s]
+    }
+    
