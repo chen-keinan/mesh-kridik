@@ -7,8 +7,10 @@ const (
 	AllowMtlsPermissiveMode = "allow_mtls_permissive_mode.policy"
 	//SaferAuthorizationPolicyPatterns file name
 	SaferAuthorizationPolicyPatterns = "safer_authorization_policy_patterns.yml"
-	//AllowWithPositiveMatching policy name
-	AllowWithPositiveMatching = "allow_with_positive_matching_rules_to.policy"
+	//AllowWithPositiveMatchingRulesTo policy name
+	AllowWithPositiveMatchingRulesTo = "allow_with_positive_matching_rules_to.policy"
+	//AllowWithPositiveMatchingRulesFrom policy name
+	AllowWithPositiveMatchingRulesFrom = "allow_with_positive_matching_rules_from.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

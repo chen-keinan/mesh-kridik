@@ -25,11 +25,12 @@ func Test_StartCli(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, len(files), 4)
+	assert.Equal(t, len(files), 5)
 	assert.Equal(t, files[0].Name, common.AllowMtlsPermissiveMode)
-	assert.Equal(t, files[1].Name, common.AllowWithPositiveMatching)
-	assert.Equal(t, files[2].Name, common.IstioMutualmTLS)
-	assert.Equal(t, files[3].Name, common.SaferAuthorizationPolicyPatterns)
+	assert.Equal(t, files[1].Name, common.AllowWithPositiveMatchingRulesFrom)
+	assert.Equal(t, files[2].Name, common.AllowWithPositiveMatchingRulesTo)
+	assert.Equal(t, files[3].Name, common.IstioMutualmTLS)
+	assert.Equal(t, files[4].Name, common.SaferAuthorizationPolicyPatterns)
 }
 
 func Test_ArgsSanitizer(t *testing.T) {

@@ -21,8 +21,8 @@ categories:
           eval_message: 'check ALLOW-with-positive-matching with method pattern namespace: $namespace'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns
-
-        - name: 'check Use the ALLOW-with-positive-matching for ''rules from'' (path / method / host) pattern'
+        -
+          name: 'check Use the ALLOW-with-positive-matching for ''rules from'' (principals / namespaces) pattern'
           description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'

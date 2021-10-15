@@ -32,11 +32,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.SaferAuthorizationPolicyPatterns, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.SaferAuthorizationPolicyPatterns, Data: sap})
-	apm, err := box.FindString(common.AllowWithPositiveMatching)
+	//3
+	apm, err := box.FindString(common.AllowWithPositiveMatchingRulesTo)
 	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AllowWithPositiveMatching, err.Error())
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AllowWithPositiveMatchingRulesTo, err.Error())
 	}
-	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AllowWithPositiveMatching, Data: apm})
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AllowWithPositiveMatchingRulesTo, Data: apm})
+	//4
+	apmf, err := box.FindString(common.AllowWithPositiveMatchingRulesFrom)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AllowWithPositiveMatchingRulesFrom, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AllowWithPositiveMatchingRulesFrom, Data: apmf})
 	return fileInfo, nil
 }
 
