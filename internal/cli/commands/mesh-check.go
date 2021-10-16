@@ -176,7 +176,8 @@ func (mc *MeshCheck) runAuditTest(at *models.SecurityCheck, policies map[string]
 	// execute audit test command
 	policy := policies[policyParam.PolicyName]
 	cmdEvalResult := mc.Evaluator.EvalCommandPolicy(at.CheckCommand, at.EvalExpr, policy)
-	at.PolicyResult = cmdEvalResult.PolicyResult
+	at.PolicyResult = cmdEvalResult
+	//fmt.Println(fmt.Sprintf("return res %v",at.PolicyResult.PolicyResult))
 	// continue with result processing
 	auditRes = append(auditRes, mc.ResultProcessor(at, cmdEvalResult.Match)...)
 	return auditRes

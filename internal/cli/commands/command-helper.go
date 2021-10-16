@@ -73,10 +73,10 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			log.Console(fmt.Sprintf("%s %s\n", failTest, a.Name))
 			failCounter++
 		}
-		for index, pr := range a.PolicyResult {
+		for index, pr := range a.PolicyResult.PolicyResult {
 			sentence := a.EvalMessage
 			var testStatus string
-			if pr.ReturnValues["match"] == "true" {
+			if pr.ReturnValues[strings.TrimSpace(a.PolicyResult.ReturnKeys[0])] == "true" {
 				testStatus = colorstring.Color("[green][Pass]")
 			} else {
 				testStatus = colorstring.Color("[red][Fail]")
