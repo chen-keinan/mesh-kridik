@@ -60,8 +60,13 @@ Execute tests and generate failure tests report
     <th style="width:300px">impact</th>
 </tr>
 <tr>
-    <td > Mutual TLS </td>
-    <td > Istio  Mutual TLS proxies are configured in permissive mode by default </td>
+    <td> Mutual TLS </td>
+    <td> Istio  Mutual TLS proxies are configured in permissive mode by default </td>
     <td> proxies will accept both mutual TLS and plaintext traffic</td>
+</tr>
+<tr>
+    <td>Istio Safer Authorization Policy Patterns</td>
+    <td> Use ALLOW-with-positive-matching or DENY-with-negative-match patterns</td>
+    <td>These authorization policy patterns are safer because the worst result in the case of policy mismatch is an unexpected 403 rejection instead of an authorization policy bypass.</td>
 </tr>
 </table>
