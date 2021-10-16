@@ -16,12 +16,12 @@ package istio
  }
 
   policy_eval = {"namespace":namespace_name,"match":allow_policy} {
-  	namespace_name = "input.namespace"
+  	namespace_name = input.namespace
     allow_policy = valid_authz
   }
 
   policy_eval = {"namespace":namespace_name,"match":allow_policy} {
-    namespace_name = "input.namespace"
+    namespace_name = input.namespace
     allow_policy = valid_authz
   }
 
@@ -62,4 +62,3 @@ valid_authz {
     s:=a[p]
     x[s]
     }
-    

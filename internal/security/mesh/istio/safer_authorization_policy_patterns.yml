@@ -7,32 +7,23 @@ categories:
       name: Istio Safer Authorization Policy Patterns
       security_checks:
         -
-          name: 'check Use the ALLOW-with-positive-matching for ''rules to'' (path / method / host) pattern'
-          description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
+          name: 'Use ALLOW-with-positive-matching or DENY-with-negative-match patterns'
+          description: 'The ALLOW-with-positive-matching pattern is to use the ALLOW action only with positive matching fields (e.g. paths, values)
+                       and do not use any of the negative matching fields (e.g. notPaths, notValues).
+                       The DENY-with-negative-matching pattern is to use the DENY action only with negative matching
+                       fields (e.g. notPaths, notValues) and do not use any of the positive matching fields (e.g. paths, values).'
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
             - 'kubectl get AuthorizationPolicy -n ${0} -o json 2> /dev/null |  jq ''. |= . + {"namespace": "${0}"}'''
-          remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
-                        https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
+          remediation: 'We recommend you define your Istio authorization policies following the default-deny pattern to enhance your cluster’s security
+                        posture. The default-deny authorization pattern means your system denies all requests by default, and you define the conditions
+                        in which the requests are allowed. In case you miss some conditions, traffic will be unexpectedly denied, instead of traffic
+                        being unexpectedly allowed. The latter typically being a security incident while the former may result in a poor user experience,
+                        a service outage or will not match your SLO/SLA.'
           check_type: multi_param
           impact: 'namespace will exposed to non restricted api calls to namespace'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_with_positive_matching_rules_to.policy QUERY istio.policy_eval RETURN match,namespace];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH safer_authorization_policy_pattern.policy QUERY istio.policy_eval RETURN match,namespace];"
           default_value: 'By default, Istio is not configure for ALLOW and DENY pattern'
-          eval_message: 'check ALLOW-with-positive-matching with method pattern namespace: $namespace'
-          references:
-            - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns
-        -
-          name: 'check Use the ALLOW-with-positive-matching for ''rules from'' (principals / namespaces) pattern'
-          description: Istio authorization plays a critical part in Istio security. It takes effort to configure the correct authorization policies to best protect your clusters.
-          check_command:
-            - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
-            - 'kubectl get AuthorizationPolicy -n ${0} -o json 2> /dev/null |  jq ''. |= . + {"namespace": "${0}"}'''
-          remediation: 'It is recommended to migrate to strict mode when possible, to enforce that mutual TLS is used.:
-                                https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/ '
-          check_type: multi_param
-          impact: 'namespace will exposed to non restricted api calls to namespace'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH allow_with_positive_matching_rules_from.policy QUERY istio.policy_eval RETURN match,namespace];"
-          default_value: 'By default, Istio is not configure for ALLOW and DENY pattern'
-          eval_message: 'check ALLOW-with-positive-matching with method pattern namespace: $namespace'
+          eval_message: 'Use ALLOW-with-positive-matching or DENY-with-negative-match patterns on namespace: $namespace'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns

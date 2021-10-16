@@ -11,3 +11,57 @@ The security checks tests are the full implementation of [istio security best pr
 
 The security checks performed on a Kubernetes cluster with istio service mesh, and the output audit report includes:
 the root cause of the security issue  and proposed remediation for the security issue
+
+
+* [Installation](#installation)
+* [Quick Start](#quick-start)
+* [Istio Security Checks](#istio-security-checks)
+
+
+
+## Installation
+
+```shell
+git clone https://github.com/chen-keinan/mesh-kridik
+cd mesh-kridik
+make build
+```
+
+- Note: kube-beacon require root user to be executed
+
+## Quick Start
+
+Execute Mesh-Kridik without any flags , execute all tests
+```shell
+ ./mesh-kridik 
+
+```
+
+Execute mesh-kridik  with flags , execute test on demand
+
+```shell
+Usage: mesh-kridik [--version] [--help] <command> [<args>]
+
+Available commands are:
+  -r , --report :  run audit tests and generate remediation report
+ ```
+
+Execute tests and generate failure tests report
+
+```
+./mesh-kridik -r
+```
+
+## Istio Security Checks
+<table style="width:600px">
+<tr>
+    <th style="width:100px">Name</th>
+    <th style="width:200px">Description</th>
+    <th style="width:300px">impact</th>
+</tr>
+<tr>
+    <td > Mutual TLS </td>
+    <td > Istio  Mutual TLS proxies are configured in permissive mode by default </td>
+    <td> proxies will accept both mutual TLS and plaintext traffic</td>
+</tr>
+</table>
