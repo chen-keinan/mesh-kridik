@@ -2,13 +2,17 @@ package common
 
 const (
 	//IstioMutualmTLS file name
-	IstioMutualmTLS = "istio_mutual_mtls.yml"
+	IstioMutualmTLS = "1_istio_mutual_mtls.yml"
 	//AllowMtlsPermissiveMode policy name
 	AllowMtlsPermissiveMode = "allow_mtls_permissive_mode.policy"
 	//SaferAuthorizationPolicyPatterns file name
-	SaferAuthorizationPolicyPatterns = "safer_authorization_policy_patterns.yml"
+	SaferAuthorizationPolicyPatterns = "2_safer_authorization_policy_patterns.yml"
 	//SaferAuthorizationPolicyPatternsPolicy policy name
 	SaferAuthorizationPolicyPatternsPolicy = "safer_authorization_policy_pattern.policy"
+	//TLSOriginationForEgressTraffic policy name
+	TLSOriginationForEgressTraffic = "3_tls_origination_for_egress_traffic.yml"
+	//DestinationRulePerformTLSOrigination policy name
+	DestinationRulePerformTLSOrigination = "destination_rule_perform_tls_origination.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

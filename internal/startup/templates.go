@@ -38,6 +38,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.SaferAuthorizationPolicyPatternsPolicy, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.SaferAuthorizationPolicyPatternsPolicy, Data: apm})
+	//4
+	toet, err := box.FindString(common.TLSOriginationForEgressTraffic)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.TLSOriginationForEgressTraffic, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.TLSOriginationForEgressTraffic, Data: toet})
+	//5
+	drto, err := box.FindString(common.DestinationRulePerformTLSOrigination)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DestinationRulePerformTLSOrigination, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DestinationRulePerformTLSOrigination, Data: drto})
 	return fileInfo, nil
 }
 
