@@ -69,4 +69,9 @@ Execute tests and generate failure tests report
     <td> Use ALLOW-with-positive-matching or DENY-with-negative-match patterns</td>
     <td>These authorization policy patterns are safer because the worst result in the case of policy mismatch is an unexpected 403 rejection instead of an authorization policy bypass.</td>
 </tr>
+<tr>
+    <td>TLS origination for egress traffic</td>
+    <td>Use of DestinationRule on service ServiceEntry for egress traffic</td>
+    <td>Not using TLS origination for egress traffic to an external service will be send with plain/text</td>
+</tr>
 </table>

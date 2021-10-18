@@ -15,7 +15,7 @@ categories:
           remediation: 'We recommend to configure DestinationRule which will perform TLS origination for HTTP requests
                                 on port 80 and the ServiceEntry will then redirect the requests on port 80 to target port 443.'
           check_type: multi_param
-          impact: traffic to an external service will be encrypted via tls certificate
+          impact: Not using TLS origination for egress traffic to an external service will be send with plain/text
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH destination_rule_perform_tls_origination.policy QUERY istio.policy_eval RETURN match,serviceEntry];"
           default_value: 'By default, DestinationRule for outside traffic is no configure'
           eval_message: 'Use of DestinationRule on service ServiceEntry: $serviceEntry for egress traffic'
