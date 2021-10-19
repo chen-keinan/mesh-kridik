@@ -50,6 +50,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DestinationRulePerformTLSOrigination, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DestinationRulePerformTLSOrigination, Data: drto})
+	//6
+	dp, err := box.FindString(common.ProtocolDetection)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ProtocolDetection, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ProtocolDetection, Data: dp})
+	//7
+	dbp, err := box.FindString(common.DetectByProtocol)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DetectByProtocol, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DetectByProtocol, Data: dbp})
 	return fileInfo, nil
 }
 

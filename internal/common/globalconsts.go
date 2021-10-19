@@ -13,6 +13,10 @@ const (
 	TLSOriginationForEgressTraffic = "3_tls_origination_for_egress_traffic.yml"
 	//DestinationRulePerformTLSOrigination policy name
 	DestinationRulePerformTLSOrigination = "destination_rule_perform_tls_origination.policy"
+	//ProtocolDetection spec
+	ProtocolDetection = "4_protocol_detection.yml"
+	//DetectByProtocol policy name
+	DetectByProtocol = "detect_by_protocol.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
