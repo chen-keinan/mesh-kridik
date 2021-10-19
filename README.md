@@ -79,4 +79,9 @@ Execute tests and generate failure tests report
     <td>explicitly declare the service protocol</td>
     <td>miss detection may result in unexpected traffic behavior</td>
 </tr>
+<tr>
+    <td>CNI support</td>
+    <td>istio transparent traffic capture</td>
+    <td>not al net traffic will not be capture</td>
+</tr>
 </table>

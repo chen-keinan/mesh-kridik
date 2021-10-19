@@ -14,7 +14,7 @@ categories:
             - 'kubectl get pod  ${0} -o json 2> /dev/null'
           remediation: 'it is recommend to add NET_ADMIN and NET_RAW capabilities to pod securityContext'
           check_type: multi_param
-          impact: some traffic will not be capture
+          impact: not al net traffic will not be capture
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH pod_capabilities_exist.policy QUERY istio.policy_eval RETURN match,namespace,pod];"
           default_value: 'By default, NET_ADMIN and NET_RAW capabilities are not set in pod'
           eval_message: 'pod $pod on namespace $namespace has not define NET_ADMIN and NET_RAW capabilities'
