@@ -74,4 +74,9 @@ Execute tests and generate failure tests report
     <td>Use of DestinationRule on service ServiceEntry for egress traffic</td>
     <td>Not using TLS origination for egress traffic to an external service will be send with plain/text</td>
 </tr>
+<tr>
+    <td>Protocol detection</td>
+    <td>explicitly declare the service protocol</td>
+    <td>miss detection may result in unexpected traffic behavior</td>
+</tr>
 </table>

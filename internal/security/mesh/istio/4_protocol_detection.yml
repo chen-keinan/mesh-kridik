@@ -4,10 +4,10 @@ categories:
   -
     name: istio Security Checks
     sub_category:
-      name: TLS origination for egress traffic
+      name: Protocol detection
       security_checks:
          -
-          name: ' explicitly declare the service protocol'
+          name: 'explicitly declare the service protocol'
           description: 'Istio will automatically determine the protocol of traffic, to avoid accidental or intentional miss detection,it is recommended to explicitly declare the protocol where possible.'
           check_command:
             - 'kubectl get service --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''
@@ -17,7 +17,7 @@ categories:
           check_type: multi_param
           impact: Not declaring protocol explicitly might result in unexpected traffic behavior
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH detect_by_protocol.policy QUERY istio.policy_eval RETURN match,namespace,service];"
-          default_value: 'By default, DestinationRule for outside traffic is no configure'
+          default_value: 'By default, services are do not configure appProtocol field'
           eval_message: 'Service $service on namespace $namespace has declared protocol explicitly '
           references:
             - https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#explicit-protocol-selection
