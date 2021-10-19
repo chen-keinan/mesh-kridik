@@ -21,6 +21,10 @@ const (
 	Cni = "5_cni.yml"
 	//PodCapabilitiesExist policy name
 	PodCapabilitiesExist = "pod_capabilities_exist.policy"
+	//Gateway spec
+	Gateway = "6_gateway.yml"
+	//AvoidOverlyBroadHostsConfigurations policy name
+	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

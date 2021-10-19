@@ -1,0 +1,21 @@
+---
+benchmark_type: mesh
+categories:
+  -
+    name: istio Security Checks
+    sub_category:
+      name: Gateways
+      security_checks:
+         -
+          name: 'Avoid overly broad hosts configurations'
+          description: 'When possible, avoid overly broad hosts settings in Gateway. may cause potential exposure of unexpected domains'
+          check_command:
+            - 'kubectl get gateways --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''
+            - 'kubectl get gateway ${0} -o json 2> /dev/null'
+          remediation: 'gateway hosts setting should be locked down to allow only specific domains or specific namespaces'
+          check_type: multi_param
+          impact: may cause potential exposure of unexpected domains
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH avoid_overly_broad_hosts_configurations.policy QUERY istio.policy_eval RETURN match,namespace,gateway];"
+          eval_message: 'gateway $gateway on namespace $namespace is overlaying broad hosts configurations'
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#gateways
