@@ -12,8 +12,7 @@ categories:
           check_command:
             - 'kubectl get service --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''
             - 'kubectl get service  ${0} -o json 2> /dev/null'
-          remediation: 'We recommend to configure DestinationRule which will perform TLS origination for HTTP requests
-                                on port 80 and the ServiceEntry will then redirect the requests on port 80 to target port 443.'
+          remediation: ' it is recommended to explicitly declare the protocol where possible'
           check_type: multi_param
           impact: Not declaring protocol explicitly might result in unexpected traffic behavior
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH detect_by_protocol.policy QUERY istio.policy_eval RETURN match,namespace,service];"

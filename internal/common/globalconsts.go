@@ -17,6 +17,10 @@ const (
 	ProtocolDetection = "4_protocol_detection.yml"
 	//DetectByProtocol policy name
 	DetectByProtocol = "detect_by_protocol.policy"
+	//Cni spec
+	Cni = "5_cni.yml"
+	//PodCapabilitiesExist policy name
+	PodCapabilitiesExist = "pod_capabilities_exist.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

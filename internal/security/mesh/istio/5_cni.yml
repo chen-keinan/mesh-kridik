@@ -1,0 +1,22 @@
+---
+benchmark_type: mesh
+categories:
+  -
+    name: istio Security Checks
+    sub_category:
+      name: CNI
+      security_checks:
+         -
+          name: 'istio transparent traffic capture'
+          description: 'In order to transparently capture all traffic, Istio relies on iptables rules configured by the istio-init initContainer. This adds a requirement for the NET_ADMIN and NET_RAW capabilities to be available to the pod'
+          check_command:
+            - 'kubectl get pods --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''
+            - 'kubectl get pod  ${0} -o json 2> /dev/null'
+          remediation: 'it is recommend to add NET_ADMIN and NET_RAW capabilities to pod securityContext'
+          check_type: multi_param
+          impact: some traffic will not be capture
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH pod_capabilities_exist.policy QUERY istio.policy_eval RETURN match,namespace,pod];"
+          default_value: 'By default, NET_ADMIN and NET_RAW capabilities are not set in pod'
+          eval_message: 'pod $pod on namespace $namespace has not define NET_ADMIN and NET_RAW capabilities'
+          references:
+            - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container

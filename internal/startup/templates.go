@@ -62,6 +62,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DetectByProtocol, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DetectByProtocol, Data: dbp})
+	//8
+	cni, err := box.FindString(common.Cni)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.Cni, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.Cni, Data: cni})
+	//9
+	pce, err := box.FindString(common.PodCapabilitiesExist)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.PodCapabilitiesExist, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.PodCapabilitiesExist, Data: pce})
 	return fileInfo, nil
 }
 
