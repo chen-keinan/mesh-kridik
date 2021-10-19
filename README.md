@@ -46,7 +46,8 @@ Available commands are:
   -r , --report :  run audit tests and generate remediation report
  ```
 
-Execute tests and generate failure tests report
+Execute tests and generate failure tests report and it remediation's
+
 
 ```
 ./mesh-kridik -r
