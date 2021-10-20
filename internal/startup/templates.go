@@ -86,6 +86,12 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.AvoidOverlyBroadHostsConfigurations, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.AvoidOverlyBroadHostsConfigurations, Data: aohc})
+	//12
+	rgcp, err := box.FindString(common.RestrictGatewayCreationPrivileges)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.RestrictGatewayCreationPrivileges, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.RestrictGatewayCreationPrivileges, Data: rgcp})
 	return fileInfo, nil
 }
 

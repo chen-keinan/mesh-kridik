@@ -25,7 +25,7 @@ func Test_StartCli(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, len(files), 12)
+	assert.Equal(t, len(files), 13)
 	assert.Equal(t, files[0].Name, common.IstioMutualmTLS)
 	assert.Equal(t, files[1].Name, common.SaferAuthorizationPolicyPatterns)
 	assert.Equal(t, files[2].Name, common.TLSOriginationForEgressTraffic)
@@ -37,7 +37,8 @@ func Test_StartCli(t *testing.T) {
 	assert.Equal(t, files[8].Name, common.DestinationRulePerformTLSOrigination)
 	assert.Equal(t, files[9].Name, common.DetectByProtocol)
 	assert.Equal(t, files[10].Name, common.PodCapabilitiesExist)
-	assert.Equal(t, files[11].Name, common.SaferAuthorizationPolicyPatternsPolicy)
+	assert.Equal(t, files[11].Name, common.RestrictGatewayCreationPrivileges)
+	assert.Equal(t, files[12].Name, common.SaferAuthorizationPolicyPatternsPolicy)
 }
 
 func Test_ArgsSanitizer(t *testing.T) {

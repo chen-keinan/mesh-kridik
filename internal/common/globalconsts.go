@@ -25,6 +25,8 @@ const (
 	Gateway = "6_gateway.yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
 	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
+	//RestrictGatewayCreationPrivileges policy name
+	RestrictGatewayCreationPrivileges = "restrict_gateway_creation_privileges.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
