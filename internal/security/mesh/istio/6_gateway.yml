@@ -14,7 +14,7 @@ categories:
              - 'kubectl get ClusterRole ${0} -o json 2> /dev/null'
           remediation: 'restrict creation of Gateway resources via Kubernetes RBAC policies or tools like Open Policy Agent.'
           check_type: multi_param
-          impact: may cause potential exposure of unexpected domains
+          impact: may cause  creation of gateway by untrusted users
           eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH restrict_gateway_creation_privileges.policy QUERY istio.policy_eval RETURN match,role];"
           eval_message: 'role $role is restricted from changing (create / delete /update) Gateway'
           references:

@@ -90,4 +90,9 @@ Execute tests and generate failure tests report and it remediation's
     <td>Avoid overly broad hosts configurations</td>
     <td>may cause potential exposure of unexpected domains</td>
 </tr>
+<tr>
+    <td>Restrict Gateway creation privileges</td>
+    <td>restrict creation of Gateway resources to trusted cluster administrators</td>
+    <td>may cause  creation of gateway by untrusted users</td>
+</tr>
 </table>
