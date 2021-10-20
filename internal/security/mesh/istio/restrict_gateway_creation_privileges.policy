@@ -6,8 +6,32 @@ package istio
 
   policy_eval = {"role":role_name,"match":match_policy} {
     role_name = input.metadata.name
-    match_policy = can_change_gateway
+    s:=can_change_gateway
+    s == false
+    has_resource(input.rules)
+    match_policy = false
   }
+
+   policy_eval = {"role":role_name,"match":match_policy} {
+    role_name = input.metadata.name
+    s:=can_change_gateway
+    s == false
+    not has_resource(input.rules)
+    match_policy = true
+  }
+
+  policy_eval = {"role":role_name,"match":match_policy} {
+    role_name = input.metadata.name
+    s:=can_change_gateway
+    s == true
+    has_resource(input.rules)
+    match_policy = true
+  }
+
+ has_resource(obj){
+ 	some i
+ 	 obj[i]["resources"]
+ }
 
  default can_change_gateway = false
  can_change_gateway {
