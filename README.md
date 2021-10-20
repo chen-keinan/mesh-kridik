@@ -85,4 +85,9 @@ Execute tests and generate failure tests report and it remediation's
     <td>istio transparent traffic capture</td>
     <td>not al net traffic will not be capture</td>
 </tr>
+<tr>
+    <td>Gateways support</td>
+    <td>Avoid overly broad hosts configurations</td>
+    <td>may cause potential exposure of unexpected domains</td>
+</tr>
 </table>
