@@ -86,8 +86,8 @@ Execute tests and generate failure tests report and it remediation's
     <td>not al net traffic will not be capture</td>
 </tr>
 <tr>
-    <td>Gateways support</td>
-    <td>Avoid overly broad hosts configurations</td>
+    <td>overly broad hosts</td>
+    <td>avoid overly broad hosts settings in Gateway</td>
     <td>may cause potential exposure of unexpected domains</td>
 </tr>
 <tr>
