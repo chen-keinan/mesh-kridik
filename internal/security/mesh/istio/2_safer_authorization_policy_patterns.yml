@@ -27,3 +27,18 @@ categories:
           eval_message: 'Use ALLOW-with-positive-matching or DENY-with-negative-match patterns on namespace: $namespace'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns
+        -
+          name: 'path normalization in authorization policy'
+          description: 'The enforcement point for authorization policies is the Envoy proxy instead of the usual resource access point in the backend application.
+                        A policy mismatch happens when the Envoy proxy and the backend application interpret the request differently.'
+          check_command:
+            - kubectl get IstioOperator -n istio-system -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
+            - 'kubectl get IstioOperator ${0} -n istio-system -o json 2> /dev/null'
+          remediation: 'it is recommended to use path normalization from type DECODE_AND_MERGE_SLASHES'
+          check_type: multi_param
+          impact: 'A mismatch can lead to either unexpected rejection or a policy bypass'
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH path_normalization_in_authorization.policy QUERY istio.policy_eval RETURN match,operator];"
+          default_value: 'advance path normalization is not define'
+          eval_message: 'path normalization from type DECODE_AND_MERGE_SLASHES is defined on operator $operator at istio-system namespace'
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns

@@ -27,6 +27,8 @@ const (
 	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
 	//RestrictGatewayCreationPrivileges policy name
 	RestrictGatewayCreationPrivileges = "restrict_gateway_creation_privileges.policy"
+	//PathNormalizationInAuthorization policy name
+	PathNormalizationInAuthorization = "path_normalization_in_authorization.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg

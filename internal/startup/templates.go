@@ -92,6 +92,12 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.RestrictGatewayCreationPrivileges, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.RestrictGatewayCreationPrivileges, Data: rgcp})
+	//12
+	pnla, err := box.FindString(common.PathNormalizationInAuthorization)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.PathNormalizationInAuthorization, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.PathNormalizationInAuthorization, Data: pnla})
 	return fileInfo, nil
 }
 
