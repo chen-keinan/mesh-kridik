@@ -71,6 +71,11 @@ Execute tests and generate failure tests report and it remediation's
     <td>These authorization policy patterns are safer because the worst result in the case of policy mismatch is an unexpected 403 rejection instead of an authorization policy bypass.</td>
 </tr>
 <tr>
+    <td>path normalization in authorization policy</td>
+    <td>The enforcement point for authorization policies is the Envoy proxy instead of the usual resource access point in the backend application</td>
+    <td>A mismatch can lead to either unexpected rejection or a policy bypass</td>
+</tr>
+<tr>
     <td>TLS origination for egress traffic</td>
     <td>Use of DestinationRule on service ServiceEntry for egress traffic</td>
     <td>Not using TLS origination for egress traffic to an external service will be send with plain/text</td>
