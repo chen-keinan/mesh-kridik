@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"github.com/briandowns/spinner"
 	"github.com/chen-keinan/go-command-eval/eval"
 	evutils "github.com/chen-keinan/go-command-eval/utils"
 	"github.com/chen-keinan/mesh-kridik/internal/logger"
@@ -15,6 +16,7 @@ import (
 	"github.com/mitchellh/colorstring"
 	"github.com/olekukonko/tablewriter"
 	"os"
+	"time"
 )
 
 //MeshCheck lxd benchmark object
@@ -86,6 +88,13 @@ func calculateFinalTotal(granTotal []models.CheckTotals) models.CheckTotals {
 
 // ReportOutputGenerator print failed audit test to human report
 var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
+	log.Console((ui.RemediationReport))
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+	s.Prefix = fmt.Sprintf("[Generating Remediation Report] ")
+	s.Start()
+	time.Sleep(time.Second *4)
+	s.Stop()
+	log.Console("\n")
 	for _, a := range at {
 		log.Table(reports.GenerateAuditReport(a.Checks))
 	}

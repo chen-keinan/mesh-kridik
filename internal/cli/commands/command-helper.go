@@ -254,7 +254,6 @@ func executeTests(ft []*models.SubCategory, mc *MeshCheck, policies map[string]s
 	completedTest := make([]*models.SubCategory, 0)
 	mc.log.Console(ui.MeshCheck)
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
-	s.Start()                                                   // Start the spinner
 	for _, f := range ft {
 		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
 		s.Start()
