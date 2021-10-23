@@ -90,9 +90,9 @@ func calculateFinalTotal(granTotal []models.CheckTotals) models.CheckTotals {
 var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, log *logger.MeshKridikLogger) {
 	log.Console((ui.RemediationReport))
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
-	s.Prefix = fmt.Sprintf("[Generating Remediation Report] ")
+	s.Prefix = "[Generating Remediation Report] "
 	s.Start()
-	time.Sleep(time.Second *4)
+	time.Sleep(time.Second * 4)
 	s.Stop()
 	log.Console("\n")
 	for _, a := range at {

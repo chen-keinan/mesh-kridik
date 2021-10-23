@@ -1,0 +1,33 @@
+---
+benchmark_type: mesh
+categories:
+  -
+    name: istio Security Checks
+    sub_category:
+      name: Downstream Connections
+      security_checks:
+         -
+          name: 'make sure config map with downstream Connections created'
+          description: 'Update global_downstream_max_connections in the config map according to the number of concurrent connections needed by individual gateway instances in your deployment. Once the limit is reached, Envoy will start rejecting tcp connections.'
+          check_command:
+            - 'kubectl get configmap istio-custom-bootstrap-config -n istio-system -o json 2> /dev/null'
+          remediation: 'create config map with downstream Connections created'
+          check_type: multi_param
+          impact: not al net traffic will not be capture
+          eval_expr: "[${0} MATCH downstream_connection_limit_config_map.policy QUERY istio.policy_eval RETURN match];"
+          default_value: 'By default, Istio (and Envoy) have no limit on the number of downstream connections'
+          eval_message: 'config map istio-custom-bootstrap-config is exist on namespace istio-system'
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#configure-a-limit-on-downstream-connections
+         - name: 'make ingress gateway deployment is patched with downstream Connections limit config'
+           description: 'Patch ingress gateway with downstream Connections limit config Once the limit is reached, Envoy will start rejecting tcp connections.'
+           check_command:
+              - 'kubectl get deployment istio-ingressgateway -n istio-system -o json 2> /dev/null'
+           remediation: 'Patch the ingress gateway deployment to use the above configuration. Download gateway-patch.yaml and apply it using the following command.'
+           check_type: multi_param
+           impact: not al net traffic will not be capture
+           eval_expr: "[${0} MATCH ingress_gateway_patched_downstream_connection_limit.policy QUERY istio.policy_eval RETURN match];"
+           default_value: 'By default, Istio (and Envoy) have no limit on the number of downstream connections'
+           eval_message: 'deployment istio-ingressgateway is patched with istio-custom-bootstrap-config config map'
+           references:
+             - https://istio.io/latest/docs/ops/best-practices/security/#configure-a-limit-on-downstream-connections

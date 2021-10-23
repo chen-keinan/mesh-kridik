@@ -92,12 +92,30 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.RestrictGatewayCreationPrivileges, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.RestrictGatewayCreationPrivileges, Data: rgcp})
-	//12
+	//13
 	pnla, err := box.FindString(common.PathNormalizationInAuthorization)
 	if err != nil {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.PathNormalizationInAuthorization, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.PathNormalizationInAuthorization, Data: pnla})
+	//14
+	cldc, err := box.FindString(common.ConfigureLimitDownstreamConnections)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ConfigureLimitDownstreamConnections, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ConfigureLimitDownstreamConnections, Data: cldc})
+	//15
+	dclc, err := box.FindString(common.DownstreamConnectionLimitConfigMap)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DownstreamConnectionLimitConfigMap, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DownstreamConnectionLimitConfigMap, Data: dclc})
+	//16
+	ipcl, err := box.FindString(common.IngressGatewayPatchedDownstreamConnectionLimit)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IngressGatewayPatchedDownstreamConnectionLimit, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IngressGatewayPatchedDownstreamConnectionLimit, Data: ipcl})
 	return fileInfo, nil
 }
 

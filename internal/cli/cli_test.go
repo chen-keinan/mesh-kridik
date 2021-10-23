@@ -25,21 +25,24 @@ func Test_StartCli(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, len(files), 14)
+	assert.Equal(t, len(files), 17)
 	assert.Equal(t, files[0].Name, common.IstioMutualmTLS)
 	assert.Equal(t, files[1].Name, common.SaferAuthorizationPolicyPatterns)
 	assert.Equal(t, files[2].Name, common.TLSOriginationForEgressTraffic)
 	assert.Equal(t, files[3].Name, common.ProtocolDetection)
 	assert.Equal(t, files[4].Name, common.Cni)
 	assert.Equal(t, files[5].Name, common.Gateway)
-	assert.Equal(t, files[6].Name, common.AllowMtlsPermissiveMode)
-	assert.Equal(t, files[7].Name, common.AvoidOverlyBroadHostsConfigurations)
-	assert.Equal(t, files[8].Name, common.DestinationRulePerformTLSOrigination)
-	assert.Equal(t, files[9].Name, common.DetectByProtocol)
-	assert.Equal(t, files[10].Name, common.PathNormalizationInAuthorization)
-	assert.Equal(t, files[11].Name, common.PodCapabilitiesExist)
-	assert.Equal(t, files[12].Name, common.RestrictGatewayCreationPrivileges)
-	assert.Equal(t, files[13].Name, common.SaferAuthorizationPolicyPatternsPolicy)
+	assert.Equal(t, files[6].Name, common.ConfigureLimitDownstreamConnections)
+	assert.Equal(t, files[7].Name, common.AllowMtlsPermissiveMode)
+	assert.Equal(t, files[8].Name, common.AvoidOverlyBroadHostsConfigurations)
+	assert.Equal(t, files[9].Name, common.DestinationRulePerformTLSOrigination)
+	assert.Equal(t, files[10].Name, common.DetectByProtocol)
+	assert.Equal(t, files[11].Name, common.DownstreamConnectionLimitConfigMap)
+	assert.Equal(t, files[12].Name, common.IngressGatewayPatchedDownstreamConnectionLimit)
+	assert.Equal(t, files[13].Name, common.PathNormalizationInAuthorization)
+	assert.Equal(t, files[14].Name, common.PodCapabilitiesExist)
+	assert.Equal(t, files[15].Name, common.RestrictGatewayCreationPrivileges)
+	assert.Equal(t, files[16].Name, common.SaferAuthorizationPolicyPatternsPolicy)
 }
 
 func Test_ArgsSanitizer(t *testing.T) {

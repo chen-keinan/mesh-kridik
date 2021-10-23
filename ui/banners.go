@@ -20,6 +20,7 @@ const EmptyLines = `
 	
 
 `
+
 //RemediationReport banner
 const RemediationReport = `
 

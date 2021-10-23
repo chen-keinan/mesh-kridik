@@ -100,4 +100,9 @@ Execute tests and generate failure tests report and it remediation's
     <td>restrict creation of Gateway resources to trusted cluster administrators</td>
     <td>may cause  creation of gateway by untrusted users</td>
 </tr>
+<tr>
+    <td>Configure a limit on downstream connections</td>
+    <td>Update global_downstream_max_connections in the config map according to the number of concurrent connections needed by individual gateway instances in your deployment. Once the limit is reached, Envoy will start rejecting tcp connections</td>
+    <td>no limit on the number of downstream connections can cause exploited by a malicious actor</td>
+</tr>
 </table>

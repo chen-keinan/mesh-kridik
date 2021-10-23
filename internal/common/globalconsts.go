@@ -23,12 +23,18 @@ const (
 	PodCapabilitiesExist = "pod_capabilities_exist.policy"
 	//Gateway spec
 	Gateway = "6_gateway.yml"
+	//ConfigureLimitDownstreamConnections spec
+	ConfigureLimitDownstreamConnections = "7_configure_limit_downstream_connections .yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
 	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
 	//RestrictGatewayCreationPrivileges policy name
 	RestrictGatewayCreationPrivileges = "restrict_gateway_creation_privileges.policy"
 	//PathNormalizationInAuthorization policy name
 	PathNormalizationInAuthorization = "path_normalization_in_authorization.policy"
+	//DownstreamConnectionLimitConfigMap policy name
+	DownstreamConnectionLimitConfigMap = "downstream_connection_limit_config_map.policy"
+	//IngressGatewayPatchedDownstreamConnectionLimit policy name
+	IngressGatewayPatchedDownstreamConnectionLimit = "ingress_gateway_patched_downstream_connection_limit.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
