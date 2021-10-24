@@ -114,3 +114,25 @@ Execute tests and generate failure tests report and it remediation's
     <td>first party token properties are less secure and might cause authentication bridge</td>
 </tr>
 </table>
+
+## User Plugin Usage (via go plugins)
+The Kube-kridik expose 2 hooks for user plugins [Example](https://github.com/chen-keinan/mesh-kridik/tree/master/examples/plugins) :
+- **MeshSecurityCheckResultHook** - this hook accepts k8s service mesh security checks results
+
+##### Compile user plugin
+```shell
+go build -buildmode=plugin -o=~/<plugin folder>/<plugin>.so ~/<plugin folder>/<plugin>.go
+```
+##### Copy plugin to folder (.kube-kridik folder is created on the 1st startup)
+```shell
+cp ~/<plugin folder>/<plugin>.so ~/.kube-kridik/plugins/compile/<plugin>.so
+```
+## Supported Specs
+The Kube-kridik support this specs and can be easily extended:
+- The full Istio service mesh best practices [istio security best practices](https://github.com/chen-keinan/kube-kridik/tree/master/internal/security/mesh/istio)
+
+this specs can be easily extended by amended the spec files under ```~/.mesh-kridik/security/mesh/istio``` folder
+
+## Contribution
+- code contribution is welcome !! , contribution with tests and passing linter is more than welcome :)
+- /.dev folder include vagrantfile to be used for development : [Dev Instruction](https://github.com/chen-keinan/kube-kridik/tree/master/.dev)
