@@ -105,4 +105,9 @@ Execute tests and generate failure tests report and it remediation's
     <td>Update global_downstream_max_connections in the config map according to the number of concurrent connections needed by individual gateway instances in your deployment. Once the limit is reached, Envoy will start rejecting tcp connections</td>
     <td>no limit on the number of downstream connections can cause exploited by a malicious actor</td>
 </tr>
+<tr>
+    <td>Configure third party service account tokens</td>
+    <td>It is recommended to configure 3rd party tokens Because the properties of the first party token are less secure</td>
+    <td>first party token properties are less secure and might cause authentication bridge</td>
+</tr>
 </table>
