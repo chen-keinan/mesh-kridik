@@ -129,7 +129,7 @@ cp ~/<plugin folder>/<plugin>.so ~/.kube-kridik/plugins/compile/<plugin>.so
 ```
 ## Supported Specs
 The Kube-kridik support this specs and can be easily extended:
-- The full Istio service mesh best practices [istio security best practices](https://github.com/chen-keinan/kube-kridik/tree/master/internal/security/mesh/istio)
+- The full Istio service mesh best practices [istio security best practices](https://github.com/chen-keinan/mesh-kridik/tree/master/internal/security/mesh/istio)
 
 this specs can be easily extended by amended the spec files under ```~/.mesh-kridik/security/mesh/istio``` folder
 
