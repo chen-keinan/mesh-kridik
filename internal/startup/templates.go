@@ -128,6 +128,24 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioUsing3rdPartyTokens, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioUsing3rdPartyTokens, Data: iupt})
+	//19
+	cp, err := box.FindString(common.ControlPlane)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ControlPlane, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ControlPlane, Data: cp})
+	//20
+	cpup, err := box.FindString(common.ClosePort8008UnauthenticatePlaintext)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ClosePort8008UnauthenticatePlaintext, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ClosePort8008UnauthenticatePlaintext, Data: cpup})
+	//21
+	cpupt, err := box.FindString(common.ClosePort15010UnauthenticatePlaintext)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ClosePort15010UnauthenticatePlaintext, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ClosePort15010UnauthenticatePlaintext, Data: cpupt})
 	return fileInfo, nil
 }
 

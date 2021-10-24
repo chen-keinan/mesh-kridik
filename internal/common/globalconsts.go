@@ -28,6 +28,8 @@ const (
 	//ConfigureThirdPartyServiceAccountTokens spec
 	//nolint:gosec
 	ConfigureThirdPartyServiceAccountTokens = "8_configure_third_party_service_account_tokens.yml"
+	//ControlPlane spec
+	ControlPlane = "9_control_plane.yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
 	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
 	//RestrictGatewayCreationPrivileges policy name
@@ -38,6 +40,10 @@ const (
 	DownstreamConnectionLimitConfigMap = "downstream_connection_limit_config_map.policy"
 	//IngressGatewayPatchedDownstreamConnectionLimit policy name
 	IngressGatewayPatchedDownstreamConnectionLimit = "ingress_gateway_patched_downstream_connection_limit.policy"
+	//ClosePort8008UnauthenticatePlaintext policy
+	ClosePort8008UnauthenticatePlaintext = "close_port_8008_as_unauthenticate_plaintext.policy"
+	//ClosePort15010UnauthenticatePlaintext policy
+	ClosePort15010UnauthenticatePlaintext = "close_port_15010_as_unauthenticate_plaintext.policy"
 	//IstioUsing3rdPartyTokens policy
 	//nolint:gosec
 	IstioUsing3rdPartyTokens = "istio_using_3rd_party_tokens.policy"

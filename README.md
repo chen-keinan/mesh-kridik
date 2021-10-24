@@ -113,6 +113,11 @@ Execute tests and generate failure tests report and it remediation's
     <td>It is recommended to configure 3rd party tokens Because the properties of the first party token are less secure</td>
     <td>first party token properties are less secure and might cause authentication bridge</td>
 </tr>
+<tr>
+    <td>Control Plane</td>
+    <td>Istiod exposes a few unauthenticated plaintext ports for convenience by default</td>
+    <td>exposes the XDS service port 15010 and debug port 8080 over unauthenticated  plaintext</td>
+</tr>
 </table>
 
 ## User Plugin Usage (via go plugins)
