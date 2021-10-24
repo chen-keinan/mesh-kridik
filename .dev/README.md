@@ -1,15 +1,14 @@
-# LXD-vagrantfile
+# Mesg-vagrantfile
 
-vagrant file to be used for lxd associated  programs developments, file include :
-- buntu/bionic64
-- lxd cluster 
-- dlv for remote debug
+vagrant file to be used for mesh associated  programs developments, file include :
+- jq
+- istio 
 
 ### Quick Start
 
 ```
- git clone git@github.com:chen-keinan/lxd-vagrantfile.git
- cd lxd-vagrantfile
+ git clone git@github.com:chen-keinan/mesh-vagrantfile.git
+ cd mesh-vagrantfile
  vagrant up
 
 ```
