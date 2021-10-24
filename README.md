@@ -132,7 +132,7 @@ go build -buildmode=plugin -o=~/<plugin folder>/<plugin>.so ~/<plugin folder>/<p
 ```shell
 cp ~/<plugin folder>/<plugin>.so ~/.kube-kridik/plugins/compile/<plugin>.so
 ```
-## Supported Specs
+## Supported Spec
 The Kube-kridik support this specs and can be easily extended:
 - The full Istio service mesh best practices [istio security best practices](https://github.com/chen-keinan/mesh-kridik/tree/master/internal/security/mesh/istio)
 
