@@ -58,7 +58,7 @@ Execute tests and generate failure tests report and it remediation's
 <tr>
     <th style="width:100px">Name</th>
     <th style="width:200px">Description</th>
-    <th style="width:300px">impact</th>
+    <th style="width:300px">Impact</th>
 </tr>
 <tr>
     <td> Mutual TLS </td>
