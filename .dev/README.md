@@ -1,4 +1,4 @@
-# Mesg-vagrantfile
+# Mesh-vagrantfile
 
 vagrant file to be used for mesh associated  programs developments, file include :
 - jq
