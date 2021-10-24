@@ -57,7 +57,7 @@ Execute tests and generate failure tests report and it remediation's
 ```
 
 ## Istio Security Checks
-<table style="width:600px; font-size:70%">
+<table style="width:600px; font-size:50%">
 <tr>
     <th style="width:100px">Name</th>
     <th style="width:200px">Description</th>
