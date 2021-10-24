@@ -135,4 +135,4 @@ this specs can be easily extended by amended the spec files under ```~/.mesh-kri
 
 ## Contribution
 - code contribution is welcome !! , contribution with tests and passing linter is more than welcome :)
-- /.dev folder include vagrantfile to be used for development : [Dev Instruction](https://github.com/chen-keinan/kube-kridik/tree/master/.dev)
+- /.dev folder include vagrantfile to be used for development : [Dev Instruction](https://github.com/chen-keinan/mesh-kridik/tree/master/.dev)
