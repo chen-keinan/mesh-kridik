@@ -19,6 +19,9 @@ the root cause of the security issue  and proposed remediation for the security 
 * [Installation](#installation)
 * [Quick Start](#quick-start)
 * [Istio Security Checks](#istio-security-checks)
+* [User Plugin Usage](#user-plugin-usage)
+* [Supported Spec](#supported-spec)
+* [Contribution](#Contribution)
 
 
 
