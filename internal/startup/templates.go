@@ -116,6 +116,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IngressGatewayPatchedDownstreamConnectionLimit, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IngressGatewayPatchedDownstreamConnectionLimit, Data: ipcl})
+	//17
+	stpsa, err := box.FindString(common.ConfigureThirdPartyServiceAccountTokens)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ConfigureThirdPartyServiceAccountTokens, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ConfigureThirdPartyServiceAccountTokens, Data: stpsa})
+	//18
+	iupt, err := box.FindString(common.IstioUsing3rdPartyTokens)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.IstioUsing3rdPartyTokens, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.IstioUsing3rdPartyTokens, Data: iupt})
 	return fileInfo, nil
 }
 

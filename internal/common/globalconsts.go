@@ -25,6 +25,9 @@ const (
 	Gateway = "6_gateway.yml"
 	//ConfigureLimitDownstreamConnections spec
 	ConfigureLimitDownstreamConnections = "7_configure_limit_downstream_connections .yml"
+	//ConfigureThirdPartyServiceAccountTokens spec
+	//nolint:gosec
+	ConfigureThirdPartyServiceAccountTokens = "8_configure_third_party_service_account_tokens.yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
 	AvoidOverlyBroadHostsConfigurations = "avoid_overly_broad_hosts_configurations.policy"
 	//RestrictGatewayCreationPrivileges policy name
@@ -35,6 +38,9 @@ const (
 	DownstreamConnectionLimitConfigMap = "downstream_connection_limit_config_map.policy"
 	//IngressGatewayPatchedDownstreamConnectionLimit policy name
 	IngressGatewayPatchedDownstreamConnectionLimit = "ingress_gateway_patched_downstream_connection_limit.policy"
+	//IstioUsing3rdPartyTokens policy
+	//nolint:gosec
+	IstioUsing3rdPartyTokens = "istio_using_3rd_party_tokens.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
