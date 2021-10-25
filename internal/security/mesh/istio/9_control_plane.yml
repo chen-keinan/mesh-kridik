@@ -4,10 +4,10 @@ categories:
   -
     name: istio Security Checks
     sub_category:
-      name: control plane
+      name: Lock down ports
       security_checks:
          -
-          name: 'ensure Istiod do not exposes Port 8080 for debug as unauthenticated plaintext'
+          name: 'control-plane ensure Istiod do not exposes Port 8080 for debug as unauthenticated plaintext'
           description: 'Istiod exposes an unauthenticated plaintext port 8080 for convenience by default. If desired, these can be closed'
           check_command:
             - 'kubectl get deployment istiod -n istio-system -o json 2> /dev/null'
@@ -20,7 +20,7 @@ categories:
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#control-plane
          -
-          name: 'ensure Istiod do not exposes Port 15010 XDS service over plaintext'
+          name: 'control-plane ensure Istiod do not exposes Port 15010 XDS service over plaintext'
           description: 'Istiod exposes an unauthenticated plaintext port 15010 for convenience by default. If desired, these can be closed'
           check_command:
             - 'kubectl get deployment istiod -n istio-system -o json 2> /dev/null'
@@ -33,7 +33,7 @@ categories:
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#control-plane
          -
-          name: 'The proxy exposes a variety of ports'
+          name: 'data plane - The proxy exposes a variety of ports'
           description: 'The proxy exposes a variety of ports. Exposed externally are port 15090 (telemetry) and port 15021 (health check).
                               Ports 15020 and 15000 provide debugging endpoints'
           check_command:

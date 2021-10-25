@@ -121,6 +121,11 @@ Execute tests and generate failure tests report and it remediation's
     <td>Istiod exposes a few unauthenticated plaintext ports for convenience by default</td>
     <td>exposes the XDS service port 15010 and debug port 8080 over unauthenticated  plaintext</td>
 </tr>
+<tr>
+    <td>Data Plane</td>
+    <td>The proxy exposes a variety of ports</td>
+    <td>ports are exposed over localhost only. As a result, the applications running in the same pod as the proxy have access; there is no trust boundary between the sidecar and application</td>
+</tr>
 </table>
 
 ## User Plugin Usage (via go plugins)
