@@ -124,7 +124,7 @@ Execute tests and generate failure tests report and it remediation's
 </table>
 
 ## User Plugin Usage (via go plugins)
-The Kube-kridik expose 2 hooks for user plugins [Example](https://github.com/chen-keinan/mesh-kridik/tree/master/examples/plugins) :
+The Kube-kridik expose a hook for user plugins [Example](https://github.com/chen-keinan/mesh-kridik/tree/master/examples/plugins) :
 - **MeshSecurityCheckResultHook** - this hook accepts k8s service mesh security checks results
 
 ##### Compile user plugin
