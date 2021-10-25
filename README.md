@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/chen-keinan/mesh-kridik.svg?branch=master)](https://travis-ci.com/chen-keinan/mesh-kridik)
 <img src="./pkg/img/coverage_badge.png" alt="test coverage badge">
 [![Gitter](https://badges.gitter.im/beacon-sec/lxd-probe.svg)](https://gitter.im/beacon-sec/lxd-probe?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-<br><img src="./pkg/img/mesh_kridik_img.png" width="300" alt="mesh-kridik logo"><br>
+<br><img src="./pkg/img/mesh_kridik_img.png" width="500" alt="mesh-kridik logo"><br>
 
 # mesh-kridik
 Enhance your Kubernetes service mesh security !!
