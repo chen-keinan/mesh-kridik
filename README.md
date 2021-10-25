@@ -12,7 +12,7 @@ mesh-kridik is an open-source security scanner that performs various security ch
 
 The security checks tests are the full implementation of [istio security best practices](https://istio.io/latest/docs/ops/best-practices/security/) <br>
 
-The security checks performed on a Kubernetes cluster with istio service mesh and leveraged by OPA (Open Policy Agent) to enforce security rules, and the output audit report includes:
+The security checks performed on a Kubernetes cluster with istio service mesh and is leveraged by OPA (Open Policy Agent) to enforce security rules, and the output audit report includes:
 the root cause of the security issue  and proposed remediation for the security issue
 
 
