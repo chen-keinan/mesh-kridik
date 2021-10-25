@@ -146,12 +146,6 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ClosePort15010UnauthenticatePlaintext, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ClosePort15010UnauthenticatePlaintext, Data: cpupt})
-	//22
-	dpp, err := box.FindString(common.DataPlane)
-	if err != nil {
-		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.DataPlane, err.Error())
-	}
-	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.DataPlane, Data: dpp})
 	return fileInfo, nil
 }
 

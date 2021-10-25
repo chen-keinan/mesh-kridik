@@ -259,7 +259,6 @@ func executeTests(ft []*models.SubCategory, mc *MeshCheck, policies map[string]s
 	for _, f := range ft {
 		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
 		s.Start()
-		time.Sleep(time.Millisecond * 50)
 		tr := ui.ExecuteSpecs(f, mc.runAuditTest, policies)
 		printClassicTestResults(tr.Checks, mc.log)
 		completedTest = append(completedTest, tr)
