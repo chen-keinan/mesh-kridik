@@ -124,7 +124,7 @@ Execute tests and generate failure tests report and it remediation's
 <tr>
     <td>Data Plane</td>
     <td>The proxy exposes a variety of ports</td>
-    <td>ports are exposed over localhost only. As a result, the applications running in the same pod as the proxy have access; there is no trust boundary between the sidecar and application</td>
+    <td>The applications running in the same pod as the proxy have access; there is no trust boundary between the sidecar and application</td>
 </tr>
 </table>
 
