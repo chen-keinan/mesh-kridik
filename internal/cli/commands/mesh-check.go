@@ -92,7 +92,7 @@ var ReportOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, lo
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
 	s.Prefix = "[Generating Remediation Report] "
 	s.Start()
-	time.Sleep(time.Second * 4)
+	time.Sleep(time.Second * 3)
 	s.Stop()
 	log.Console("\n")
 	for _, a := range at {

@@ -1,0 +1,23 @@
+---
+benchmark_type: mesh
+categories:
+  -
+    name: istio Security Checks
+    sub_category:
+      name: data plane
+      security_checks:
+         -
+          name: 'The proxy exposes a variety of ports'
+          description: 'The proxy exposes a variety of ports. Exposed externally are port 15090 (telemetry) and port 15021 (health check).
+                        Ports 15020 and 15000 provide debugging endpoints'
+          check_command:
+            - 'require manual check'
+          remediation: 'disable ports if needed'
+          check_type: multi_param
+          impact: ports are exposed over localhost only. As a result, the applications running in the same pod as the proxy have access; there is no trust boundary between the sidecar and application
+          eval_expr: "no eval expr"
+          default_value: 'port 15090 (telemetry), port 15021 (health check)Ports ,15020 and 15000 are not disable'
+          type: manual
+          eval_message: 'disable ports port 15090 (telemetry), port 15021 (health check)Ports ,15020 and 15000 if needed  '
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#data-plane

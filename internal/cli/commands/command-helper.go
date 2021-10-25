@@ -61,6 +61,7 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 		if a.NonApplicable {
 			warnTest := colorstring.Color("[yellow][Warn]")
 			log.Console(fmt.Sprintf("%s %s\n", warnTest, a.Name))
+			log.Console(fmt.Sprintf("       %s %d. %s\n", warnTest, 1, a.EvalMessage))
 			warnCounter++
 			continue
 		}
@@ -73,6 +74,7 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			log.Console(fmt.Sprintf("%s %s\n", failTest, a.Name))
 			failCounter++
 		}
+
 		for index, pr := range a.PolicyResult.PolicyResult {
 			sentence := a.EvalMessage
 			var testStatus string
@@ -253,12 +255,13 @@ func loadPolicies(fi []utils.FilesInfo) map[string]string {
 func executeTests(ft []*models.SubCategory, mc *MeshCheck, policies map[string]string) []*models.SubCategory {
 	completedTest := make([]*models.SubCategory, 0)
 	mc.log.Console(ui.MeshCheck)
-	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+	s := spinner.New(spinner.CharSets[9], 50*time.Millisecond) // Build our new spinner
 	for _, f := range ft {
 		s.Prefix = fmt.Sprintf("[Category] %s   ", f.Name)
 		s.Start()
+		time.Sleep(time.Millisecond * 50)
 		tr := ui.ExecuteSpecs(f, mc.runAuditTest, policies)
-		printClassicTestResults(f.Checks, mc.log)
+		printClassicTestResults(tr.Checks, mc.log)
 		completedTest = append(completedTest, tr)
 		s.Stop()
 	}

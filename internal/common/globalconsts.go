@@ -28,6 +28,8 @@ const (
 	//ConfigureThirdPartyServiceAccountTokens spec
 	//nolint:gosec
 	ConfigureThirdPartyServiceAccountTokens = "8_configure_third_party_service_account_tokens.yml"
+	//DataPlane spec
+	DataPlane = "10_data_plane.yml"
 	//ControlPlane spec
 	ControlPlane = "9_control_plane.yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
