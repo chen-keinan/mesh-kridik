@@ -16,8 +16,8 @@ categories:
             - 'kubectl get IstioOperator ${0} -n istio-system -o json 2> /dev/null'
           remediation: 'Change the meshConfig.outboundTrafficPolicy.mode option to REGISTRY_ONLY.'
           check_type: multi_param
-          impact: port 8080 offers read access to a variety of details about the clusters state in unauthenticated plaintext
-          eval_expr: "[${0} MATCH close_port_8008_as_unauthenticate_plaintext.policy QUERY istio.policy_eval RETURN match];"
+          impact: external service access will not be controlled
+          eval_expr: "[${1} MATCH proxy_blocks_external_host_within_mesh.policy QUERY istio.policy_eval RETURN match];"
           default_value: 'ALLOW_ANY is the default value, allowing you to start evaluating Istio quickly, without controlling access to external services'
           eval_message: 'iIstio proxy blocks any host without an HTTP service or service entry defined within the mesh'
           references:

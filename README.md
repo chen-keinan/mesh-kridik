@@ -139,6 +139,11 @@ docker run --pid=host -v $HOME/.kube:/root/.kube:ro -v $(which kubectl):/usr/bin
     <td>The proxy exposes a variety of ports</td>
     <td>The applications running in the same pod as the proxy have access; there is no trust boundary between the sidecar and application</td>
 </tr>
+<tr>
+    <td>Understand traffic capture limitations</td>
+    <td>Securing egress traffic by setting the meshConfig.outboundTrafficPolicy.mode </td>
+    <td>external service access will not be controlled</td>
+</tr>
 </table>
 
 ## User Plugin Usage (via go plugins)
