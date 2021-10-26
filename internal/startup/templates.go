@@ -146,6 +146,18 @@ func GenerateMeshSecurityFiles() ([]utils.FilesInfo, error) {
 		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ClosePort15010UnauthenticatePlaintext, err.Error())
 	}
 	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ClosePort15010UnauthenticatePlaintext, Data: cpupt})
+	//22
+	utcl, err := box.FindString(common.UnderstandTrafficCaptureLimitations)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.UnderstandTrafficCaptureLimitations, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.UnderstandTrafficCaptureLimitations, Data: utcl})
+	//23
+	pbhw, err := box.FindString(common.ProxyBlocksExternalHostWithinMesh)
+	if err != nil {
+		return []utils.FilesInfo{}, fmt.Errorf("faild to load security checks %s  %s", common.ProxyBlocksExternalHostWithinMesh, err.Error())
+	}
+	fileInfo = append(fileInfo, utils.FilesInfo{Name: common.ProxyBlocksExternalHostWithinMesh, Data: pbhw})
 	return fileInfo, nil
 }
 

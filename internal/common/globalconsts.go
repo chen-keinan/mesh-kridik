@@ -28,8 +28,8 @@ const (
 	//ConfigureThirdPartyServiceAccountTokens spec
 	//nolint:gosec
 	ConfigureThirdPartyServiceAccountTokens = "8_configure_third_party_service_account_tokens.yml"
-	//DataPlane spec
-	DataPlane = "10_data_plane.yml"
+	//UnderstandTrafficCaptureLimitations spec
+	UnderstandTrafficCaptureLimitations = "10_understand_traffic_capture_limitations.yml"
 	//ControlPlane spec
 	ControlPlane = "9_control_plane.yml"
 	//AvoidOverlyBroadHostsConfigurations policy name
@@ -49,6 +49,8 @@ const (
 	//IstioUsing3rdPartyTokens policy
 	//nolint:gosec
 	IstioUsing3rdPartyTokens = "istio_using_3rd_party_tokens.policy"
+	//ProxyBlocksExternalHostWithinMesh policy
+	ProxyBlocksExternalHostWithinMesh = "proxy_blocks_external_host_within_mesh.policy"
 	//Report arg
 	Report = "r"
 	//ReportFull arg
