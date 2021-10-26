@@ -50,8 +50,12 @@ build_travis:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
 build_remote:
 	$(GOPACKR)
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -v -gcflags='-N -l' ./cmd/mesh-kridik
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik
 	mv mesh-kridik ~/boxes/basic_box/mesh-kridik
+
+build_docker_local:
+	docker build -t chenkeinan/mesh-kridik:3 .
+	docker push chenkeinan/mesh-kridik:3
 dlv:
 	dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./mesh-kridik
 build_beb:

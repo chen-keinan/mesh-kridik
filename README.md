@@ -63,6 +63,15 @@ Execute tests and generate failure tests report and it remediation's
 ./mesh-kridik -r
 ```
 
+## mesh-kridik as Docker
+
+Execute mesh-kridik via docker
+
+```shell
+docker run --pid=host -v $HOME/.kube:/root/.kube:ro -v $(which kubectl):/usr/bin/kubectl -t chenkeinan/mesh-kridik
+```
+
+
 ## Istio Security Checks
 <table style="width:600px; font-size:10px;">
 <tr>
