@@ -16,6 +16,7 @@ The security checks performed on a Kubernetes cluster with istio service mesh an
 the root cause of the security issue  and proposed remediation for the security issue
 
 
+* [Requirements](#requirements)
 * [Installation](#installation)
 * [Quick Start](#quick-start)
 * [Istio Security Checks](#istio-security-checks)
@@ -23,7 +24,10 @@ the root cause of the security issue  and proposed remediation for the security 
 * [Supported Spec](#supported-spec)
 * [Contribution](#Contribution)
 
-
+## Requirements
+- Go 1.16+
+- jq
+- istio
 
 ## Installation
 
