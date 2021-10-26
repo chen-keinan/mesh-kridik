@@ -21,5 +21,6 @@ require (
 	go.uber.org/fx v1.13.1
 	go.uber.org/zap v1.19.1
 	golang.org/x/sys v0.0.0-20211025201205-69cdffdb9359 // indirect
+	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )

@@ -34,3 +34,19 @@ categories:
           eval_message: 'gateway $gateway on namespace $namespace is overlaying broad hosts configurations'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#gateways
+         -
+          name: 'Isolate sensitive services'
+          description: 'It may be desired to enforce stricter physical isolation for sensitive services. For example,
+                        you may want to run a dedicated gateway instance for a sensitive payments.example.com, while utilizing
+                         a single shared gateway instance for less sensitive domains like blog.example.com and store.example.com.'
+          check_command:
+            - 'require manual check'
+          remediation: 'disable ports if needed'
+          check_type: multi_param
+          impact: This can offer a stronger defense-in-depth and help meet certain regulatory compliance guidelines.
+          eval_expr: "no eval expr"
+          default_value: 'service are not isolated by diffrent gateways'
+          type: manual
+          eval_message: 'enforce stricter physical isolation for sensitive services'
+          references:
+            - https://istio.io/latest/docs/ops/best-practices/security/#isolate-sensitive-services
