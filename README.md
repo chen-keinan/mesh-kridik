@@ -15,7 +15,7 @@ The security checks tests are the full implementation of [istio security best pr
 The security checks performed on a Kubernetes cluster with istio service mesh and is leveraged by OPA (Open Policy Agent) to enforce security rules, and the output audit report includes:
 the root cause of the security issue  and proposed remediation for the security issue.
 
-![mesh kridik](./pkg/img/mesh-kridik.gif)
+![mesh kridik](./pkg/img/mesh-mov-img.gif)
 
 * [Requirements](#requirements)
 * [Installation](#installation)
