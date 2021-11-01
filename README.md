@@ -119,7 +119,7 @@ Execute tests and generate failure tests report and it remediation's
 <tr>
     <td>Configure third party service account tokens</td>
     <td>It is recommended to configure 3rd party tokens Because the properties of the first party token are less secure</td>
-    <td>first party token properties are less secure and might cause authentication bridge</td>
+    <td>first party token properties are less secure and might cause authentication breach</td>
 </tr>
 <tr>
     <td>Control Plane</td>
