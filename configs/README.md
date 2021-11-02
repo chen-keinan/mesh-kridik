@@ -1,3 +1,0 @@
-# `/configs`
-
-project config files

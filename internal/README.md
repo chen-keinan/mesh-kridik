@@ -1,3 +1,0 @@
-# `/internal`
-
-core project files
