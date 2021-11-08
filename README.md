@@ -38,7 +38,7 @@ cd mesh-kridik
 make build
 ```
 
-- Note: kube-beacon require root user to be executed
+- Note: mesh-kridik require root user to be executed
 
 ## Quick Start
 
