@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-//MeshCheck lxd benchmark object
+//MeshCheck benchmark object
 type MeshCheck struct {
 	ResultProcessor ResultProcessor
 	OutputGenerator ui.OutputGenerator
@@ -138,7 +138,7 @@ func (mc MeshCheck) Help() string {
 	return startup.GetHelpSynopsis()
 }
 
-//Run execute the full lxd benchmark
+//Run execute the full mesh benchmark
 func (mc *MeshCheck) Run(args []string) int {
 	// load audit tests fro benchmark folder
 	auditTests := mc.FileLoader.LoadSecurityChecks(mc.FilesInfo)

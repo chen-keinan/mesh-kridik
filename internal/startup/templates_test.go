@@ -63,7 +63,7 @@ func Test_GetHelpSynopsis(t *testing.T) {
 //Test_SaveBenchmarkFilesIfNotExist test
 func Test_SaveBenchmarkFilesIfNotExist(t *testing.T) {
 	fm := utils.NewKFolder()
-	folder, err2 := utils.GetSecurityFolder("lxd", "v1.6.0", fm)
+	folder, err2 := utils.GetSecurityFolder("mesh", "v1.6.0", fm)
 	assert.NoError(t, err2)
 	err := os.RemoveAll(folder)
 	assert.NoError(t, err)

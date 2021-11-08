@@ -153,7 +153,7 @@ func TestCreateBenchmarkFoldersErrorHomeFolder(t *testing.T) {
 	ctl := gomock.NewController(t)
 	fm := mocks.NewMockFolderMgr(ctl)
 	fm.EXPECT().GetHomeFolder().Return("homePath", fmt.Errorf("error")).Times(1)
-	err := CreateSecurityFolderIfNotExist("lxd", "v1.0.0", fm)
+	err := CreateSecurityFolderIfNotExist("mesh", "v1.0.0", fm)
 	assert.Error(t, err)
 	fmr := NewKFolder()
 	path, err := GetSecurityFolder("mesh", "istio", fmr)

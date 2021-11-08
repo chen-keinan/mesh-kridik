@@ -80,8 +80,8 @@ func readTestData(fileName string, t *testing.T) []byte {
 	return b
 }
 
-//Test_NewLxdAudit test
-func Test_NewLxdAudit(t *testing.T) {
+//Test_NewMeshCheck test
+func Test_NewMeshCheck(t *testing.T) {
 	args := []string{"a", "i=1.2.3"}
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
@@ -121,8 +121,8 @@ func Test_reportResultProcessor(t *testing.T) {
 	assert.Equal(t, fm[0].Name, "1.2.1 aaa")
 }
 
-//Test_LxdSynopsis test
-func Test_LxdSynopsis(t *testing.T) {
+//Test_MeshSynopsis test
+func Test_MeshSynopsis(t *testing.T) {
 	args := []string{"a", "i=1.2.3"}
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)

@@ -34,7 +34,7 @@ func NewKFolder() FolderMgr {
 }
 
 //CreateFolder create new mesh-kridik folder
-func (lxdf bFolder) CreateFolder(folderName string) error {
+func (meshf bFolder) CreateFolder(folderName string) error {
 	_, err := os.Stat(folderName)
 	if os.IsNotExist(err) {
 		errDir := os.MkdirAll(folderName, 0750)
@@ -46,7 +46,7 @@ func (lxdf bFolder) CreateFolder(folderName string) error {
 }
 
 //GetHomeFolder return mesh-kridik home folder
-func (lxdf bFolder) GetHomeFolder() (string, error) {
+func (meshf bFolder) GetHomeFolder() (string, error) {
 	usr, err := user.Current()
 	if err != nil {
 		return "", err
@@ -98,22 +98,22 @@ func GetHomeFolder() string {
 	if err != nil {
 		panic("Failed to fetch user home folder")
 	}
-	// User can set a custom LXD_PROBE_HOME from environment variable
+	// User can set a custom MESH_KRIDIK_HOME from environment variable
 	usrHome := GetEnv(common.MeshKridikHomeEnvVar, usr.HomeDir)
 	return path.Join(usrHome, ".mesh-kridik")
 }
 
 //CreateHomeFolderIfNotExist create mesh-kridik home folder if not exist
 func CreateHomeFolderIfNotExist(fm FolderMgr) error {
-	lxdProbeFolder, err := fm.GetHomeFolder()
+	meshHomeFolder, err := fm.GetHomeFolder()
 	if err != nil {
 		return err
 	}
-	_, err = os.Stat(lxdProbeFolder)
+	_, err = os.Stat(meshHomeFolder)
 	if os.IsNotExist(err) {
-		errDir := os.MkdirAll(lxdProbeFolder, 0750)
+		errDir := os.MkdirAll(meshHomeFolder, 0750)
 		if errDir != nil {
-			return fmt.Errorf("failed to create mesh-kridik home folder at %s", lxdProbeFolder)
+			return fmt.Errorf("failed to create mesh-kridik home folder at %s", meshHomeFolder)
 		}
 	}
 	return nil
@@ -137,7 +137,7 @@ func CreateSecurityFolderIfNotExist(spec, version string, fm FolderMgr) error {
 	return fm.CreateFolder(benchmarkFolder)
 }
 
-//GetMeshSecurityChecksFiles return lxd benchmark file
+//GetMeshSecurityChecksFiles return mesh checks file
 func GetMeshSecurityChecksFiles(spec, version string, fm FolderMgr) ([]FilesInfo, error) {
 	filesData := make([]FilesInfo, 0)
 	folder, err := GetSecurityFolder(spec, version, fm)

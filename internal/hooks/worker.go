@@ -14,7 +14,7 @@ type PluginWorker struct {
 	log *zap.Logger
 }
 
-//MeshChecksResultHook hold the plugin symbol for Lxd bench audit result Hook
+//MeshChecksResultHook hold the plugin symbol for mesh chek result Hook
 type MeshChecksResultHook struct {
 	Plugins []plugin.Symbol
 	Plug    *uplugin.PluginLoader

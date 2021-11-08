@@ -66,8 +66,8 @@ func Test_ArgsSanitizer(t *testing.T) {
 	assert.True(t, ad.Help)
 }
 
-//Test_LxdProbeHelpFunc test
-func Test_LxdProbeHelpFunc(t *testing.T) {
+//Test_MeshKridikHelpFunc test
+func Test_MeshKridikHelpFunc(t *testing.T) {
 	cm := make(map[string]cli.CommandFactory)
 	bhf := MeshKridikHelpFunc(common.MeshKridik)
 	helpFile := bhf(cm)
