@@ -211,11 +211,9 @@ func buildPredicateChain(args []string) []filters.Predicate {
 	for _, n := range args {
 		switch {
 		case strings.HasPrefix(n, common.IncludeParam):
-			pc = append(pc, filters.IncludeAudit)
+			pc = append(pc, filters.IncludeCheck)
 		case strings.HasPrefix(n, common.ExcludeParam):
-			pc = append(pc, filters.ExcludeAudit)
-		case strings.HasPrefix(n, common.NodeParam):
-			pc = append(pc, filters.NodeAudit)
+			pc = append(pc, filters.ExcludeCheck)
 		case n == "a":
 			pc = append(pc, filters.Basic)
 		}

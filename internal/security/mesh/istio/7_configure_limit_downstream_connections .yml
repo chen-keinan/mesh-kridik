@@ -7,7 +7,7 @@ categories:
       name: Downstream Connections
       security_checks:
          -
-          name: 'make sure config map with downstream Connections created'
+          name: '7.0 make sure config map with downstream Connections created'
           description: 'Update global_downstream_max_connections in the config map according to the number of concurrent connections needed by individual gateway instances in your deployment. Once the limit is reached, Envoy will start rejecting tcp connections.'
           check_command:
             - 'kubectl get configmap istio-custom-bootstrap-config -n istio-system -o json 2> /dev/null'
@@ -19,7 +19,7 @@ categories:
           eval_message: 'config map istio-custom-bootstrap-config is exist on namespace istio-system'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#configure-a-limit-on-downstream-connections
-         - name: 'make ingress gateway deployment is patched with downstream Connections limit config'
+         - name: '7.1 make ingress gateway deployment is patched with downstream Connections limit config'
            description: 'Patch ingress gateway with downstream Connections limit config Once the limit is reached, Envoy will start rejecting tcp connections.'
            check_command:
               - 'kubectl get deployment istio-ingressgateway -n istio-system -o json 2> /dev/null'

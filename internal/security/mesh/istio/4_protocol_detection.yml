@@ -7,7 +7,7 @@ categories:
       name: Protocol detection
       security_checks:
          -
-          name: 'explicitly declare the service protocol'
+          name: '4.0 explicitly declare the service protocol'
           description: 'Istio will automatically determine the protocol of traffic, to avoid accidental or intentional miss detection,it is recommended to explicitly declare the protocol where possible.'
           check_command:
             - 'kubectl get service --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''

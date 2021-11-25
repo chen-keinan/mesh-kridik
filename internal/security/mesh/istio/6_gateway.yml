@@ -7,7 +7,7 @@ categories:
       name: Gateways
       security_checks:
          -
-          name: 'Restrict Gateway creation privileges'
+          name: '6.0 Restrict Gateway creation privileges'
           description: 'restrict creation of Gateway resources to trusted cluster administrators. This can be achieved by Kubernetes RBAC policies or tools like Open Policy Agent.'
           check_command:
              - 'kubectl get ClusterRole -o=custom-columns="NAME:.metadata.name" | awk ''{if(NR>1)print}'''
@@ -22,7 +22,7 @@ categories:
             - https://kubernetes.io/docs/reference/access-authn-authz/rbac/#auto-reconciliation
             - https://www.openpolicyagent.org/
          -
-          name: 'Avoid overly broad hosts configurations'
+          name: '6.1 Avoid overly broad hosts configurations'
           description: 'When possible, avoid overly broad hosts settings in Gateway. may cause potential exposure of unexpected domains'
           check_command:
             - 'kubectl get gateways --all-namespaces -o=custom-columns="NAME:.metadata.name,NAMESPACE:.metadata.namespace" | awk ''{if(NR>1)print}'' |awk '' { print  $1 " -n " $NF } '''
@@ -35,7 +35,7 @@ categories:
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#gateways
          -
-          name: 'Isolate sensitive services'
+          name: '6.2 Isolate sensitive services'
           description: 'It may be desired to enforce stricter physical isolation for sensitive services. For example,
                         you may want to run a dedicated gateway instance for a sensitive payments.example.com, while utilizing
                          a single shared gateway instance for less sensitive domains like blog.example.com and store.example.com.'

@@ -7,7 +7,7 @@ categories:
       name: Istio Safer Authorization Policy Patterns
       security_checks:
         -
-          name: 'Use ALLOW-with-positive-matching or DENY-with-negative-match patterns'
+          name: '2.0 Use ALLOW-with-positive-matching or DENY-with-negative-match patterns'
           description: 'The ALLOW-with-positive-matching pattern is to use the ALLOW action only with positive matching fields (e.g. paths, values)
                        and do not use any of the negative matching fields (e.g. notPaths, notValues).
                        The DENY-with-negative-matching pattern is to use the DENY action only with negative matching
@@ -28,7 +28,7 @@ categories:
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#use-allow-with-positive-matching-and-deny-with-negative-match-patterns
         -
-          name: 'path normalization in authorization policy'
+          name: '2.1 path normalization in authorization policy'
           description: 'The enforcement point for authorization policies is the Envoy proxy instead of the usual resource access point in the backend application.
                         A policy mismatch happens when the Envoy proxy and the backend application interpret the request differently.'
           check_command:

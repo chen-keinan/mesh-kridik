@@ -106,7 +106,7 @@ func Test_LoadSecurityCheck(t *testing.T) {
 //Test_FilterAuditTests test
 func Test_FilterAuditTests(t *testing.T) {
 	at := &models.SubCategory{Checks: []*models.SecurityCheck{{Name: "1.2.1 aaa"}, {Name: "2.2.2"}}}
-	fab := FilterAuditTests([]filters.Predicate{filters.IncludeAudit}, []string{"1.2.1"}, at)
+	fab := FilterAuditTests([]filters.Predicate{filters.IncludeCheck}, []string{"1.2.1"}, at)
 	assert.Equal(t, fab.Checks[0].Name, "1.2.1 aaa")
 	assert.True(t, len(fab.Checks) == 1)
 }
@@ -131,7 +131,7 @@ func Test_buildPredicateChainParams(t *testing.T) {
 
 func Test_filteredAuditBenchTests(t *testing.T) {
 	asc := []*models.SubCategory{{Checks: []*models.SecurityCheck{{Name: "1.1.0 bbb"}}}}
-	fp := []filters.Predicate{filters.IncludeAudit, filters.ExcludeAudit}
+	fp := []filters.Predicate{filters.IncludeCheck, filters.ExcludeCheck}
 	st := []string{"i=1.1.0", "e=1.1.0"}
 	fr := filteredAuditBenchTests(asc, fp, st)
 	assert.True(t, len(fr) == 0)

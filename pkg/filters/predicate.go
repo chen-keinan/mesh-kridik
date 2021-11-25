@@ -9,8 +9,8 @@ import (
 // Predicate filter audit tests cmd criteria
 type Predicate func(tests *models.SubCategory, params string) *models.SubCategory
 
-// IncludeAudit include audit tests , only included tests will be executed
-var IncludeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
+// IncludeCheck include audit tests , only included tests will be executed
+var IncludeCheck Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
 	sat := make([]*models.SecurityCheck, 0)
 	spt := utils.GetAuditTestsList("i", params)
 	// check if param include category
@@ -33,8 +33,8 @@ var IncludeAudit Predicate = func(tests *models.SubCategory, params string) *mod
 	return &models.SubCategory{Name: tests.Name, Checks: sat}
 }
 
-// ExcludeAudit audit test from been executed
-var ExcludeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
+// ExcludeCheck audit test from been executed
+var ExcludeCheck Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
 	sat := make([]*models.SecurityCheck, 0)
 	spt := utils.GetAuditTestsList("e", params)
 	// if exclude category
@@ -54,24 +54,6 @@ var ExcludeAudit Predicate = func(tests *models.SubCategory, params string) *mod
 			continue
 		}
 		sat = append(sat, at)
-	}
-	return &models.SubCategory{Name: tests.Name, Checks: sat}
-}
-
-// NodeAudit audit test from been executed
-var NodeAudit Predicate = func(tests *models.SubCategory, params string) *models.SubCategory {
-	sat := make([]*models.SecurityCheck, 0)
-	spt := utils.GetAuditTestsList("n", params)
-	// check tests
-	for _, at := range tests.Checks {
-		for _, sp := range spt {
-			if strings.ToLower(at.ProfileApplicability) == sp {
-				sat = append(sat, at)
-			}
-		}
-	}
-	if len(sat) == 0 {
-		return &models.SubCategory{Name: tests.Name, Checks: make([]*models.SecurityCheck, 0)}
 	}
 	return &models.SubCategory{Name: tests.Name, Checks: sat}
 }

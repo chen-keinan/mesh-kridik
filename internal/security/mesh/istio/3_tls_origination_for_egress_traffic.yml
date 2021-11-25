@@ -7,7 +7,7 @@ categories:
       name: TLS origination for egress traffic
       security_checks:
          -
-          name: 'Use of DestinationRule on service ServiceEntry for egress traffic'
+          name: '3.0 Use of DestinationRule on service ServiceEntry for egress traffic'
           description: 'DestinationRule will perform TLS origination for HTTP requests on port 80 and the ServiceEntry will then redirect the requests on port 80 to target port 443.'
           check_command:
             - 'kubectl get ServiceEntry --all-namespaces -o=custom-columns=NAME:.metadata.name | awk ''{if(NR>1)print}'''

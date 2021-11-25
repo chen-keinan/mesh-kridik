@@ -7,7 +7,7 @@ categories:
       name: Istio Mutual mTLS
       security_checks:
         -
-          name: 'Make sure mTLS is not configured in permissive mode for each namespace'
+          name: '1.0 Make sure mTLS is not configured in permissive mode for each namespace'
           description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
           check_command:
             - kubectl get namespaces -o=custom-columns=NAME:.metadata.name | awk '{if(NR>1)print}'
@@ -21,7 +21,7 @@ categories:
           eval_message: 'check mTLS STRICT mode for namespace: $namespace'
           references:
             - https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
-        -   name: 'Make sure mTLS is not configured in permissive mode for all cluster'
+        -   name: '1.1 Make sure mTLS is not configured in permissive mode for all cluster'
             description: Istio will automatically encrypt traffic using Mutual TLS whenever possible. However, proxies are configured in permissive mode by default, meaning they will accept both mutual TLS and plaintext traffic.
             check_command:
                - 'kubectl get peerauthentication -n istio-system -o json 2> /dev/null |  jq ''. |= . + {"namespace": "istio-system"}'''

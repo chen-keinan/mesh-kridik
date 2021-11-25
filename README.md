@@ -54,7 +54,9 @@ Execute mesh-kridik  with flags , execute test on demand
 Usage: mesh-kridik [--version] [--help] <command> [<args>]
 
 Available commands are:
-  -r , --report :  run audit tests and generate remediation report
+  -r , --report :  run security checks and generate remediation report
+  -i , --include: execute only specific security check, example -i=1.1
+  -e , --exclude: ignore specific security check,  example -e=1.1,2.0
  ```
 
 Execute tests and generate failure tests report and it remediation's

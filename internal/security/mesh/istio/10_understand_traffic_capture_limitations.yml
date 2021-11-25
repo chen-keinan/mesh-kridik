@@ -7,7 +7,7 @@ categories:
       name: Understand traffic capture limitations
       security_checks:
          -
-          name: 'Securing egress traffic'
+          name: '10.0 Securing egress traffic'
           description: 'Istio has an installation option, meshConfig.outboundTrafficPolicy.mode,
                         that configures the sidecar handling of external services, that is,
                         those services that are not defined in Istio’s internal service registry.'

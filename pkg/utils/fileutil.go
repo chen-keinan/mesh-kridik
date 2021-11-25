@@ -51,7 +51,7 @@ func (meshf bFolder) GetHomeFolder() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// User can set a custom KUBE_KNARK_HOME from environment variable
+	// user can set a custom KUBE_KNARK_HOME from environment variable
 	usrHome := GetEnv(common.MeshKridikHomeEnvVar, usr.HomeDir)
 	return path.Join(usrHome, ".mesh-kridik"), nil
 }
@@ -98,7 +98,7 @@ func GetHomeFolder() string {
 	if err != nil {
 		panic("Failed to fetch user home folder")
 	}
-	// User can set a custom MESH_KRIDIK_HOME from environment variable
+	// user can set a custom MESH_KRIDIK_HOME from environment variable
 	usrHome := GetEnv(common.MeshKridikHomeEnvVar, usr.HomeDir)
 	return path.Join(usrHome, ".mesh-kridik")
 }
