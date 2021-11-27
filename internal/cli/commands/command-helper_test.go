@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"github.com/chen-keinan/go-command-eval/eval"
 	"github.com/chen-keinan/mesh-kridik/internal/cli/mocks"
 	"github.com/chen-keinan/mesh-kridik/internal/logger"
@@ -199,6 +200,24 @@ func TestPrintTestResults(t *testing.T) {
 			}
 			if tr.Warn != tt.warn {
 				t.Errorf("TestPrintTestResults() = %v, want %v", tr.Warn, tt.warn)
+			}
+		})
+	}
+}
+
+func TestLoaPolicies(t *testing.T) {
+	tests := []struct {
+		name  string
+		files []utils.FilesInfo
+		got   map[string]string
+	}{
+		{name: "load policies with policies files", files: []utils.FilesInfo{{Name: "a.policy", Data: "policy data"}}, got: map[string]string{"a.policy": "policy data"}},
+		{name: "load policies without policies files", files: []utils.FilesInfo{{Name: "a.yml", Data: "spec data"}}, got: map[string]string{}}}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			want := loadPolicies(tt.files)
+			if len(want) != len(tt.got) {
+				t.Fatal(fmt.Sprintf("TestLoaPolicies: want:%d got:%d", len(want), len(tt.got)))
 			}
 		})
 	}
