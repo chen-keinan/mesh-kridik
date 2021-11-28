@@ -222,3 +222,27 @@ func TestLoaPolicies(t *testing.T) {
 		})
 	}
 }
+
+func TestLoaTotals(t *testing.T) {
+	tests := []struct {
+		name   string
+		checks []*models.SecurityCheck
+		want   models.CheckTotals
+	}{
+		{name: "check test total with succeed and failure", checks: []*models.SecurityCheck{{TestSucceed: true}, {TestSucceed: false}}, want: models.CheckTotals{Pass: 1, Fail: 1, Warn: 0}},
+		{name: "check fail and warn", checks: []*models.SecurityCheck{{TestSucceed: false}, {NonApplicable: true}}, want: models.CheckTotals{Pass: 0, Fail: 1, Warn: 1}}}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := calculateTotals(tt.checks)
+			if got.Pass != tt.want.Pass {
+				t.Fatal(fmt.Sprintf("TestLoaTotals: want:%d got:%d", tt.want.Pass, got.Pass))
+			}
+			if got.Fail != tt.want.Fail {
+				t.Fatal(fmt.Sprintf("TestLoaTotals: want:%d got:%d", tt.want.Fail, got.Fail))
+			}
+			if got.Warn != tt.want.Warn {
+				t.Fatal(fmt.Sprintf("TestLoaTotals: want:%d got:%d", tt.want.Warn, got.Warn))
+			}
+		})
+	}
+}
