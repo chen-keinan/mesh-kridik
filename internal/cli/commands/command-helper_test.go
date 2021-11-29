@@ -99,9 +99,20 @@ func Test_LoadSecurityCheck(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	at := NewFileLoader().LoadSecurityChecks(bFiles)
+	at, err := NewFileLoader().LoadSecurityChecks(bFiles)
+	if err != nil {
+		t.Fatal(err)
+	}
 	assert.True(t, len(at) != 0)
 	assert.True(t, strings.Contains(at[0].Checks[0].Name, "Make sure mTLS is not configured in permissive mode"))
+}
+
+func Test_LoadSecurityWithFailure(t *testing.T) {
+	filesd, err := NewFileLoader().LoadSecurityChecks([]utils.FilesInfo{{Name: "aa.yaml", Data: ",ers"}})
+	assert.Nilf(t, filesd, "file expexted to be nil")
+	if err == nil {
+		t.Errorf("Test_LoadSecurityWithFailure expect err: %s", "yaml: did not find expected node content")
+	}
 }
 
 //Test_FilterAuditTests test

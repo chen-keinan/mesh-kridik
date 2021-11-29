@@ -141,7 +141,10 @@ func (mc MeshCheck) Help() string {
 //Run execute the full mesh benchmark
 func (mc *MeshCheck) Run(args []string) int {
 	// load audit tests fro benchmark folder
-	auditTests := mc.FileLoader.LoadSecurityChecks(mc.FilesInfo)
+	auditTests, err := mc.FileLoader.LoadSecurityChecks(mc.FilesInfo)
+	if err != nil {
+		panic(err)
+	}
 	// filter tests by cmd criteria
 	ft := filteredAuditBenchTests(auditTests, mc.PredicateChain, mc.PredicateParams)
 	// load load checks policies

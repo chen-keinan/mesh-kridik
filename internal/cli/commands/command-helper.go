@@ -134,7 +134,7 @@ func AddAllMessages(at *models.SecurityCheck, isSucceeded bool) []*models.Securi
 //command-helper.go
 //go:generate mockgen -destination=../../mocks/mock_TestLoader.go -package=mocks . TestLoader
 type TestLoader interface {
-	LoadSecurityChecks(fi []utils.FilesInfo) []*models.SubCategory
+	LoadSecurityChecks(fi []utils.FilesInfo) ([]*models.SubCategory, error)
 }
 
 //AuditTestLoader object
@@ -147,19 +147,19 @@ func NewFileLoader() TestLoader {
 }
 
 //LoadSecurityChecks load audit test from benchmark folder
-func (tl AuditTestLoader) LoadSecurityChecks(auditFiles []utils.FilesInfo) []*models.SubCategory {
+func (tl AuditTestLoader) LoadSecurityChecks(auditFiles []utils.FilesInfo) ([]*models.SubCategory, error) {
 	auditTests := make([]*models.SubCategory, 0)
 	audit := models.Check{}
 	for _, auditFile := range auditFiles {
 		if !strings.HasSuffix(auditFile.Name, common.PolicySuffix) {
 			err := yaml.Unmarshal([]byte(auditFile.Data), &audit)
 			if err != nil {
-				panic("Failed to unmarshal audit test yaml file")
+				return nil, err
 			}
 			auditTests = append(auditTests, audit.Categories[0].SubCategory)
 		}
 	}
-	return auditTests
+	return auditTests, nil
 }
 
 //FilterAuditTests filter audit tests by predicate chain

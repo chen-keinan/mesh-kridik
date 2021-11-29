@@ -113,7 +113,7 @@ func Test_InvokeCli(t *testing.T) {
 	plChan := make(chan m2.MeshCheckResults)
 	tl := m3.NewMockTestLoader(ctrl)
 	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
-	tl.EXPECT().LoadSecurityChecks(infos).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}})
+	tl.EXPECT().LoadSecurityChecks(infos).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}},nil)
 	go func() {
 		<-plChan
 		completedChan <- true
