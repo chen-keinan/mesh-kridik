@@ -56,7 +56,7 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 		failCounter int
 	)
 	// just empty line
-	fmt.Println()
+	log.Console("")
 	for _, a := range at {
 		if a.NonApplicable {
 			warnTest := colorstring.Color("[yellow][Warn]")
