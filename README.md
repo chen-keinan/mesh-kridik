@@ -8,7 +8,7 @@
 # mesh-kridik
 Enhance your Kubernetes service mesh security !!
 
-mesh-kridik is an open-source security checker that performs various security checks on a Kubernetes cluster with istio service mesh and outputs a security report.
+mesh-kridik is an open-source security checker that performs various security checks on a Kubernetes cluster with istio service mesh and outputs a security report
 
 The security checks tests are the full implementation of [istio security best practices](https://istio.io/latest/docs/ops/best-practices/security/) <br>
 
