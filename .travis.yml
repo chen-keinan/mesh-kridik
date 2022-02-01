@@ -9,11 +9,11 @@ services:
   - docker
 
 before_install:
-  - go install golang.org/x/tools/cmd/cover
-  - go install github.com/mattn/goveralls
+  - go get -d golang.org/x/tools/cmd/cover
+  - go get -d github.com/mattn/goveralls
 
 script:
-  - go get github.com/golang/mock/mockgen@latest
+  - go get -d github.com/golang/mock/mockgen@v1.6.0
   - go install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
   - go generate ./...
   - make test_travis
