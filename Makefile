@@ -40,7 +40,7 @@ build_local:
 install:build_travis
 	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
 test_travis:
-	$(GOCMD) install github.com/golang/mock/mockgen@latest
+	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
 	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
 	$(GOMOCKS)
 	$(GOTEST) -short ./...  -coverprofile coverage.md fmt
