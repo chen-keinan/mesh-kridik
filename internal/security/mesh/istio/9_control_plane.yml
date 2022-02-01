@@ -14,7 +14,7 @@ categories:
           remediation: 'disabled by set the environment variable ENABLE_DEBUG_ON_HTTP=false on Istiod. Warning: many istioctl commands depend on this interface and will not function if it is disabled.'
           check_type: multi_param
           impact: port 8080 offers read access to a variety of details about the clusters state in unauthenticated plaintext
-          eval_expr: "[${0} MATCH close_port_8008_as_unauthenticate_plaintext.rego QUERY istio.rego_eval RETURN match];"
+          eval_expr: "[${0} MATCH close_port_8008_as_unauthenticate_plaintext.rego QUERY istio.policy_eval RETURN match];"
           default_value: 'Istiod exposes a few unauthenticated plaintext ports for convenience by default'
           eval_message: 'istio port 8080 is not exposed as unauthenticated plaintext'
           references:
@@ -27,7 +27,7 @@ categories:
           remediation: 'This can be disabled by adding the --grpcAddr="" flag to the Istiod Deployment. Note: highly sensitive services, such as the certificate signing and distribution services, are never served over plaintext.'
           check_type: multi_param
           impact: port 15010 offers read access to a variety of details about the clusters state in unauthenticated plaintext
-          eval_expr: "[${0} MATCH close_port_15010_as_unauthenticate_plaintext.rego QUERY istio.rego_eval RETURN match];"
+          eval_expr: "[${0} MATCH close_port_15010_as_unauthenticate_plaintext.rego QUERY istio.policy_eval RETURN match];"
           default_value: 'Istiod exposes a few unauthenticated plaintext ports for convenience by default'
           eval_message: 'istio port 15010 is not exposed as unauthenticated plaintext'
           references:

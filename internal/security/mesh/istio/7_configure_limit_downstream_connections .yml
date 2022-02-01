@@ -14,7 +14,7 @@ categories:
           remediation: 'create config map with downstream Connections created'
           check_type: multi_param
           impact: not al net traffic will not be capture
-          eval_expr: "[${0} MATCH downstream_connection_limit_config_map.rego QUERY istio.rego_eval RETURN match];"
+          eval_expr: "[${0} MATCH downstream_connection_limit_config_map.rego QUERY istio.policy_eval RETURN match];"
           default_value: 'By default, Istio (and Envoy) have no limit on the number of downstream connections'
           eval_message: 'config map istio-custom-bootstrap-config is exist on namespace istio-system'
           references:
@@ -26,7 +26,7 @@ categories:
            remediation: 'Patch the ingress gateway deployment to use the above configuration. Download gateway-patch.yaml and apply it using the following command.'
            check_type: multi_param
            impact: not al net traffic will not be capture
-           eval_expr: "[${0} MATCH ingress_gateway_patched_downstream_connection_limit.rego QUERY istio.rego_eval RETURN match];"
+           eval_expr: "[${0} MATCH ingress_gateway_patched_downstream_connection_limit.rego QUERY istio.policy_eval RETURN match];"
            default_value: 'By default, Istio (and Envoy) have no limit on the number of downstream connections'
            eval_message: 'deployment istio-ingressgateway is patched with istio-custom-bootstrap-config config map'
            references:
