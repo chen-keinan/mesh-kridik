@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 GOCMD=go
 MOVESANDBOX=mv ~/vms/mesh-kridikmesh-kridik ~/vms-local/mesh-kridik
-GOPACKR=$(GOCMD) get -d github.com/gobuffalo/packr/packr && packr
+GOPACKR=$(GOCMD) get -d github.com/gobuffalo/packr/packr && ${GOPATH}/bin/packr
 GOMOD=$(GOCMD) mod
 GOMOCKS=$(GOCMD) generate ./...
 GOBUILD=$(GOCMD) build
@@ -46,7 +46,6 @@ test_travis:
 	$(GOTEST) -short ./...  -coverprofile coverage.md fmt
 	$(GOCMD) tool cover -html=coverage.md -o coverage.html
 build_travis:
-	export PATH=$GOPATH/bin:$PATH;
 	$(GOPACKR)
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
 build_remote:
