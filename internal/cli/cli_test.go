@@ -103,7 +103,7 @@ func Test_InvokeCli(t *testing.T) {
 		}`
 	ab := &models.SecurityCheck{}
 	ab.CheckCommand = []string{"aaa"}
-	ab.EvalExpr = "'${0}' != '';&& [${1} MATCH no_permission.policy QUERY example.allow RETURN allow]"
+	ab.EvalExpr = "'${0}' != '';&& [${1} MATCH no_permission.rego QUERY example.allow RETURN allow]"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -112,8 +112,8 @@ func Test_InvokeCli(t *testing.T) {
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
 	tl := m3.NewMockTestLoader(ctrl)
-	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
-	tl.EXPECT().LoadSecurityChecks(infos).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}},nil)
+	infos := []utils.FilesInfo{{Name: "no_permission.rego", Data: policy}}
+	tl.EXPECT().LoadSecurityChecks(infos).Return([]*models.SubCategory{{Name: "te", Checks: []*models.SecurityCheck{ab}}}, nil)
 	go func() {
 		<-plChan
 		completedChan <- true

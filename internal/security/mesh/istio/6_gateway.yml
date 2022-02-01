@@ -15,7 +15,7 @@ categories:
           remediation: 'restrict creation of Gateway resources via Kubernetes RBAC policies or tools like Open Policy Agent.'
           check_type: multi_param
           impact: may cause  creation of gateway by untrusted users
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH restrict_gateway_creation_privileges.policy QUERY istio.policy_eval RETURN match,role];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH restrict_gateway_creation_privileges.rego QUERY istio.rego_eval RETURN match,role];"
           eval_message: 'role $role is restricted from changing (create / delete /update) Gateway'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#gateways
@@ -30,7 +30,7 @@ categories:
           remediation: 'gateway hosts setting should be locked down to allow only specific domains or specific namespaces'
           check_type: multi_param
           impact: may cause potential exposure of unexpected domains
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH avoid_overly_broad_hosts_configurations.policy QUERY istio.policy_eval RETURN match,namespace,gateway];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH avoid_overly_broad_hosts_configurations.rego QUERY istio.rego_eval RETURN match,namespace,gateway];"
           eval_message: 'gateway $gateway on namespace $namespace is overlaying broad hosts configurations'
           references:
             - https://istio.io/latest/docs/ops/best-practices/security/#gateways
