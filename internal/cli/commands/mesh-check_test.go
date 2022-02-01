@@ -52,11 +52,11 @@ func TestRunAuditTests(t *testing.T) {
 			defer ctrl.Finish()
 			evalCmd := mocks.NewMockCmdEvaluator(ctrl)
 			testBench := ab.Categories[0].SubCategory.Checks[0]
-			testBench.EvalExpr = "'${0}' != '';&& [${1} MATCH no_permission.policy QUERY example.allow RETURN allow]"
+			testBench.EvalExpr = "'${0}' != '';&& [${1} MATCH no_permission.rego QUERY example.allow RETURN allow]"
 			evalCmd.EXPECT().EvalCommandPolicy(testBench.CheckCommand, testBench.EvalExpr, policy).Return(eval.CmdEvalResult{Match: tt.wantTestSucceeded, Error: nil}).Times(1)
 			kb := MeshCheck{Evaluator: evalCmd, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: tt.plChan, CompletedChan: tt.completedChan}
 			policyMap := make(map[string]string)
-			policyMap["no_permission.policy"] = policy
+			policyMap["no_permission.rego"] = policy
 			kb.runAuditTest(ab.Categories[0].SubCategory.Checks[0], policyMap)
 			assert.Equal(t, ab.Categories[0].SubCategory.Checks[0].TestSucceed, tt.wantTestSucceeded)
 			go func() {

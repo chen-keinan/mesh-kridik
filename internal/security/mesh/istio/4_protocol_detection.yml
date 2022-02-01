@@ -15,7 +15,7 @@ categories:
           remediation: ' it is recommended to explicitly declare the protocol where possible'
           check_type: multi_param
           impact: Not declaring protocol explicitly might result in unexpected traffic behavior
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH detect_by_protocol.policy QUERY istio.policy_eval RETURN match,namespace,service];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH detect_by_protocol.rego QUERY istio.rego_eval RETURN match,namespace,service];"
           default_value: 'By default, services are do not configure appProtocol field'
           eval_message: 'Service $service on namespace $namespace has declared protocol explicitly '
           references:

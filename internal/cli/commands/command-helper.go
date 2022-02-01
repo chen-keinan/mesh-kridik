@@ -243,7 +243,7 @@ func filteredAuditBenchTests(auditTests []*models.SubCategory, pc []filters.Pred
 func loadPolicies(fi []utils.FilesInfo) map[string]string {
 	policyMap := make(map[string]string)
 	for _, policy := range fi {
-		if strings.HasSuffix(policy.Name, ".policy") {
+		if strings.HasSuffix(policy.Name, ".rego") {
 			policyMap[policy.Name] = policy.Data
 		}
 	}

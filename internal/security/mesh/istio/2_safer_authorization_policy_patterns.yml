@@ -22,7 +22,7 @@ categories:
                         a service outage or will not match your SLO/SLA.'
           check_type: multi_param
           impact: 'namespace will exposed to non restricted api calls to namespace'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH safer_authorization_policy_pattern.policy QUERY istio.policy_eval RETURN match,namespace];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH safer_authorization_policy_pattern.rego QUERY istio.rego_eval RETURN match,namespace];"
           default_value: 'By default, Istio is not configure for ALLOW and DENY pattern'
           eval_message: 'Use ALLOW-with-positive-matching or DENY-with-negative-match patterns on namespace: $namespace'
           references:
@@ -37,7 +37,7 @@ categories:
           remediation: 'it is recommended to use path normalization from type DECODE_AND_MERGE_SLASHES'
           check_type: multi_param
           impact: 'A mismatch can lead to either unexpected rejection or a policy bypass'
-          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH path_normalization_in_authorization.policy QUERY istio.policy_eval RETURN match,operator];"
+          eval_expr: "'${0}' != 'No resources found in default namespace.'; && [${1} MATCH path_normalization_in_authorization.rego QUERY istio.rego_eval RETURN match,operator];"
           default_value: 'advance path normalization is not define'
           eval_message: 'path normalization from type DECODE_AND_MERGE_SLASHES is defined on operator $operator at istio-system namespace'
           references:

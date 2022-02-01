@@ -161,7 +161,7 @@ func Test_executeTests(t *testing.T) {
 		}`
 	ab := &models.SecurityCheck{}
 	ab.CheckCommand = []string{"aaa", "bbb"}
-	ab.EvalExpr = "'${0}' != ''; && [${1} MATCH no_permission.policy QUERY example.allow RETURN allow]"
+	ab.EvalExpr = "'${0}' != ''; && [${1} MATCH no_permission.rego QUERY example.allow RETURN allow]"
 	ab.CommandParams = map[int][]string{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -169,11 +169,11 @@ func Test_executeTests(t *testing.T) {
 	evalcmd.EXPECT().EvalCommandPolicy([]string{"aaa", "bbb"}, ab.EvalExpr, policy).Return(eval.CmdEvalResult{Match: true, CmdEvalExpr: ab.EvalExpr, Error: nil})
 	completedChan := make(chan bool)
 	plChan := make(chan m2.MeshCheckResults)
-	infos := []utils.FilesInfo{{Name: "no_permission.policy", Data: policy}}
+	infos := []utils.FilesInfo{{Name: "no_permission.rego", Data: policy}}
 	kb := &MeshCheck{FilesInfo: infos, ResultProcessor: GetResultProcessingFunction([]string{}), PlChan: plChan, CompletedChan: completedChan, Evaluator: evalcmd, log: logger.GetLog()}
 	sc := []*models.SubCategory{{Checks: []*models.SecurityCheck{ab}}}
 	policyMap := make(map[string]string)
-	policyMap["no_permission.policy"] = policy
+	policyMap["no_permission.rego"] = policy
 	executeTests(sc, kb, policyMap)
 	assert.True(t, ab.TestSucceed)
 	go func() {
@@ -222,7 +222,7 @@ func TestLoaPolicies(t *testing.T) {
 		files []utils.FilesInfo
 		got   map[string]string
 	}{
-		{name: "load policies with policies files", files: []utils.FilesInfo{{Name: "a.policy", Data: "policy data"}}, got: map[string]string{"a.policy": "policy data"}},
+		{name: "load policies with policies files", files: []utils.FilesInfo{{Name: "a.rego", Data: "policy data"}}, got: map[string]string{"a.rego": "policy data"}},
 		{name: "load policies without policies files", files: []utils.FilesInfo{{Name: "a.yml", Data: "spec data"}}, got: map[string]string{}}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
