@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.15
+  - 1.17
 
 env:
   - "PATH=/home/travis/gopath/bin:$PATH"
@@ -9,8 +9,8 @@ services:
   - docker
 
 before_install:
-  - go get golang.org/x/tools/cmd/cover
-  - go get github.com/mattn/goveralls
+  - go install golang.org/x/tools/cmd/cover
+  - go install github.com/mattn/goveralls
 
 script:
   - go get github.com/golang/mock/mockgen@latest

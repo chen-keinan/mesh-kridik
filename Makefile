@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 GOCMD=go
 MOVESANDBOX=mv ~/vms/mesh-kridikmesh-kridik ~/vms-local/mesh-kridik
-GOPACKR=$(GOCMD) get -u github.com/gobuffalo/packr/packr && packr
+GOPACKR=$(GOCMD) get -d github.com/gobuffalo/packr/packr && packr
 GOMOD=$(GOCMD) mod
 GOMOCKS=$(GOCMD) generate ./...
 GOBUILD=$(GOCMD) build
@@ -19,7 +19,7 @@ lint:
 tidy:
 	$(GOMOD) tidy -v
 test:
-	$(GOCMD) get github.com/golang/mock/mockgen@latest
+	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
 	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
 	$(GOMOCKS)
 	$(GOTEST) ./... -coverprofile coverage.md fmt
@@ -40,7 +40,7 @@ build_local:
 install:build_travis
 	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
 test_travis:
-	$(GOCMD) get github.com/golang/mock/mockgen@latest
+	$(GOCMD) install github.com/golang/mock/mockgen@latest
 	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
 	$(GOMOCKS)
 	$(GOTEST) -short ./...  -coverprofile coverage.md fmt
