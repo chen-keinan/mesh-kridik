@@ -16,5 +16,4 @@ script:
   - go get -d github.com/golang/mock/mockgen@v1.6.0
   - go install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
   - go generate ./...
-  - make test_travis
-  - make build_travis
+  - make test_build_travis
