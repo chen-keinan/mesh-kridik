@@ -39,12 +39,13 @@ build_local:
 	$(GOBUILD) ./cmd/mesh-kridik;
 install:build_travis
 	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
-test_travis:
+test_build_travis:
 	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
 	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
 	$(GOMOCKS)
 	$(GOTEST) -short ./...  -coverprofile coverage.md fmt
 	$(GOCMD) tool cover -html=coverage.md -o coverage.html
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
 build_travis:
 	$(GOPACKR)
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
