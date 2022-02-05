@@ -34,6 +34,7 @@ test_rego_travis:
 	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
 	chmod 755 ./opa
 	./opa test ./internal/security/mesh/istio/allow_mtls_permissive_mode_test.rego ./internal/security/mesh/istio/allow_mtls_permissive_mode.rego -v
+	./opa test ./internal/security/mesh/istio/safer_authorization_policy_pattern_test.rego ./internal/security/mesh/istio/safer_authorization_policy_pattern.rego -v
 
 build:
 	$(GOPACKR)
