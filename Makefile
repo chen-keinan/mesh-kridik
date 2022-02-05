@@ -25,6 +25,16 @@ test:
 	$(GOTEST) ./... -coverprofile coverage.md fmt
 	$(GOCMD) tool cover -html=coverage.md -o coverage.html
 	$(GOCMD) tool cover  -func coverage.md
+test_rego:
+	curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_darwin_arm64
+	chmod 755 ./opa
+	opa test ./internal/security/mesh/istio/allow_mtls_permissive_mode_test.rego ./internal/security/mesh/istio/allow_mtls_permissive_mode.rego -v
+
+test_rego_travis:
+	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
+	chmod 755 ./opa
+	./opa test ./internal/security/mesh/istio/allow_mtls_permissive_mode_test.rego ./internal/security/mesh/istio/allow_mtls_permissive_mode.rego -v
+
 build:
 	$(GOPACKR)
 	export PATH=$GOPATH/bin:$PATH;
