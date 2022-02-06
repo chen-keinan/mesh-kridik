@@ -35,6 +35,7 @@ test_rego_travis:
 	chmod 755 ./opa
 	./opa test ./internal/security/mesh/istio/allow_mtls_permissive_mode_test.rego ./internal/security/mesh/istio/allow_mtls_permissive_mode.rego -v
 	./opa test ./internal/security/mesh/istio/safer_authorization_policy_pattern_test.rego ./internal/security/mesh/istio/safer_authorization_policy_pattern.rego -v
+	./opa test ./internal/security/mesh/istio/detect_by_protocol_test.rego ./internal/security/mesh/istio/detect_by_protocol.rego -v
 
 build:
 	$(GOPACKR)
