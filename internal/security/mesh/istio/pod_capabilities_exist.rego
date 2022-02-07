@@ -15,7 +15,7 @@ package istio
  capabilities_detected {
      input.kind == "Pod"
      some i
-     has_capabilities(input.spec.containers[i].securityContext.capabilities)
+     has_capabilities(input.spec.containers[i].securityContext.capabilities.add)
  }
 
   has_key(x, a) {
