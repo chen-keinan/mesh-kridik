@@ -1,5 +1,4 @@
 package istio
-
 policy_eval = {"match":allow_policy} {
  	allow_policy = using_3rd_party_token
   }
