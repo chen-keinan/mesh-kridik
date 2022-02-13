@@ -36,12 +36,12 @@ func printTestResults(at []*models.SecurityCheck, table *tablewriter.Table, cate
 			continue
 		}
 		if a.TestSucceed {
-			passTest := colorstring.Color("[green][Pass]")
+			passTest := colorstring.Color("[green][PassTotal]")
 			table.Append([]string{category, passTest, testType, a.Name})
 
 			passCounter++
 		} else {
-			failTest := colorstring.Color("[red][Fail]")
+			failTest := colorstring.Color("[red][FailTotal]")
 			table.Append([]string{category, failTest, testType, a.Name})
 			failCounter++
 		}
@@ -66,11 +66,11 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			continue
 		}
 		if a.TestSucceed {
-			passTest := colorstring.Color("[green][Pass]")
+			passTest := colorstring.Color("[green][PassTotal]")
 			log.Console(fmt.Sprintf("%s %s\n", passTest, a.Name))
 			passCounter++
 		} else {
-			failTest := colorstring.Color("[red][Fail]")
+			failTest := colorstring.Color("[red][FailTotal]")
 			log.Console(fmt.Sprintf("%s %s\n", failTest, a.Name))
 			failCounter++
 		}
@@ -79,9 +79,9 @@ func printClassicTestResults(at []*models.SecurityCheck, log *logger.MeshKridikL
 			sentence := a.EvalMessage
 			var testStatus string
 			if pr.ReturnValues[strings.TrimSpace(a.PolicyResult.ReturnKeys[0])] == "true" {
-				testStatus = colorstring.Color("[green][Pass]")
+				testStatus = colorstring.Color("[green][PassTotal]")
 			} else {
-				testStatus = colorstring.Color("[red][Fail]")
+				testStatus = colorstring.Color("[red][FailTotal]")
 			}
 			for key, val := range pr.ReturnValues {
 				sentence = strings.Replace(sentence, fmt.Sprintf("$%s", key), val, -1)
