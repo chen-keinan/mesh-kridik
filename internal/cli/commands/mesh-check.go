@@ -65,8 +65,8 @@ var ClassicOutputGenerator ui.OutputGenerator = func(at []*models.SubCategory, l
 
 func printFinalResults(grandTotal []models.CheckTotals) string {
 	finalTotal := calculateFinalTotal(grandTotal)
-	passTest := colorstring.Color("[green]PassTotal:")
-	failTest := colorstring.Color("[red]FailTotal:")
+	passTest := colorstring.Color("[green]Pass:")
+	failTest := colorstring.Color("[red]Fail:")
 	warnTest := colorstring.Color("[yellow]Warn:")
 	title := "Test Result Total:   "
 	return fmt.Sprintf("%s %s %d , %s %d , %s %d ", title, passTest, finalTotal.Pass, warnTest, finalTotal.Warn, failTest, finalTotal.Fail)
