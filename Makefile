@@ -33,6 +33,7 @@ test_rego:
 	./opa test ./internal/security/mesh/istio/pod_capabilities_exist_test.rego ./internal/security/mesh/istio/pod_capabilities_exist.rego -v
 	./opa test ./internal/security/mesh/istio/restrict_gateway_creation_privileges_test.rego ./internal/security/mesh/istio/restrict_gateway_creation_privileges.rego -v
 	./opa test ./internal/security/mesh/istio/istio_using_3rd_party_tokens_test.rego ./internal/security/mesh/istio/istio_using_3rd_party_tokens.rego -v
+	./opa test ./internal/security/mesh/istio/path_normalization_in_authorization_test.rego ./internal/security/mesh/istio/path_normalization_in_authorization.rego -v
 test_rego_travis:
 	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
 	chmod 755 ./opa
@@ -41,6 +42,7 @@ test_rego_travis:
 	./opa test ./internal/security/mesh/istio/pod_capabilities_exist_test.rego ./internal/security/mesh/istio/pod_capabilities_exist.rego -v
 	./opa test ./internal/security/mesh/istio/restrict_gateway_creation_privileges_test.rego ./internal/security/mesh/istio/restrict_gateway_creation_privileges.rego -v
 	./opa test ./internal/security/mesh/istio/istio_using_3rd_party_tokens_test.rego ./internal/security/mesh/istio/istio_using_3rd_party_tokens.rego -v
+	./opa test ./internal/security/mesh/istio/path_normalization_in_authorization_test.rego ./internal/security/mesh/istio/path_normalization_in_authorization.rego -v
 
 build:
 	$(GOPACKR)
