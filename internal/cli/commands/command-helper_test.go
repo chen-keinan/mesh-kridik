@@ -104,7 +104,7 @@ func Test_LoadSecurityCheck(t *testing.T) {
 		t.Fatal(err)
 	}
 	assert.True(t, len(at) != 0)
-	assert.True(t, strings.Contains(at[0].Checks[0].Name, "Make sure mTLS is not configured in permissive mode"))
+	assert.True(t, strings.Contains(at[0].Checks[0].Name, "10.0 Securing egress traffic"))
 }
 
 func Test_LoadSecurityWithFailure(t *testing.T) {

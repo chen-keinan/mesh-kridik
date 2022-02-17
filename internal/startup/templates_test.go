@@ -15,7 +15,6 @@ func Test_CreateMeshSecurityFilesIfNotExist(t *testing.T) {
 		t.Fatal(err)
 	}
 	// generate test with packr
-	assert.Equal(t, bFiles[0].Name, common.IstioMutualmTLS)
 	fm := utils.NewKFolder()
 	err = utils.CreateSecurityFolderIfNotExist("mesh", "istio", fm)
 	assert.NoError(t, err)
