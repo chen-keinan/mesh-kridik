@@ -34,6 +34,7 @@ test_rego:
 	./opa test ./internal/security/mesh/istio/istio_using_3rd_party_tokens_test.rego ./internal/security/mesh/istio/istio_using_3rd_party_tokens.rego -v
 	./opa test ./internal/security/mesh/istio/ingress_gateway_patched_downstream_connection_limit_test.rego ./internal/security/mesh/istio/ingress_gateway_patched_downstream_connection_limit.rego -v
 	./opa test ./internal/security/mesh/istio/path_normalization_in_authorization_test.rego ./internal/security/mesh/istio/path_normalization_in_authorization.rego -v
+	./opa test ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations_test.rego ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations.rego -v
 
 test_rego_travis:
 	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
@@ -45,6 +46,7 @@ test_rego_travis:
 	./opa test ./internal/security/mesh/istio/istio_using_3rd_party_tokens_test.rego ./internal/security/mesh/istio/istio_using_3rd_party_tokens.rego -v
 	./opa test ./internal/security/mesh/istio/ingress_gateway_patched_downstream_connection_limit_test.rego ./internal/security/mesh/istio/ingress_gateway_patched_downstream_connection_limit.rego -v
 	./opa test ./internal/security/mesh/istio/path_normalization_in_authorization_test.rego ./internal/security/mesh/istio/path_normalization_in_authorization.rego -v
+	./opa test ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations_test.rego ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations.rego -v
 
 build:
 	export PATH=$GOPATH/bin:$PATH;
