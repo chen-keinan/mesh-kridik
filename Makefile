@@ -37,6 +37,7 @@ test_rego:
 	./opa test ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations_test.rego ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations.rego -v
 	./opa test ./internal/security/mesh/istio/close_port_8008_as_unauthenticate_plaintext_test.rego ./internal/security/mesh/istio/close_port_8008_as_unauthenticate_plaintext.rego -v
 	./opa test ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext_test.rego ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext.rego -v
+	./opa test ./internal/security/mesh/istio/downstream_connection_limit_config_map_test.rego ./internal/security/mesh/istio/downstream_connection_limit_config_map.rego -v
 
 test_rego_travis:
 	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
@@ -51,6 +52,7 @@ test_rego_travis:
 	./opa test ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations_test.rego ./internal/security/mesh/istio/avoid_overly_broad_hosts_configurations.rego -v
 	./opa test ./internal/security/mesh/istio/close_port_8008_as_unauthenticate_plaintext_test.rego ./internal/security/mesh/istio/close_port_8008_as_unauthenticate_plaintext.rego -v
 	./opa test ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext_test.rego ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext.rego -v
+	./opa test ./internal/security/mesh/istio/downstream_connection_limit_config_map_test.rego ./internal/security/mesh/istio/downstream_connection_limit_config_map.rego -v
 
 build:
 	export PATH=$GOPATH/bin:$PATH;
