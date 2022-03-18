@@ -1,7 +1,7 @@
 //go:build test.
 // +build test.
 
-package main
+package plugins
 
 import (
 	"bytes"
