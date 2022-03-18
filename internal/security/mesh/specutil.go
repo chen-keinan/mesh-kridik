@@ -8,13 +8,17 @@ import (
 	"strings"
 )
 
-const IstioFolder = "istio"
+const (
+	//IstioFolder constant
+	IstioFolder = "istio"
+)
 
 var (
 	//go:embed istio
 	res embed.FS
 )
 
+//LoadIstioSpecs load istio specs
 func LoadIstioSpecs() ([]utils.FilesInfo, error) {
 	dir, _ := res.ReadDir(IstioFolder)
 	specs := make([]utils.FilesInfo, 0)

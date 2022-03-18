@@ -28,6 +28,7 @@ func GetHelpSynopsis() string {
 }
 
 //SaveSecurityFilesIfNotExist create benchmark audit file if not exist
+//nolint:gosec
 func SaveSecurityFilesIfNotExist(spec, version string, filesData []utils.FilesInfo) error {
 	fm := utils.NewKFolder()
 	folder, err := utils.GetSecurityFolder(spec, version, fm)
