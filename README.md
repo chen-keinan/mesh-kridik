@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/chen-keinan/mesh-kridik)](https://goreportcard.com/report/github.com/chen-keinan/mesh-kridik)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/chen-keinan/mesh-kridik/blob/main/LICENSE)
-[![Build Status](https://travis-ci.com/chen-keinan/mesh-kridik.svg?branch=master)](https://travis-ci.com/chen-keinan/mesh-kridik)
+[![Go](https://github.com/chen-keinan/mesh-kridik/actions/workflows/go.yml/badge.svg?branch=master)](https://github.com/chen-keinan/mesh-kridik/actions/workflows/go.yml)
 <img src="./pkg/img/coverage_badge.png" alt="test coverage badge">
 [![Gitter](https://badges.gitter.im/beacon-sec/mesh-kridik.svg)](https://gitter.im/beacon-sec/mesh-kridik?source=orgpage)
 <br><img src="./pkg/img/mesh_kridik_img.png" width="350" alt="mesh-kridik logo"><br>
