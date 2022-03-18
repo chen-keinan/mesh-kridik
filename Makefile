@@ -39,7 +39,7 @@ test_rego:
 	./opa test ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext_test.rego ./internal/security/mesh/istio/close_port_15010_as_unauthenticate_plaintext.rego -v
 	./opa test ./internal/security/mesh/istio/downstream_connection_limit_config_map_test.rego ./internal/security/mesh/istio/downstream_connection_limit_config_map.rego -v
 
-test_rego_travis:
+test_rego_actions:
 	curl -L -o opa https://openpolicyagent.org/downloads/v0.37.1/opa_linux_amd64_static
 	chmod 755 ./opa
 	./opa test ./internal/security/mesh/istio/allow_mtls_permissive_mode_test.rego ./internal/security/mesh/istio/allow_mtls_permissive_mode.rego -v
@@ -64,15 +64,6 @@ build_local:
 	export PATH=$PATH:/home/vagrant/go/bin
 	export PATH=$PATH:/home/root/go/bin
 	$(GOBUILD) ./cmd/mesh-kridik;
-install:build_travis
-	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
-test_build_travis:
-	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
-	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
-	$(GOMOCKS)
-	$(GOTEST) -short ./...  -coverprofile coverage.md fmt
-	$(GOCMD) tool cover -html=coverage.md -o coverage.html
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
 build_travis:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -v ./cmd/mesh-kridik;
 build_remote:
