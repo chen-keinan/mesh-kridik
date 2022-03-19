@@ -19,6 +19,7 @@ lint:
 	$(GOCMD) install -v github.com/golang/mock/mockgen
 	export PATH=$HOME/go/bin:$PATH
 	$(GOMOCKS)
+	./scripts/lint.sh
 tidy:
 	$(GOMOD) tidy -v
 test:
