@@ -20,7 +20,7 @@ lint:
 	export PATH=$HOME/go/bin:$PATH
 	export PATH=$PATH:/root/go/bin
 	go generate ./...
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s
 	./scripts/lint.sh
 tidy:
 	$(GOMOD) tidy -v
