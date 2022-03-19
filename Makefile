@@ -17,8 +17,7 @@ fmt:
 lint:
 	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
 	$(GOCMD) install -v github.com/golang/mock/mockgen
-	(go env GOPATH)/bin
-	export PATH=$GOPATH/bin:$PATH
+	export PATH=$HOME/go/bin:$PATH
 	export PATH=$PATH:/root/go/bin
 	go generate ./...
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
