@@ -18,8 +18,7 @@ lint:
 	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
 	$(GOCMD) install -v github.com/golang/mock/mockgen
 	export PATH=$HOME/go/bin:$PATH
-	export PATH=$PATH:/root/go/bin
-	go generate ./...
+	$(GOMOCKS)
 tidy:
 	$(GOMOD) tidy -v
 test:
