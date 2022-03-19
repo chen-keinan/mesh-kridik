@@ -7,6 +7,7 @@ GOMOCKS=$(GOCMD) generate ./...
 GOBUILD=$(GOCMD) build
 GOTEST=$(GOCMD) test
 BINARY_NAME=mesh-kridik
+METALINTER=golangci-lint run -v  > lint.xml
 GOCOPY=cp mesh-kridik ~/vagrant_file/.
 
 all:test lint build
@@ -15,8 +16,12 @@ fmt:
 	$(GOCMD) fmt ./...
 lint:
 	$(GOCMD) get -d github.com/golang/mock/mockgen@v1.6.0
-	$(GOCMD) install -v github.com/golang/mock/mockgen && export PATH=$GOPATH/bin:$PATH;
-	$(GOMOCKS)
+	$(GOCMD) install -v github.com/golang/mock/mockgen
+	export GOPATH=/Users/chen.keinan/go
+	export PATH=$GOPATH/bin:$PATH
+	export PATH=$PATH:/root/go/bin
+	(go env GOPATH)/bin generate ./...
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
 	./scripts/lint.sh
 tidy:
 	$(GOMOD) tidy -v
