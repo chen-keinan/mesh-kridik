@@ -18,7 +18,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/fx v1.17.0
-	go.uber.org/zap v1.19.1
+	go.uber.org/zap v1.21.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
