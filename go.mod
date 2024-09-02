@@ -5,7 +5,7 @@ go 1.17
 replace github.com/chen-keinan/go-opa-validate => github.com/chen-keinan/go-opa-validate v0.0.6
 
 require (
-	github.com/briandowns/spinner v1.23.0
+	github.com/briandowns/spinner v1.23.1
 	github.com/chen-keinan/go-command-eval v0.0.14
 	github.com/chen-keinan/go-user-plugins v0.0.5
 	github.com/gobuffalo/packr v1.30.1
@@ -64,7 +64,7 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
-	golang.org/x/sys v0.0.0-20211025201205-69cdffdb9359 // indirect
+	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	golang.org/x/term v0.1.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
